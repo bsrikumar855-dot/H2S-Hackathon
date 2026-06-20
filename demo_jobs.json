@@ -1,0 +1,52 @@
+[
+  {
+    "id": "job-1",
+    "title": "Senior AI Platform Engineer",
+    "description": "Role: Senior AI Platform Engineer\nCore Stack: Python, FastAPI, PostgreSQL, pgvector, LangGraph, Docker, Kubernetes\nExperience Required: 5+ years\n\nResponsibilities:\n- Build and maintain core multi-agent recruitment backend pipelines and service platforms.\n- Optimize pgvector similarity search metrics and semantic search queries.\n- Orchestrate agent workflows using LangGraph and integrate LLM models (Gemini/OpenAI).\n\nPrerequisites:\n- Strong experience in software architectures and microservices.\n- Hands-on vector database experience and prompt engineering."
+  },
+  {
+    "id": "job-2",
+    "title": "NLP Research Scientist",
+    "description": "Role: NLP Research Scientist\nCore Stack: PyTorch, HuggingFace, Transformers, Python, SentencePiece, AWS\nExperience Required: 3+ years\n\nResponsibilities:\n- Train and fine-tune large language models and representation embeddings.\n- Research tokenizer adaptations and prefix-tuning modifications.\n- Deploy NLP model gateways on cloud environments.\n\nPrerequisites:\n- M.S. or Ph.D. in Computer Science, Linguistics, or related mathematics field.\n- Strong track record of deep learning research publications."
+  },
+  {
+    "id": "job-3",
+    "title": "Computer Vision Engineer",
+    "description": "Role: Computer Vision Engineer\nCore Stack: C++, Python, OpenCV, TensorFlow, CUDA, YOLOv8, PyTorch\nExperience Required: 4+ years\n\nResponsibilities:\n- Build edge detection, object segmentation, and tracking algorithms for real-time cameras.\n- Optimize inference speeds using CUDA bindings and TensorRT compilation.\n- Manage visual datasets pipelines.\n\nPrerequisites:\n- 4+ years developing low-latency vision algorithms.\n- Experience in C++ optimizations and deep learning models."
+  },
+  {
+    "id": "job-4",
+    "title": "MLOps Architect",
+    "description": "Role: MLOps Architect\nCore Stack: Python, MLflow, Kubernetes, KubeFlow, Triton Server, AWS, Terraform\nExperience Required: 5+ years\n\nResponsibilities:\n- Design candidate feature stores and automate model CI/CD pipelines.\n- Oversee model serving layers using Triton Inference Server on Kubernetes cluster hubs.\n- Standardize monitoring systems for model drift and input feature anomaly detection.\n\nPrerequisites:\n- Experience with infrastructure-as-code (Terraform) and Kubernetes deployments.\n- Strong Python skills and familiarity with machine learning workflows."
+  },
+  {
+    "id": "job-5",
+    "title": "LLM Application Developer",
+    "description": "Role: LLM Application Developer\nCore Stack: TypeScript, React, Node.js, Python, LangChain, Pinecone, LlamaIndex\nExperience Required: 2+ years\n\nResponsibilities:\n- Build responsive web wrappers and AI agent copilot UI layouts.\n- Connect Pinecone similarity vectors index contexts to prompt payloads.\n- Design chain-of-thought system prompts for conversational assistants.\n\nPrerequisites:\n- 2+ years building JavaScript/TypeScript frontend systems.\n- Familiarity with LangChain/LlamaIndex and prompt patterns."
+  },
+  {
+    "id": "job-6",
+    "title": "Junior Data Scientist",
+    "description": "Role: Junior Data Scientist\nCore Stack: Python, Pandas, Scikit-Learn, SQL, Jupyter, Tableau\nExperience Required: 1+ years\n\nResponsibilities:\n- Clean candidate features datasets, handle null parameters, and extract statistical metrics.\n- Formulate basic regression and clustering classifiers to identify candidate categories.\n- Construct dashboard reports outlining candidate behavior profiles.\n\nPrerequisites:\n- Degree in Data Science, Statistics, or Math.\n- Solid Python Pandas and SQL query skills."
+  },
+  {
+    "id": "job-7",
+    "title": "Embedded AI Engineer (TinyML)",
+    "description": "Role: Embedded AI Engineer\nCore Stack: C, C++, ARM Cortex, TensorFlow Lite, Keil, STM32\nExperience Required: 4+ years\n\nResponsibilities:\n- Port compressed neural network weights to low-power microcontrollers.\n- Implement post-training 8-bit integer quantization.\n- Conduct hardware-in-the-loop latency tests on ARM microcontrollers.\n\nPrerequisites:\n- 4+ years in firmware development or low-level C programming.\n- Knowledge of TFLite Micro or model compression techniques."
+  },
+  {
+    "id": "job-8",
+    "title": "AI Product Manager",
+    "description": "Role: AI Product Manager\nCore Focus: Agile, Roadmap planning, LLM evaluations, Recruiter UX, Analytics\nExperience Required: 4+ years\n\nResponsibilities:\n- Lead system design definitions for automated AI resume sourcing tools.\n- Benchmark accuracy metrics across GPT and Gemini model outputs.\n- Collaborate with engineering teams to define data schema variables and analytics tabs.\n\nPrerequisites:\n- 4+ years in product management.\n- Basic understanding of AI models, APIs, and recruiter user journeys."
+  },
+  {
+    "id": "job-9",
+    "title": "Deep Learning Solutions Architect",
+    "description": "Role: Deep Learning Solutions Architect\nCore Stack: PyTorch, AWS SageMaker, GCP Vertex AI, Docker, Python, ONNX\nExperience Required: 6+ years\n\nResponsibilities:\n- Advise enterprise clients on transitioning legacy backend servers to deep learning cloud pipelines.\n- Create standard deployment templates for SageMaker training jobs.\n- Set up low-latency model inference pipelines with ONNX bindings.\n\nPrerequisites:\n- 6+ years building enterprise architectures.\n- Strong technical skills in PyTorch, Docker, and Cloud platforms (AWS/GCP)."
+  },
+  {
+    "id": "job-10",
+    "title": "Reinforcement Learning Engineer",
+    "description": "Role: Reinforcement Learning Engineer\nCore Stack: Python, PyTorch, Ray/RLlib, OpenAI Gym, Mujoco, C++\nExperience Required: 3+ years\n\nResponsibilities:\n- Design reward shaping algorithms and policy training graphs for control tasks.\n- Scale parallel environments training pipelines using Ray cluster hubs.\n- Integrate physics constraints into simulator environments.\n\nPrerequisites:\n- Deep knowledge of RL algorithms (PPO, SAC, DDPG).\n- Strong math foundations in Markov Decision Processes and calculus."
+  }
+]
