@@ -6,6 +6,7 @@ from backend.database.base import Base
 from backend.api.v1.routes import router as api_router
 
 # Ensure models are imported so SQLAlchemy knows about them before creation
+from fastapi.middleware.cors import CORSMiddleware
 from backend.database import models
 
 # Create FastAPI app metadata
@@ -13,6 +14,15 @@ app = FastAPI(
     title="AI Recruiter Ranking Engine",
     description="An AI-driven recruiter tool utilizing multi-agent LangGraph workflow and PostgreSQL vector embeddings.",
     version="1.0.0"
+)
+
+# Enable Cross-Origin Resource Sharing (CORS) for development
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 @app.on_event("startup")
