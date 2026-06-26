@@ -8,7 +8,7 @@ class Settings(BaseSettings):
         extra="ignore"
     )
 
-    POSTGRES_URL: str = "postgresql://postgres:postgres@localhost:5432/h2s_recruiter"
+    DATABASE_URL: str = "sqlite:///backend/database/h2s_recruiter.db"
     GEMINI_API_KEY: str = ""
     OPENAI_API_KEY: str = ""
     ENVIRONMENT: str = "development"

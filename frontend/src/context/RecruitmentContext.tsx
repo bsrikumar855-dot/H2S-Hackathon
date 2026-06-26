@@ -61,14 +61,14 @@ Backend Engineer
 Experience: 4 years
 
 Summary:
-Backend developer specializing in AI pipelines and graph-based workflow architectures. Experienced with FastAPI, PostgreSQL, and LangGraph orchestrations.
+Backend developer specializing in AI pipelines and graph-based workflow architectures. Experienced with FastAPI, SQLite, and LangGraph orchestrations.
 
 Technical Skills:
-Python, FastAPI, PostgreSQL, OpenAI API, Docker.
+Python, FastAPI, SQLite, OpenAI API, Docker.
 
 Projects:
 - Multi-Agent Orchestration: Constructed LangGraph pipelines integrating multi-agent processing systems.
-- Vector Core: Configured similarity searches using pgvector.`
+- Vector Core: Configured similarity searches using SQLite JSON vectors.`
   },
   {
     name: "Elena_Rostova_Resume.pdf",
@@ -97,7 +97,7 @@ Summary:
 Full-stack generalist with background in rapid startup prototyping and legacy MVC codebases.
 
 Technical Skills:
-Ruby on Rails, PostgreSQL, HTML5, Git, Ruby, JavaScript.
+Ruby on Rails, SQLite, HTML5, Git, Ruby, JavaScript.
 
 Projects:
 - Prototyping Gateways: Deployed rapid startup client tools on Heroku using monolithic Rails.`
@@ -141,11 +141,11 @@ Summary:
 Dynamic software engineer with expertise in building responsive applications and database integration.
 
 Technical Skills:
-Python, FastAPI, PostgreSQL, React, TypeScript, Docker, Git.
+Python, FastAPI, SQLite, React, TypeScript, Docker, Git.
 
 Projects:
 - Application Refactoring: Successfully migrated monolithic services to FastAPI.
-- Database Integration: Configured pgvector schema configurations.`
+- Database Integration: Configured SQLite JSON vectors schema configurations.`
 
         setUploadedFiles((prev) => {
           if (prev.some((f) => f.name === file.name)) return prev

@@ -89,13 +89,13 @@ class CandidateIntelligenceAgent:
             years = float(exp_match.group(1))
 
         # Check for typical languages/frameworks
-        known_skills = ["python", "fastapi", "django", "postgres", "postgresql", "docker", "kubernetes", "react", "typescript", "javascript", "go", "golang", "aws", "gcp"]
+        known_skills = ["python", "fastapi", "django", "sqlite", "docker", "kubernetes", "react", "typescript", "javascript", "go", "golang", "aws", "gcp"]
         found_skills = []
         for skill in known_skills:
             if re.search(rf"\b{skill}\b", text, re.IGNORECASE):
                 name_skill = skill.capitalize()
-                if skill == "postgresql":
-                    name_skill = "PostgreSQL"
+                if skill == "sqlite":
+                    name_skill = "SQLite"
                 elif skill == "fastapi":
                     name_skill = "FastAPI"
                 elif skill == "gcp":

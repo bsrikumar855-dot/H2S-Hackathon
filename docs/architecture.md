@@ -9,7 +9,7 @@ This document provides a detailed overview of the system architecture, state tra
 The application is built using a modern decoupled client-server architecture:
 *   **Frontend Client:** React 19 web application built with Vite and TypeScript, styled using Tailwind CSS and custom glassmorphism parameters.
 *   **Backend Server:** FastAPI server orchestrating database connections and LangGraph pipeline operations.
-*   **Vector Database:** PostgreSQL configured with the `pgvector` extension for storing and querying high-dimensional embedding vectors.
+*   **Database:** SQLite file database for relational records and JSON embedding storage.
 *   **AI Orchestration:** LangGraph coordinate flow mapping multi-agent activities using Gemini 2.5 Flash models for text extraction and recruiter reasoning.
 
 ```mermaid
@@ -25,8 +25,8 @@ graph TD
         LGraph["LangGraph Workflow Orchestrator"]
     end
 
-    subgraph "Vector Database"
-        Postgres["PostgreSQL + pgvector"]
+    subgraph "Database"
+        SQLite["SQLite"]
     end
 
     subgraph "AI Services Layer"
@@ -37,7 +37,7 @@ graph TD
     Axios -->|HTTP POST Request| API
     API -->|Read/Write Records| ORM
     API -->|Invoke Suite Pipeline| LGraph
-    ORM -->|Vector & Tabular SQL| Postgres
+    ORM -->|Relational SQL & JSON storage| SQLite
     LGraph -->|Embeddings & Justifications| Gemini
     LGraph -->|Read Similarity Data| ORM
 ```
@@ -127,7 +127,7 @@ sequenceDiagram
     participant API as FastAPI Router Gateway
     participant Graph as LangGraph Orchestrator
     participant Gemini as Gemini 2.5 Flash
-    participant DB as PostgreSQL + pgvector
+    participant DB as SQLite
 
     Recruiter->>App: Submits Job Description + Resumes
     App->>API: POST /api/v1/rankings/run (Payload parameters)
@@ -138,8 +138,7 @@ sequenceDiagram
     Gemini-->>Graph: Returns structured profiles
     Graph->>Gemini: Generate text embeddings vectors
     Gemini-->>Graph: Returns embedding vectors
-    Graph->>DB: Query vector comparisons (pgvector similarity calculations)
-    DB-->>Graph: Returns cosine similarity distance metrics
+    Graph->>Graph: Calculate embedding similarity metrics
     Graph->>Graph: Calculate suitability ranking weights scores
     Graph->>Gemini: Generate natural language explainability reasoning
     Gemini-->>Graph: Returns strengths, weaknesses, and texts

@@ -136,7 +136,7 @@ Generate vector representations of the JD requirements and candidate profiles, r
 ### Internal Workflow
 1. **Vector Preparation:** Create query texts by combining structural elements of the JD (role title + business domain + mandatory skills).
 2. **Embedding Generation:** Call the embedding model to convert query text into a 768-dimension vector.
-3. **Vector Database Retrieval:** Run a cosine similarity query against the candidate resume embeddings in PostgreSQL (`pgvector`) using an HNSW index, returning the top $N$ matching profiles.
+3. **Vector Database Retrieval:** Run a cosine similarity query against the candidate resume embeddings in SQLite JSON embeddings using an HNSW index, returning the top $N$ matching profiles.
 4. **Overlap Analysis:** Compare the candidate's extracted skills against the JD's mandatory and preferred skills lists. Compute exact matching, synonym matching, and track gaps.
 
 ### Failure Handling
@@ -145,7 +145,7 @@ Generate vector representations of the JD requirements and candidate profiles, r
 
 ### Dependencies
 * Embedding API (`text-embedding-004`).
-* PostgreSQL vector database context.
+* SQLite vector database context.
 
 ---
 

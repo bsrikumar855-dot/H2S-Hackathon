@@ -1,7 +1,7 @@
 [
   {
     "name": "Sophia Chen",
-    "resume_text": "Sophia Chen\nDomain focus: AI Platform Engineering\nEducation: M.S. in Computer Science - Stanford University\nExperience: 6.5 years\n\nTechnical Skills:\nPython, FastAPI, PostgreSQL, pgvector, LangGraph, Docker, Kubernetes, TypeScript\n\nSelected Projects:\n- Vector Hub: Built search gateway using pgvector.\n- Agent Flow: Built LangGraph routing workflow.\n\nProfessional Summary:\nCompetent IT professional specializing in AI Platform Engineering with 6.5 years of practical focus. Expertise covers: Python, FastAPI, PostgreSQL, pgvector.",
+    "resume_text": "Sophia Chen\nDomain focus: AI Platform Engineering\nEducation: M.S. in Computer Science - Stanford University\nExperience: 6.5 years\n\nTechnical Skills:\nPython, FastAPI, SQLite, SQLite JSON vectors, LangGraph, Docker, Kubernetes, TypeScript\n\nSelected Projects:\n- Vector Hub: Built search gateway using SQLite JSON vectors.\n- Agent Flow: Built LangGraph routing workflow.\n\nProfessional Summary:\nCompetent IT professional specializing in AI Platform Engineering with 6.5 years of practical focus. Expertise covers: Python, FastAPI, SQLite, SQLite JSON vectors.",
     "behavioral_signals": {
       "profile_updates_last_30_days": 3,
       "login_frequency": 14,
@@ -13,7 +13,7 @@
   },
   {
     "name": "Marcus Vance",
-    "resume_text": "Marcus Vance\nDomain focus: AI Systems Development\nEducation: B.S. in Software Engineering - UT Austin\nExperience: 5.0 years\n\nTechnical Skills:\nPython, FastAPI, PostgreSQL, pgvector, LangGraph, Docker, AWS, LangChain\n\nSelected Projects:\n- Doc Classifier: Extracted structured candidate schemas.\n- Graph Orchestrator: Built microservices pipelines.\n\nProfessional Summary:\nCompetent IT professional specializing in AI Systems Development with 5.0 years of practical focus. Expertise covers: Python, FastAPI, PostgreSQL, pgvector.",
+    "resume_text": "Marcus Vance\nDomain focus: AI Systems Development\nEducation: B.S. in Software Engineering - UT Austin\nExperience: 5.0 years\n\nTechnical Skills:\nPython, FastAPI, SQLite, SQLite JSON vectors, LangGraph, Docker, AWS, LangChain\n\nSelected Projects:\n- Doc Classifier: Extracted structured candidate schemas.\n- Graph Orchestrator: Built microservices pipelines.\n\nProfessional Summary:\nCompetent IT professional specializing in AI Systems Development with 5.0 years of practical focus. Expertise covers: Python, FastAPI, SQLite, SQLite JSON vectors.",
     "behavioral_signals": {
       "profile_updates_last_30_days": 2,
       "login_frequency": 11,
@@ -25,7 +25,7 @@
   },
   {
     "name": "Vikram Malhotra",
-    "resume_text": "Vikram Malhotra\nDomain focus: Platform Infrastructures\nEducation: B. Tech in CS - IIT Bombay\nExperience: 7.0 years\n\nTechnical Skills:\nPython, FastAPI, Kubernetes, Docker, pgvector, PostgreSQL, Redis, LangChain, GCP\n\nSelected Projects:\n- Search Scale: Handled 10M vector queries.\n- Infra Deployment: Setup Kubernetes serving networks.\n\nProfessional Summary:\nCompetent IT professional specializing in Platform Infrastructures with 7.0 years of practical focus. Expertise covers: Python, FastAPI, Kubernetes, Docker.",
+    "resume_text": "Vikram Malhotra\nDomain focus: Platform Infrastructures\nEducation: B. Tech in CS - IIT Bombay\nExperience: 7.0 years\n\nTechnical Skills:\nPython, FastAPI, Kubernetes, Docker, SQLite JSON vectors, SQLite, Redis, LangChain, GCP\n\nSelected Projects:\n- Search Scale: Handled 10M vector queries.\n- Infra Deployment: Setup Kubernetes serving networks.\n\nProfessional Summary:\nCompetent IT professional specializing in Platform Infrastructures with 7.0 years of practical focus. Expertise covers: Python, FastAPI, Kubernetes, Docker.",
     "behavioral_signals": {
       "profile_updates_last_30_days": 4,
       "login_frequency": 15,
@@ -37,7 +37,7 @@
   },
   {
     "name": "Clara Dupont",
-    "resume_text": "Clara Dupont\nDomain focus: Fullstack AI Integrations\nEducation: M.S. in Software Systems - Sorbonne\nExperience: 5.5 years\n\nTechnical Skills:\nPython, FastAPI, LangGraph, pgvector, Docker, SQLAlchemy, TypeScript, React\n\nSelected Projects:\n- Client UI Portal: Interactive recruiter dashboard.\n- AI Workflow: LangGraph agent orchestrations.\n\nProfessional Summary:\nCompetent IT professional specializing in Fullstack AI Integrations with 5.5 years of practical focus. Expertise covers: Python, FastAPI, LangGraph, pgvector.",
+    "resume_text": "Clara Dupont\nDomain focus: Fullstack AI Integrations\nEducation: M.S. in Software Systems - Sorbonne\nExperience: 5.5 years\n\nTechnical Skills:\nPython, FastAPI, LangGraph, SQLite JSON vectors, Docker, SQLAlchemy, TypeScript, React\n\nSelected Projects:\n- Client UI Portal: Interactive recruiter dashboard.\n- AI Workflow: LangGraph agent orchestrations.\n\nProfessional Summary:\nCompetent IT professional specializing in Fullstack AI Integrations with 5.5 years of practical focus. Expertise covers: Python, FastAPI, LangGraph, SQLite JSON vectors.",
     "behavioral_signals": {
       "profile_updates_last_30_days": 1,
       "login_frequency": 9,
@@ -133,7 +133,7 @@
   },
   {
     "name": "James O'Connor",
-    "resume_text": "James O'Connor\nDomain focus: Web Development\nEducation: B.S. in CS - University College Dublin\nExperience: 4.0 years\n\nTechnical Skills:\nPython, Django, PostgreSQL, Docker, AWS, Celery, REST APIs, Redis\n\nSelected Projects:\n- Web API: Built high-load Django SaaS API portals.\n- Async Workflows: Integrated Celery Redis queue workers.\n\nProfessional Summary:\nCompetent IT professional specializing in Web Development with 4.0 years of practical focus. Expertise covers: Python, Django, PostgreSQL, Docker.",
+    "resume_text": "James O'Connor\nDomain focus: Web Development\nEducation: B.S. in CS - University College Dublin\nExperience: 4.0 years\n\nTechnical Skills:\nPython, Django, SQLite, Docker, AWS, Celery, REST APIs, Redis\n\nSelected Projects:\n- Web API: Built high-load Django SaaS API portals.\n- Async Workflows: Integrated Celery Redis queue workers.\n\nProfessional Summary:\nCompetent IT professional specializing in Web Development with 4.0 years of practical focus. Expertise covers: Python, Django, SQLite, Docker.",
     "behavioral_signals": {
       "profile_updates_last_30_days": 2,
       "login_frequency": 8,
@@ -193,7 +193,7 @@
   },
   {
     "name": "Gabriel Dubois",
-    "resume_text": "Gabriel Dubois\nDomain focus: Fullstack Web\nEducation: B.S. in CS - University of Lyon\nExperience: 4.0 years\n\nTechnical Skills:\nPython, Flask, PostgreSQL, Docker, AWS, HTML5, CSS3, JavaScript\n\nSelected Projects:\n- Portal MVP: Scaled Flask web templates.\n- Database Migrations: Optimized slow lookup join structures.\n\nProfessional Summary:\nCompetent IT professional specializing in Fullstack Web with 4.0 years of practical focus. Expertise covers: Python, Flask, PostgreSQL, Docker.",
+    "resume_text": "Gabriel Dubois\nDomain focus: Fullstack Web\nEducation: B.S. in CS - University of Lyon\nExperience: 4.0 years\n\nTechnical Skills:\nPython, Flask, SQLite, Docker, AWS, HTML5, CSS3, JavaScript\n\nSelected Projects:\n- Portal MVP: Scaled Flask web templates.\n- Database Migrations: Optimized slow lookup join structures.\n\nProfessional Summary:\nCompetent IT professional specializing in Fullstack Web with 4.0 years of practical focus. Expertise covers: Python, Flask, SQLite, Docker.",
     "behavioral_signals": {
       "profile_updates_last_30_days": 3,
       "login_frequency": 11,
@@ -229,7 +229,7 @@
   },
   {
     "name": "Grace Hopper",
-    "resume_text": "Grace Hopper\nDomain focus: Core Computing\nEducation: Ph.D. in Mathematics - Yale\nExperience: 8.0 years\n\nTechnical Skills:\nCobol, Python, SQL, Assembly, Compiler Design, Algorithms, Git\n\nSelected Projects:\n- Compiler Parser: Custom parsing grammar algorithms.\n- SQL Migration: Translated legacy systems to PostgreSQL.\n\nProfessional Summary:\nCompetent IT professional specializing in Core Computing with 8.0 years of practical focus. Expertise covers: Cobol, Python, SQL, Assembly.",
+    "resume_text": "Grace Hopper\nDomain focus: Core Computing\nEducation: Ph.D. in Mathematics - Yale\nExperience: 8.0 years\n\nTechnical Skills:\nCobol, Python, SQL, Assembly, Compiler Design, Algorithms, Git\n\nSelected Projects:\n- Compiler Parser: Custom parsing grammar algorithms.\n- SQL Migration: Translated legacy systems to SQLite.\n\nProfessional Summary:\nCompetent IT professional specializing in Core Computing with 8.0 years of practical focus. Expertise covers: Cobol, Python, SQL, Assembly.",
     "behavioral_signals": {
       "profile_updates_last_30_days": 1,
       "login_frequency": 5,
@@ -301,7 +301,7 @@
   },
   {
     "name": "Devon Miller",
-    "resume_text": "Devon Miller\nDomain focus: Legacy Rails Apps\nEducation: B.A. in History - NYU\nExperience: 3.0 years\n\nTechnical Skills:\nRuby on Rails, PostgreSQL, HTML5, Git, Ruby, CSS3, JavaScript\n\nSelected Projects:\n- Blog Hub: Legacy monolithic Rails blog app.\n- Cart Service: Deployed basic checkout workflows.\n\nProfessional Summary:\nCompetent IT professional specializing in Legacy Rails Apps with 3.0 years of practical focus. Expertise covers: Ruby on Rails, PostgreSQL, HTML5, Git.",
+    "resume_text": "Devon Miller\nDomain focus: Legacy Rails Apps\nEducation: B.A. in History - NYU\nExperience: 3.0 years\n\nTechnical Skills:\nRuby on Rails, SQLite, HTML5, Git, Ruby, CSS3, JavaScript\n\nSelected Projects:\n- Blog Hub: Legacy monolithic Rails blog app.\n- Cart Service: Deployed basic checkout workflows.\n\nProfessional Summary:\nCompetent IT professional specializing in Legacy Rails Apps with 3.0 years of practical focus. Expertise covers: Ruby on Rails, SQLite, HTML5, Git.",
     "behavioral_signals": {
       "profile_updates_last_30_days": 0,
       "login_frequency": 4,
@@ -493,7 +493,7 @@
   },
   {
     "name": "Bob Builder",
-    "resume_text": "Bob Builder\nDomain focus: Fresh Graduate\nEducation: B.S. in Computer Science - Stanford (GPA 3.8)\nExperience: 0.0 years\n\nTechnical Skills:\nPython, FastAPI, React, TypeScript, PostgreSQL, Docker, Git, Tailwind CSS\n\nSelected Projects:\n- SaaS MVP: Designed microservice gateway with FastAPI React.\n- Cloud deploy: Deployed containerized applications using Docker.\n\nProfessional Summary:\nCompetent IT professional specializing in Fresh Graduate with 0.0 years of practical focus. Expertise covers: Python, FastAPI, React, TypeScript.",
+    "resume_text": "Bob Builder\nDomain focus: Fresh Graduate\nEducation: B.S. in Computer Science - Stanford (GPA 3.8)\nExperience: 0.0 years\n\nTechnical Skills:\nPython, FastAPI, React, TypeScript, SQLite, Docker, Git, Tailwind CSS\n\nSelected Projects:\n- SaaS MVP: Designed microservice gateway with FastAPI React.\n- Cloud deploy: Deployed containerized applications using Docker.\n\nProfessional Summary:\nCompetent IT professional specializing in Fresh Graduate with 0.0 years of practical focus. Expertise covers: Python, FastAPI, React, TypeScript.",
     "behavioral_signals": {
       "profile_updates_last_30_days": 4,
       "login_frequency": 14,

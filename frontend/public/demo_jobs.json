@@ -2,7 +2,7 @@
   {
     "id": "job-1",
     "title": "Senior AI Platform Engineer",
-    "description": "Role: Senior AI Platform Engineer\nCore Stack: Python, FastAPI, PostgreSQL, pgvector, LangGraph, Docker, Kubernetes\nExperience Required: 5+ years\n\nResponsibilities:\n- Build and maintain core multi-agent recruitment backend pipelines and service platforms.\n- Optimize pgvector similarity search metrics and semantic search queries.\n- Orchestrate agent workflows using LangGraph and integrate LLM models (Gemini/OpenAI).\n\nPrerequisites:\n- Strong experience in software architectures and microservices.\n- Hands-on vector database experience and prompt engineering."
+    "description": "Role: Senior AI Platform Engineer\nCore Stack: Python, FastAPI, SQLite, SQLite JSON vectors, LangGraph, Docker, Kubernetes\nExperience Required: 5+ years\n\nResponsibilities:\n- Build and maintain core multi-agent recruitment backend pipelines and service platforms.\n- Optimize SQLite JSON vectors similarity search metrics and semantic search queries.\n- Orchestrate agent workflows using LangGraph and integrate LLM models (Gemini/OpenAI).\n\nPrerequisites:\n- Strong experience in software architectures and microservices.\n- Hands-on vector database experience and prompt engineering."
   },
   {
     "id": "job-2",

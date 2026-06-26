@@ -8,11 +8,11 @@ jobs = [
         "title": "Senior AI Platform Engineer",
         "description": (
             "Role: Senior AI Platform Engineer\n"
-            "Core Stack: Python, FastAPI, PostgreSQL, pgvector, LangGraph, Docker, Kubernetes\n"
+            "Core Stack: Python, FastAPI, SQLite, SQLite JSON vectors, LangGraph, Docker, Kubernetes\n"
             "Experience Required: 5+ years\n\n"
             "Responsibilities:\n"
             "- Build and maintain core multi-agent recruitment backend pipelines and service platforms.\n"
-            "- Optimize pgvector similarity search metrics and semantic search queries.\n"
+            "- Optimize SQLite JSON vectors similarity search metrics and semantic search queries.\n"
             "- Orchestrate agent workflows using LangGraph and integrate LLM models (Gemini/OpenAI).\n\n"
             "Prerequisites:\n"
             "- Strong experience in software architectures and microservices.\n"
@@ -174,16 +174,16 @@ candidate_profiles_raw = [
     {
         "name": "Sophia Chen",
         "experience": 6.5,
-        "skills": ["Python", "FastAPI", "PostgreSQL", "pgvector", "LangGraph", "Docker", "Kubernetes", "TypeScript"],
+        "skills": ["Python", "FastAPI", "SQLite", "SQLite JSON vectors", "LangGraph", "Docker", "Kubernetes", "TypeScript"],
         "education": "M.S. in Computer Science - Stanford University",
         "domain": "AI Platform Engineering",
         "behavior": {"updates": 3, "logins": 14, "rate": 0.95, "apps": 5, "certs": 1, "github": 22},
-        "projects": ["Vector Hub: Built search gateway using pgvector.", "Agent Flow: Built LangGraph routing workflow."]
+        "projects": ["Vector Hub: Built search gateway using SQLite JSON vectors.", "Agent Flow: Built LangGraph routing workflow."]
     },
     {
         "name": "Marcus Vance",
         "experience": 5.0,
-        "skills": ["Python", "FastAPI", "PostgreSQL", "pgvector", "LangGraph", "Docker", "AWS", "LangChain"],
+        "skills": ["Python", "FastAPI", "SQLite", "SQLite JSON vectors", "LangGraph", "Docker", "AWS", "LangChain"],
         "education": "B.S. in Software Engineering - UT Austin",
         "domain": "AI Systems Development",
         "behavior": {"updates": 2, "logins": 11, "rate": 0.90, "apps": 4, "certs": 2, "github": 18},
@@ -192,7 +192,7 @@ candidate_profiles_raw = [
     {
         "name": "Vikram Malhotra",
         "experience": 7.0,
-        "skills": ["Python", "FastAPI", "Kubernetes", "Docker", "pgvector", "PostgreSQL", "Redis", "LangChain", "GCP"],
+        "skills": ["Python", "FastAPI", "Kubernetes", "Docker", "SQLite JSON vectors", "SQLite", "Redis", "LangChain", "GCP"],
         "education": "B. Tech in CS - IIT Bombay",
         "domain": "Platform Infrastructures",
         "behavior": {"updates": 4, "logins": 15, "rate": 0.98, "apps": 6, "certs": 0, "github": 30},
@@ -201,7 +201,7 @@ candidate_profiles_raw = [
     {
         "name": "Clara Dupont",
         "experience": 5.5,
-        "skills": ["Python", "FastAPI", "LangGraph", "pgvector", "Docker", "SQLAlchemy", "TypeScript", "React"],
+        "skills": ["Python", "FastAPI", "LangGraph", "SQLite JSON vectors", "Docker", "SQLAlchemy", "TypeScript", "React"],
         "education": "M.S. in Software Systems - Sorbonne",
         "domain": "Fullstack AI Integrations",
         "behavior": {"updates": 1, "logins": 9, "rate": 0.85, "apps": 3, "certs": 1, "github": 14},
@@ -277,7 +277,7 @@ candidate_profiles_raw = [
     {
         "name": "James O'Connor",
         "experience": 4.0,
-        "skills": ["Python", "Django", "PostgreSQL", "Docker", "AWS", "Celery", "REST APIs", "Redis"],
+        "skills": ["Python", "Django", "SQLite", "Docker", "AWS", "Celery", "REST APIs", "Redis"],
         "education": "B.S. in CS - University College Dublin",
         "domain": "Web Development",
         "behavior": {"updates": 2, "logins": 8, "rate": 0.82, "apps": 4, "certs": 0, "github": 11},
@@ -322,7 +322,7 @@ candidate_profiles_raw = [
     {
         "name": "Gabriel Dubois",
         "experience": 4.0,
-        "skills": ["Python", "Flask", "PostgreSQL", "Docker", "AWS", "HTML5", "CSS3", "JavaScript"],
+        "skills": ["Python", "Flask", "SQLite", "Docker", "AWS", "HTML5", "CSS3", "JavaScript"],
         "education": "B.S. in CS - University of Lyon",
         "domain": "Fullstack Web",
         "behavior": {"updates": 3, "logins": 11, "rate": 0.90, "apps": 5, "certs": 1, "github": 14},
@@ -353,7 +353,7 @@ candidate_profiles_raw = [
         "education": "Ph.D. in Mathematics - Yale",
         "domain": "Core Computing",
         "behavior": {"updates": 1, "logins": 5, "rate": 0.65, "apps": 2, "certs": 0, "github": 10},
-        "projects": ["Compiler Parser: Custom parsing grammar algorithms.", "SQL Migration: Translated legacy systems to PostgreSQL."]
+        "projects": ["Compiler Parser: Custom parsing grammar algorithms.", "SQL Migration: Translated legacy systems to SQLite."]
     },
     {
         "name": "Linus Torvalds",
@@ -405,7 +405,7 @@ candidate_profiles_raw = [
     {
         "name": "Devon Miller",
         "experience": 3.0,
-        "skills": ["Ruby on Rails", "PostgreSQL", "HTML5", "Git", "Ruby", "CSS3", "JavaScript"],
+        "skills": ["Ruby on Rails", "SQLite", "HTML5", "Git", "Ruby", "CSS3", "JavaScript"],
         "education": "B.A. in History - NYU",
         "domain": "Legacy Rails Apps",
         "behavior": {"updates": 0, "logins": 4, "rate": 0.40, "apps": 2, "certs": 0, "github": 4},
@@ -553,7 +553,7 @@ candidate_profiles_raw = [
     {
         "name": "Bob Builder",
         "experience": 0.0,
-        "skills": ["Python", "FastAPI", "React", "TypeScript", "PostgreSQL", "Docker", "Git", "Tailwind CSS"],
+        "skills": ["Python", "FastAPI", "React", "TypeScript", "SQLite", "Docker", "Git", "Tailwind CSS"],
         "education": "B.S. in Computer Science - Stanford (GPA 3.8)",
         "domain": "Fresh Graduate",
         "behavior": {"updates": 4, "logins": 14, "rate": 0.95, "apps": 10, "certs": 2, "github": 22},

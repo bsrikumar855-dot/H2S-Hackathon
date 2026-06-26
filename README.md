@@ -19,7 +19,7 @@ AI Recruiter solves this by going **beyond keywords**:
 
 The application is structured into two main layers:
 1.  **Frontend SPA Client:** Built with React 19, TypeScript, and Vite. Styled with custom glassmorphic panels and responsive grids using Tailwind CSS. Features dynamic SVG charts trace skill densities, candidate score brackets, and behavioral spreads.
-2.  **FastAPI Backend Server:** Python backend exposing FastAPI endpoints, managing SQLAlchemy models connected to a PostgreSQL vector database (`pgvector`), and running the multi-agent LangGraph workflow.
+2.  **FastAPI Backend Server:** Python backend exposing FastAPI endpoints, managing SQLAlchemy models connected to a SQLite database with JSON embedding storage, and running the multi-agent LangGraph workflow.
 
 ```
 +------------------------------------------------------------+
@@ -42,7 +42,7 @@ The application is structured into two main layers:
 +-------+-------------+---------------+---------------+------+
         |             |               |               |
         v             v               v               v
-    [Gemini API]  [pgvector DB]  [Heuristics]  [Explainers]
+    [Gemini API]  [SQLite JSON vectors DB]  [Heuristics]  [Explainers]
 ```
 
 ---
@@ -53,7 +53,7 @@ The system coordinates **six specialized AI agents** inside a LangGraph state gr
 
 1.  **Job Intelligence Agent:** Extracts structured prerequisites (mandatory skills, preferred stacks, minimum experience) from raw Job Descriptions.
 2.  **Candidate Intelligence Agent:** Parses raw candidate resume strings into structured entities (skills, projects, education, experience years) using Gemini.
-3.  **Semantic Matching Agent:** Generates text embeddings and queries the PostgreSQL `pgvector` database to compute cosine similarity math.
+3.  **Semantic Matching Agent:** Generates text embeddings and computes cosine similarity math in the application workflow.
 4.  **Behavioral Signal Agent:** Computes engagement intent metrics from candidate profile activity (commits, updates, responses).
 5.  **Ranking Agent:** Applies a weighted suitability algorithm:
     $$\text{Score} = 0.55 \times \text{Semantic} + 0.15 \times \text{Skills} + 0.10 \times \text{Experience} + 0.20 \times \text{Behavior}$$
@@ -78,7 +78,7 @@ The system coordinates **six specialized AI agents** inside a LangGraph state gr
 ### Prerequisites
 *   Python 3.10+
 *   Node.js 18+
-*   PostgreSQL configured with the `pgvector` extension
+*   SQLite file database
 
 ### 5.1 Backend Setup
 1.  Navigate to the `backend/` directory:
@@ -91,7 +91,7 @@ The system coordinates **six specialized AI agents** inside a LangGraph state gr
     ```
 3.  Configure environment variables in a `.env` file at the root of `backend/`:
     ```env
-    POSTGRES_URL=postgresql://username:password@localhost:5432/h2s_recruiter
+    DATABASE_URL=sqlite:///backend/database/h2s_recruiter.db
     GEMINI_API_KEY=your_gemini_api_key_here
     ENVIRONMENT=development
     PORT=8000

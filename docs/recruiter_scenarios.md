@@ -8,9 +8,9 @@ The dataset is generated at `demo_jobs.json` and `demo_candidates.json`, and cop
 
 ## Scenario 1: Sourcing for Core Stack Alignment
 *   **Job Description:** Job #1 - **Senior AI Platform Engineer**
-    *   *Prerequisites:* Python, FastAPI, PostgreSQL, pgvector, LangGraph, Docker, Kubernetes.
+    *   *Prerequisites:* Python, FastAPI, SQLite, SQLite JSON vectors, LangGraph, Docker, Kubernetes.
 *   **Candidate Test Group:**
-    *   *Sophia Chen* (Strong Match): Has 5+ years exp, exact match for React/FastAPI/pgvector/LangGraph, and very high GitHub activity (22 commits).
+    *   *Sophia Chen* (Strong Match): Has 5+ years exp, exact match for React/FastAPI/SQLite JSON vectors/LangGraph, and very high GitHub activity (22 commits).
     *   *Elena Rostova* (Medium Match): Seasoned Java/Spring Boot enterprise dev (6 years exp). Strong system concepts but lacks Python/LangGraph/vector experience.
     *   *Devon Miller* (Weak Match): Ruby on Rails developer (3 years exp) with low alignment to modern AI platforms and low outreach intent.
 *   **Expected AI Evaluation:**

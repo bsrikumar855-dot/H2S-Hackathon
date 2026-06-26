@@ -1,118 +1,154 @@
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { Button } from "../../components/ui/Button"
+import { Activity, ArrowRight, BrainCircuit, Cloud, Database, Gauge, Network, Sparkles } from "lucide-react"
 
 export default function LandingPage() {
   const navigate = useNavigate()
+  const [demoProgress, setDemoProgress] = useState(28)
 
-  const features = [
-    {
-      title: "Semantic Matching",
-      description: "Deep contextual analysis of candidates' expertise, mapping capabilities beyond exact keyword syntax matches.",
-      icon: (
-        <svg className="h-6 w-6 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-        </svg>
-      )
-    },
-    {
-      title: "Behavioral Intelligence",
-      description: "Evaluate active job-seeking activity, certification updates, response rates, and GitHub commits to prioritize outreach.",
-      icon: (
-        <svg className="h-6 w-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-        </svg>
-      )
-    },
-    {
-      title: "Explainable Ranking",
-      description: "A transparent scoring breakdown of how suitability scores are calculated across semantic, experience, and behavioral metrics.",
-      icon: (
-        <svg className="h-6 w-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-        </svg>
-      )
-    },
-    {
-      title: "Skill Gap Analysis",
-      description: "Instantly map core matched skills, missing criteria, and transferable knowledge tags with recruiter-friendly justifications.",
-      icon: (
-        <svg className="h-6 w-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-        </svg>
-      )
-    }
-  ]
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setDemoProgress((value) => (value > 92 ? 18 : value + 9))
+    }, 850)
+    return () => window.clearInterval(timer)
+  }, [])
 
   return (
-    <div className="min-h-screen bg-[#030014] text-gray-200 antialiased font-sans relative overflow-x-hidden flex flex-col justify-between">
-      
-      {/* Glow Effects */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1100px] h-[550px] bg-[radial-gradient(ellipse_at_top,rgba(139,92,246,0.22),transparent_55%)] pointer-events-none z-0" />
-      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.06),transparent_50%)] pointer-events-none z-0" />
-
-      {/* Main hero segment */}
-      <main className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 relative z-10 py-16 max-w-6xl mx-auto w-full">
-        
-        {/* Logo tag */}
-        <div className="flex items-center gap-2 mb-6 px-3 py-1.5 rounded-full border border-violet-500/20 bg-violet-950/20 shadow-lg shadow-violet-500/5 animate-pulse">
-          <span className="h-2 w-2 rounded-full bg-violet-400" />
-          <span className="text-[10px] sm:text-xs font-semibold text-violet-300 uppercase tracking-widest font-mono">AI-Powered Recruitment Suite</span>
-        </div>
-
-        {/* Hero title */}
-        <div className="text-center space-y-4 max-w-3xl">
-          <h2 className="text-sm font-semibold text-violet-400 font-mono tracking-wider uppercase">AI Recruiter</h2>
-          <h1 className="text-4xl sm:text-6xl font-extrabold text-white tracking-tight leading-none bg-clip-text bg-gradient-to-b from-white via-gray-100 to-gray-400">
-            Beyond Keywords. <span className="bg-gradient-to-r from-violet-400 to-blue-500 bg-clip-text text-transparent">Beyond Resumes.</span>
-          </h1>
-          <p className="text-base sm:text-xl text-gray-400 max-w-2xl mx-auto font-normal leading-relaxed pt-2">
-            Rank candidates using semantic intelligence, behavioral insights, and explainable AI. Understand true potential rather than simple keyword lists.
-          </p>
-        </div>
-
-        {/* CTA Button */}
-        <div className="mt-10">
-          <Button 
-            variant="primary" 
-            size="lg" 
-            onClick={() => navigate("/job")}
-            className="px-8 py-4 text-base font-semibold tracking-wide rounded-xl shadow-xl shadow-violet-600/20 relative overflow-hidden group hover:scale-[1.03] transition-all"
-          >
-            <span className="relative z-10 flex items-center gap-2">
-              Start Ranking Candidates
-              <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
+    <div className="tm-page">
+      <header className="tm-topbar">
+        <div className="mx-auto flex h-full max-w-[1440px] items-center justify-between px-4 md:px-12">
+          <button onClick={() => navigate("/")} className="flex items-center gap-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-indigo-300/20 bg-indigo-400/10">
+              <Network className="h-5 w-5 text-[var(--tm-primary)]" />
             </span>
-            <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-          </Button>
+            <span className="tm-gradient-text text-xl font-bold tracking-tight md:text-2xl">TalentMind AI</span>
+          </button>
+          <div className="flex items-center gap-3 rounded-full border border-emerald-300/20 bg-emerald-400/10 px-4 py-2">
+            <span className="tm-status-dot" />
+            <span className="tm-label text-[10px] text-[var(--tm-tertiary)]">System Online</span>
+          </div>
         </div>
+      </header>
 
-        {/* Features grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full mt-24">
-          {features.map((feature, index) => (
-            <div 
-              key={index}
-              className="rounded-xl border border-white/5 bg-[#0a0720]/40 backdrop-blur-md p-6 hover:bg-[#0a0720]/60 hover:border-violet-500/20 transition-all duration-300 group"
+      <main className="tm-topbar-offset mx-auto max-w-[1440px] px-4 pb-20 md:px-12">
+        <section className="mx-auto flex min-h-[calc(100vh-64px)] md:min-h-[calc(100vh-72px)] max-w-5xl flex-col items-center justify-center text-center py-12 md:py-16">
+          <div className="tm-card mb-7 inline-flex items-center gap-2 rounded-full px-5 py-2">
+            <Sparkles className="h-4 w-4 text-[var(--tm-primary)]" />
+            <span className="tm-label text-[var(--tm-primary)]">Next-Gen Recruitment</span>
+          </div>
+          <h1 className="max-w-5xl text-5xl font-extrabold leading-tight tracking-tight text-white md:text-6xl xl:text-7xl">
+            Hire Smarter with <span className="tm-gradient-text">Neural Intelligence</span>
+          </h1>
+          <p className="mt-7 max-w-2xl text-lg leading-8 text-[var(--tm-muted)]">
+            Understand candidate intent beyond keywords. Map expertise, activity signals, and fit across technical
+            dimensions with explainable AI ranking.
+          </p>
+          <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+            <button
+              onClick={() => navigate("/job")}
+              className="tm-primary-btn inline-flex items-center justify-center gap-3 rounded-xl px-8 py-4 font-bold transition hover:-translate-y-0.5"
             >
-              <div className="flex items-center gap-3 mb-3">
-                <div className="p-2 bg-white/5 rounded-lg border border-white/10 group-hover:border-violet-500/20 transition-colors">
-                  {feature.icon}
-                </div>
-                <h3 className="text-lg font-semibold text-white tracking-wide">{feature.title}</h3>
-              </div>
-              <p className="text-sm text-gray-400 leading-relaxed">{feature.description}</p>
+              Start Analysis <ArrowRight className="h-5 w-5" />
+            </button>
+            <button
+              onClick={() => navigate("/candidates")}
+              className="tm-secondary-btn inline-flex items-center justify-center rounded-xl px-8 py-4 font-bold transition"
+            >
+              View Interactive Demo
+            </button>
+          </div>
+        </section>
+
+        <section className="mt-20 grid grid-cols-1 items-stretch gap-6 md:grid-cols-12">
+          <article className="tm-card flex min-h-[320px] flex-col rounded-2xl p-8 md:col-span-8 md:p-10">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-indigo-300/20 bg-indigo-400/10">
+              <BrainCircuit className="h-7 w-7 text-[var(--tm-primary)]" />
             </div>
-          ))}
-        </div>
+            <h2 className="mt-8 text-3xl font-bold tracking-tight text-white">Intent-Based Matching</h2>
+            <p className="mt-4 max-w-2xl text-lg leading-8 text-[var(--tm-muted)]">
+              Go beyond string matching. TalentMind interprets semantic nuance in resumes to reveal what a candidate
+              actually contributes.
+            </p>
+            <div className="mt-10 grid gap-4 sm:grid-cols-2">
+              <MetricPill label="Relevance Score" value="98.2%" percent={98} />
+              <MetricPill label="Bias Reduction" value="Active" percent={100} accent />
+            </div>
+          </article>
 
+          <article className="tm-card flex min-h-[320px] flex-col rounded-2xl p-8 md:col-span-4 md:p-10">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-emerald-300/20 bg-emerald-400/10">
+              <Gauge className="h-7 w-7 text-[var(--tm-tertiary)]" />
+            </div>
+            <h2 className="mt-8 text-3xl font-bold tracking-tight text-white">Real-Time Pipeline</h2>
+            <p className="mt-4 text-lg leading-8 text-[var(--tm-muted)]">
+              Instant parsing and scoring for high-growth teams.
+            </p>
+            <div className="mt-auto rounded-2xl border border-white/10 bg-black/30 p-5">
+              <div className="mb-4 flex items-center gap-3">
+                <Cloud className="h-5 w-5 text-[var(--tm-primary)]" />
+                <span className="text-sm text-white/80">Parsing 1,200 CVs...</span>
+              </div>
+              <div className="tm-progress">
+                <span style={{ width: `${demoProgress}%` }} />
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section className="mx-auto mt-24 max-w-4xl">
+          <div className="tm-card rounded-2xl p-8 md:p-10">
+            <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
+              <div>
+                <h2 className="flex items-center gap-3 text-2xl font-bold text-white">
+                  <Database className="h-6 w-6 text-[var(--tm-tertiary)]" /> Infrastructure Health
+                </h2>
+                <p className="mt-2 text-[var(--tm-muted)]">Real-time node performance and API availability</p>
+              </div>
+              <div className="tm-mono rounded-xl border border-white/10 bg-black/30 px-4 py-2 text-sm">
+                <span className="text-white/45">GET /health</span>
+                <span className="ml-3 font-bold text-[var(--tm-tertiary)]">200 OK</span>
+              </div>
+            </div>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2">
+              <StatusCard icon={<Cloud className="h-5 w-5" />} title="Edge Gateway" subtitle="Production v2.4" />
+              <StatusCard icon={<Activity className="h-5 w-5" />} title="Vector DB" subtitle="Cluster 4 active" />
+            </div>
+          </div>
+        </section>
       </main>
+    </div>
+  )
+}
 
-      {/* Mini Footer */}
-      <footer className="w-full border-t border-white/5 py-6 text-center text-xs text-gray-500 font-mono relative z-10">
-        AI Candidate Ranking Engine. Strictly for Hackathon Demonstration.
-      </footer>
+function MetricPill({ label, value, percent, accent = false }: { label: string; value: string; percent: number; accent?: boolean }) {
+  return (
+    <div className="rounded-xl border border-white/10 bg-black/25 p-5">
+      <div className="mb-3 flex items-center justify-between">
+        <span className="tm-label text-[var(--tm-primary)]">{label}</span>
+        <span className="tm-mono text-sm font-bold text-[var(--tm-tertiary)]">{value}</span>
+      </div>
+      <div className="tm-progress">
+        <span style={{ width: `${percent}%`, background: accent ? "var(--tm-tertiary)" : undefined }} />
+      </div>
+    </div>
+  )
+}
 
+function StatusCard({ icon, title, subtitle }: { icon: React.ReactNode; title: string; subtitle: string }) {
+  return (
+    <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-black/25 p-5">
+      <div className="flex items-center gap-4">
+        <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-emerald-300/20 bg-emerald-400/10 text-[var(--tm-tertiary)]">
+          {icon}
+        </span>
+        <div>
+          <p className="font-bold text-white">{title}</p>
+          <p className="text-sm text-[var(--tm-muted)]">{subtitle}</p>
+        </div>
+      </div>
+      <span className="flex items-center gap-2 text-sm font-bold text-[var(--tm-tertiary)]">
+        <span className="tm-status-dot" /> Online
+      </span>
     </div>
   )
 }

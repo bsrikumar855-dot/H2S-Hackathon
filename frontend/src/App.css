@@ -1,1 +1,225 @@
-/* Custom styles for application */
+/* TalentMind AI interface */
+:root {
+  --tm-bg: #09090b;
+  --tm-surface: #131315;
+  --tm-surface-low: #18181b;
+  --tm-surface-mid: #201f22;
+  --tm-surface-high: #2a2a2c;
+  --tm-border: #27272a;
+  --tm-border-strong: #3f3f46;
+  --tm-text: #e5e1e4;
+  --tm-muted: #a8a4b7;
+  --tm-primary: #c0c1ff;
+  --tm-indigo: #6366f1;
+  --tm-violet: #8b5cf6;
+  --tm-tertiary: #4edea3;
+  --tm-error: #ff8a80;
+}
+
+html {
+  background: var(--tm-bg);
+}
+
+body {
+  margin: 0;
+  background: var(--tm-bg);
+  color: var(--tm-text);
+  font-family: "Geist Variable", "Geist", Inter, system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+.tm-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(99, 102, 241, 0.14), transparent 36rem),
+    radial-gradient(circle at 90% 12%, rgba(78, 222, 163, 0.08), transparent 30rem),
+    var(--tm-bg);
+  color: var(--tm-text);
+}
+
+.tm-shell {
+  min-height: 100vh;
+  background: var(--tm-bg);
+  color: var(--tm-text);
+}
+
+.tm-topbar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 50;
+  height: 72px;
+  border-bottom: 1px solid rgba(70, 69, 84, 0.35);
+  background: rgba(9, 9, 11, 0.82);
+  backdrop-filter: blur(18px);
+}
+
+.tm-topbar-offset {
+  padding-top: 72px;
+}
+
+.tm-sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 45;
+  width: 240px;
+  border-right: 1px solid rgba(70, 69, 84, 0.35);
+  background: rgba(14, 14, 16, 0.92);
+  backdrop-filter: blur(18px);
+}
+
+.tm-content-with-sidebar {
+  margin-left: 240px;
+}
+
+.tm-card {
+  background: rgba(24, 24, 27, 0.76);
+  border: 1px solid var(--tm-border);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.24);
+  backdrop-filter: blur(14px);
+}
+
+.tm-card:hover {
+  border-color: rgba(99, 102, 241, 0.42);
+  box-shadow: 0 20px 60px rgba(99, 102, 241, 0.08);
+}
+
+.tm-gradient-text {
+  background: linear-gradient(135deg, var(--tm-primary), var(--tm-tertiary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.tm-primary-btn {
+  border: 0;
+  background: linear-gradient(135deg, var(--tm-indigo), var(--tm-violet));
+  color: white;
+  box-shadow: 0 14px 32px rgba(99, 102, 241, 0.23);
+}
+
+.tm-secondary-btn {
+  border: 1px solid var(--tm-border);
+  background: rgba(42, 42, 44, 0.72);
+  color: var(--tm-text);
+}
+
+.tm-secondary-btn:hover,
+.tm-icon-btn:hover {
+  background: rgba(57, 57, 59, 0.82);
+  border-color: var(--tm-border-strong);
+}
+
+.tm-icon-btn {
+  border: 1px solid var(--tm-border);
+  background: rgba(24, 24, 27, 0.78);
+  color: var(--tm-muted);
+}
+
+.tm-label {
+  color: var(--tm-muted);
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.tm-mono {
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+
+.tm-input {
+  width: 100%;
+  border: 1px solid rgba(70, 69, 84, 0.65);
+  border-radius: 0.5rem;
+  background: rgba(9, 9, 11, 0.72);
+  color: var(--tm-text);
+  outline: none;
+}
+
+.tm-input:focus {
+  border-color: var(--tm-indigo);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.16);
+}
+
+.tm-progress {
+  height: 6px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.tm-progress > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--tm-indigo), var(--tm-violet));
+}
+
+.tm-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--tm-tertiary);
+  box-shadow: 0 0 0 5px rgba(78, 222, 163, 0.12);
+}
+
+.tm-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06), transparent);
+  background-size: 220% 100%;
+  animation: tm-shimmer 2.2s linear infinite;
+}
+
+.tm-orbit {
+  animation: tm-pulse 4s ease-in-out infinite;
+}
+
+@keyframes tm-shimmer {
+  from {
+    background-position: 220% 0;
+  }
+  to {
+    background-position: -220% 0;
+  }
+}
+
+@keyframes tm-pulse {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+    filter: blur(28px);
+  }
+  50% {
+    opacity: 0.86;
+    transform: scale(1.08);
+    filter: blur(42px);
+  }
+}
+
+@media (max-width: 860px) {
+  .tm-sidebar {
+    display: none;
+  }
+
+  .tm-content-with-sidebar {
+    margin-left: 0;
+  }
+
+  .tm-topbar {
+    height: 64px;
+  }
+
+  .tm-topbar-offset {
+    padding-top: 64px;
+  }
+}

@@ -12,7 +12,7 @@ from backend.database import models
 # Create FastAPI app metadata
 app = FastAPI(
     title="AI Recruiter Ranking Engine",
-    description="An AI-driven recruiter tool utilizing multi-agent LangGraph workflow and PostgreSQL vector embeddings.",
+    description="An AI-driven recruiter tool utilizing a multi-agent LangGraph workflow and SQLite persistence.",
     version="1.0.0"
 )
 
@@ -42,8 +42,7 @@ def health_check():
     """
     return {
         "status": "ok",
-        "environment": settings.ENVIRONMENT,
-        "database": "connected"  # Simple status placeholder
+        "database": "connected"
     }
 
 # Register the API routes under /api

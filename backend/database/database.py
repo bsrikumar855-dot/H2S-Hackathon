@@ -2,12 +2,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from backend.settings import settings
 
-# Create engine with connection pooling enabled
+# SQLite is the primary database for the MVP.
 engine = create_engine(
-    settings.POSTGRES_URL,
-    pool_pre_ping=True,  # Verifies connectivity before executing queries
-    pool_size=10,
-    max_overflow=20
+    settings.DATABASE_URL,
+    connect_args={"check_same_thread": False}
 )
 
 # Session factory for local transaction sessions

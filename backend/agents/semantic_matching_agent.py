@@ -69,7 +69,7 @@ class SemanticMatchingAgent:
             transferable_skills = []
             TRANSFERABLE_GROUPS = [
                 {"fastapi", "django", "flask", "tornado"},
-                {"postgresql", "postgres", "mysql", "mariadb", "sqlite"},
+                {"sqlite", "mysql", "mariadb"},
                 {"aws", "gcp", "azure", "cloud"},
                 {"kubernetes", "docker swarm", "ecs", "nomad"},
                 {"react", "vue", "angular", "svelte", "nextjs"},

@@ -2,7 +2,7 @@
 
 ## 1. System Overview (MVP)
 
-The AI Recruiter Candidate Ranking Engine is designed as a modular, event-driven, multi-agent system. To maintain MVP feasibility, it utilizes a synchronous API gateway that delegates tasks to a specialized **LangGraph Orchestrator**. The orchestrator manages the state and control flow across six distinct LLM agents, persisting intermediate results to a PostgreSQL database powered by `pgvector` for semantic querying.
+The AI Recruiter Candidate Ranking Engine is designed as a modular, event-driven, multi-agent system. To maintain MVP feasibility, it utilizes a synchronous API gateway that delegates tasks to a specialized **LangGraph Orchestrator**. The orchestrator manages the state and control flow across six distinct LLM agents, persisting intermediate results to a SQLite database with JSON embedding storage for semantic querying.
 
 ```mermaid
 graph TD
@@ -20,8 +20,8 @@ graph TD
     end
 
     subgraph Data Tier
-        DB[(PostgreSQL + pgvector)]
-        VectorSearch[pgvector HNSW Index]
+        DB[(SQLite)]
+        JSONStore[JSON Embedding Storage]
     end
 
     subgraph LLM & Inference Services
@@ -32,7 +32,7 @@ graph TD
     JIA & CIA & SMA & RA & EA & RCA <--> LLM
     SMA & CIA <--> Embed
     Web & Orchestrator <--> DB
-    DB <--> VectorSearch
+    DB <--> JSONStore
 ```
 
 ---
@@ -45,11 +45,11 @@ graph TD
 
 ### Agent Orchestrator (LangGraph)
 * **Responsibility:** Models agent interactions as a stateful Directed Acyclic Graph (DAG) or cyclic state machine. It manages state transitions, conditionally routes control, constructs agent memories, and aggregates rankings.
-* **State Management:** Uses LangGraph's native `StateGraph` backed by a Postgres checkpoint saver (`PostgresSaver`) for crash resilience and human-in-the-loop validation hooks.
+* **State Management:** Uses LangGraph's native `StateGraph` runtime for the MVP workflow state.
 
-### Database & Vector Storage (PostgreSQL + pgvector)
+### Database & Embedding Storage (SQLite + JSON)
 * **Responsibility:** Stores raw and parsed job profiles, candidate metrics, skill taxonomies, and computed vector embeddings.
-* **MVP Strategy:** Relational schema containing flat JSONB fields for dynamic metadata. A unified vector storage table handles both document chunk embeddings and skill concept embeddings.
+* **MVP Strategy:** Relational schema containing flat JSON fields for dynamic metadata. A unified vector storage table handles both document chunk embeddings and skill concept embeddings.
 
 ### LLM / Embedding Engine
 * **Responsibility:** Computes vector representations of texts and drives agent decision-making.
@@ -124,11 +124,11 @@ class AgentState(TypedDict):
 
 2. **Candidate Intelligence Node (`node_candidate_intelligence`)**:
    * Executed when raw resume files are submitted.
-   * Parses resumes and updates candidate records in Postgres.
+   * Parses resumes and updates candidate records in SQLite.
    * Feeds the newly parsed IDs into `candidate_ids` and passes control to the `SemanticMatching` node.
 
 3. **Semantic Matching Node (`node_semantic_matching`)**:
-   * Queries the database using `pgvector` similarity search to gather candidate documents matching the job representation.
+   * Computes application-level similarity using embedding vectors and candidate documents matching the job representation.
    * Updates `vector_match_results` in the state.
    * Routes unconditionally to `RankingAgent`.
 
@@ -153,6 +153,6 @@ class AgentState(TypedDict):
 To ensure speed-to-delivery and stability during a hackathon, the following architectural simplifications are applied:
 
 1. **Synchronous LLM Calls for Pipeline Steps:** While LangGraph supports asynchronous parallel execution, we execute `Candidate Intelligence` parsing concurrently across profiles using `asyncio.gather`, but keep the sequential flow (Job Parser -> Matcher -> Ranker) synchronous to simplify state management and debug tracing.
-2. **Unified Data Format:** All intermediate outputs between agents are modeled as structured JSON documents stored within the shared Postgres DB, reducing serialization overhead between state updates.
-3. **No Local Vector DB Instance:** Instead of maintaining a separate cluster for Pinecone or Qdrant, we use the `pgvector` extension inside the primary Postgres database. This guarantees ACID transactions and atomic updates of candidate text and vector representations.
+2. **Unified Data Format:** All intermediate outputs between agents are modeled as structured JSON documents stored within the shared SQLite DB, reducing serialization overhead between state updates.
+3. **No Local Vector DB Instance:** The MVP stores embedding arrays in SQLite JSON columns and computes similarity in the application workflow.
 4. **LLM-Based Parsing Over Custom NLP:** We use structured outputs (`response_format={"type": "json_object"}`) provided by the Gemini API for Named Entity Recognition (NER) and structuring, rather than maintaining custom spaCy or HuggingFace tokenizers.
