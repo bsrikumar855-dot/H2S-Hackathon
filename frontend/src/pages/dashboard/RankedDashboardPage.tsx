@@ -1,8 +1,58 @@
 import { useMemo, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { Bell, Download, Filter, Network, Search, Share2, X } from "lucide-react"
+import { BarChart3, Bell, BriefcaseBusiness, CalendarDays, ChevronDown, Download, FileText, HelpCircle, MessageCircle, Network, Plus, Search, Settings, Share2, TrendingUp, User, Users, X } from "lucide-react"
 import { useRecruitment } from "../../context/RecruitmentContext"
 import { type RankingRunItem } from "../../services/api"
+import jsPDF from "jspdf"
+import html2canvas from "html2canvas"
+
+const exportPDF = async (elementId: string, filename: string) => {
+  const element = document.getElementById(elementId)
+  if (!element) return
+
+  try {
+    const canvas = await html2canvas(element, { 
+      scale: 2, 
+      useCORS: true,
+      backgroundColor: '#f9f9ff',
+      onclone: (clonedDoc) => {
+        const style = clonedDoc.createElement('style')
+        style.innerHTML = '* { animation: none !important; transition: none !important; }'
+        clonedDoc.head.appendChild(style)
+        
+        const title = clonedDoc.getElementById('pdf-title')
+        if (title) title.style.display = 'block'
+      }
+    })
+    const imgData = canvas.toDataURL("image/png")
+    
+    const pdf = new jsPDF({
+      orientation: "portrait",
+      unit: "mm",
+      format: "a4",
+    })
+
+    const pdfWidth = pdf.internal.pageSize.getWidth()
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width
+
+    let heightLeft = pdfHeight
+    let position = 0
+
+    pdf.addImage(imgData, "PNG", 0, position, pdfWidth, pdfHeight)
+    heightLeft -= pdf.internal.pageSize.getHeight()
+
+    while (heightLeft > 0) {
+      position = heightLeft - pdfHeight
+      pdf.addPage()
+      pdf.addImage(imgData, "PNG", 0, position, pdfWidth, pdfHeight)
+      heightLeft -= pdf.internal.pageSize.getHeight()
+    }
+
+    pdf.save(filename)
+  } catch (err) {
+    console.error("Failed to generate PDF", err)
+  }
+}
 
 export default function RankedDashboardPage() {
   const navigate = useNavigate()
@@ -36,10 +86,10 @@ export default function RankedDashboardPage() {
   if (apiRankings.length === 0) {
     return (
       <div className="tm-page flex min-h-screen items-center justify-center px-4">
-        <div className="tm-card max-w-md rounded-xl p-8 text-center">
+        <div className="tm-card max-w-md rounded-2xl bg-white p-8 text-center">
           <Network className="mx-auto mb-4 h-10 w-10 text-[var(--tm-primary)]" />
-          <h1 className="text-2xl font-bold text-white">No Evaluation Results</h1>
-          <p className="mt-3 text-[var(--tm-muted)]">Run a job and candidate analysis to generate the TalentMind dashboard.</p>
+          <h1 className="text-2xl font-bold text-[var(--tm-text)]">No Evaluation Results</h1>
+          <p className="mt-3 leading-6 text-[var(--tm-muted)]">Run a job and candidate analysis to generate the TalentMind dashboard.</p>
           <button onClick={() => navigate("/")} className="tm-primary-btn mt-6 w-full rounded-lg px-5 py-3 font-bold">
             Go to Home
           </button>
@@ -54,133 +104,108 @@ export default function RankedDashboardPage() {
   }
 
   return (
-    <div className="tm-shell">
+    <div className="tm-page">
       <SideNav />
-      <main className="tm-content-with-sidebar min-h-screen">
-        <header className="fixed left-[240px] right-0 top-0 z-50 flex h-[72px] items-center justify-between border-b border-white/10 bg-[rgba(9,9,11,0.82)] px-4 backdrop-blur-xl md:px-12">
-          <div>
-            <h1 className="tm-gradient-text text-2xl font-bold">Results Dashboard</h1>
-            <p className="text-xs text-[var(--tm-muted)]">{jobTitle || "Active role analysis"}</p>
+      <header className="fixed right-0 top-0 z-40 hidden h-16 items-center justify-between border-b border-[var(--tm-border)] bg-white px-6 md:flex md:left-[280px]">
+        <div className="relative w-full max-w-md">
+          <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--tm-muted)]" />
+          <input
+            className="tm-input rounded-full bg-[var(--tm-surface-low)] py-2 pl-12 pr-4"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Search candidates or skills..."
+          />
+        </div>
+        <div className="flex items-center gap-5">
+          <div className="hidden text-right lg:block">
+            <p className="text-sm font-bold">Alexander Reed</p>
+            <p className="text-xs text-[var(--tm-muted)]">Lead Recruiter</p>
           </div>
-          <div className="flex items-center gap-4">
-            <span className="hidden items-center gap-2 md:flex">
-              <span className="tm-status-dot" />
-              <span className="tm-label">System Online</span>
-            </span>
-            <button className="tm-icon-btn flex h-10 w-10 items-center justify-center rounded-full" aria-label="Notifications">
-              <Bell className="h-4 w-4" />
-            </button>
-          </div>
-        </header>
+          <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--tm-border)] bg-[var(--tm-primary-soft)] font-bold text-[var(--tm-primary)]">A</div>
+        </div>
+      </header>
 
-        <div className="px-4 pb-12 pt-28 md:px-12">
-          <section className="grid gap-6 md:grid-cols-4">
-            <Kpi label="Total Candidates" value={String(total)} detail="Processed by agent pipeline" />
-            <Kpi label="Average Score" value={`${average}`} detail="Semantic and skills weighted" accent="primary" />
-            <Kpi label="Highest Score" value={`${highest}`} detail={candidates[0]?.candidate.candidate_name || "N/A"} />
-            <Kpi label="Avg Confidence" value={`${confidence}%`} detail="AI precision indicator" accent="success" />
+      <main id="dashboard-report" className="tm-content-with-sidebar min-h-screen px-4 pb-12 pt-8 md:px-8 md:pt-24">
+        <div className="mx-auto max-w-[1440px]">
+          <section className="tm-slide-up mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end">
+            <div>
+              <span className="mb-2 block text-sm font-bold text-[var(--tm-primary)]">Welcome back, Alexander</span>
+              <h1 className="text-3xl font-bold text-[var(--tm-text)] md:text-4xl">Recruitment Dashboard</h1>
+              <p className="mt-2 text-[var(--tm-muted)]">Monitoring {jobTitle || "your active role analysis"}.</p>
+            </div>
+            <div className="flex items-center gap-2 rounded-xl border border-[var(--tm-border)] bg-[var(--tm-surface-mid)] p-3">
+              <CalendarDays className="h-5 w-5 text-[var(--tm-primary)]" />
+              <span className="text-sm font-bold">Live Ranking Session</span>
+              <ChevronDown className="h-5 w-5 text-[var(--tm-muted)]" />
+            </div>
           </section>
 
-          <section className="mt-8 grid gap-6 lg:grid-cols-3">
-            <div className="tm-card rounded-xl p-6 lg:col-span-2">
-              <div className="mb-8 flex items-center justify-between">
-                <h2 className="text-xl font-bold text-white">Top Skill Coverage</h2>
-                <span className="tm-label">Live Data</span>
+          <div id="pdf-stats-report" className="-mx-4 p-4 lg:-mx-8 lg:p-8">
+            <h1 id="pdf-title" style={{ display: 'none' }} className="mb-10 text-center text-4xl font-extrabold tracking-tight text-[var(--tm-primary)]">TalentMind AI</h1>
+            <section className="mb-10 grid gap-6 md:grid-cols-3">
+              <Kpi icon={<TrendingUp />} label="Average Match" value={`${average}%`} detail={`${total} candidates analyzed`} />
+            <Kpi icon={<Users />} label="Applicants" value={String(total)} detail="Processed by agent workflow" />
+            <Kpi icon={<BarChart3 />} label="AI Confidence" value={`${confidence}%`} detail={`Highest score ${highest}%`} />
+          </section>
+
+          <section className="mb-10 grid gap-6 lg:grid-cols-12">
+            <div className="tm-card tm-slide-up rounded-2xl bg-white p-6 lg:col-span-8">
+              <div className="mb-6 flex items-center justify-between">
+                <div>
+                  <h2 className="text-xl font-bold">Top Skill Coverage</h2>
+                  <p className="text-sm text-[var(--tm-muted)]">Live skills extracted from ranked candidates</p>
+                </div>
+                <span className="tm-label text-[var(--tm-primary)]">Live Data</span>
               </div>
-              <div className="flex h-[270px] items-end justify-between gap-4 px-2">
-                {topSkills.map((skill) => (
+              <div className="flex h-[260px] items-end gap-4">
+                {topSkills.map((skill, index) => (
                   <div key={skill.name} className="flex flex-1 flex-col items-center gap-3">
-                    <div className="relative flex w-full items-end rounded-t-lg bg-indigo-400/10" style={{ height: "230px" }}>
-                      <div className="w-full rounded-t-lg bg-indigo-400/35 transition-all" style={{ height: `${skill.percent}%` }} />
-                      <span className="tm-mono absolute -top-7 left-1/2 -translate-x-1/2 text-xs text-[var(--tm-primary)]">{skill.percent}</span>
+                    <div className="relative flex w-full items-end overflow-hidden rounded-t-xl bg-[var(--tm-primary-soft)]" style={{ height: "220px" }}>
+                      <div className="w-full rounded-t-xl bg-[var(--tm-primary)] transition-all duration-700" style={{ height: `${skill.percent}%`, animationDelay: `${index * 80}ms` }} />
+                      <span className="absolute -top-7 left-1/2 -translate-x-1/2 text-xs font-bold text-[var(--tm-primary)]">{skill.percent}%</span>
                     </div>
-                    <span className="tm-label max-w-[100px] truncate text-center">{skill.name}</span>
+                    <span className="max-w-[120px] truncate text-center text-xs font-bold uppercase tracking-[0.05em] text-[var(--tm-muted)]">{skill.name}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="tm-card rounded-xl p-6">
-              <h2 className="text-xl font-bold text-white">Skill Match</h2>
-              <p className="mt-1 text-sm text-[var(--tm-muted)]">Overall pipeline integrity</p>
+            <div className="tm-card tm-slide-up rounded-2xl bg-white p-6 lg:col-span-4" style={{ animationDelay: "120ms" }}>
+              <h2 className="text-xl font-bold">Match Radar</h2>
+              <p className="mt-1 text-sm text-[var(--tm-muted)]">Pipeline signal integrity</p>
               <div className="mt-8 flex justify-center">
-                <svg className="h-64 w-64" viewBox="0 0 200 200">
-                  <polygon fill="none" points="100,20 180,75 150,165 50,165 20,75" stroke="rgba(255,255,255,.14)" />
-                  <polygon fill="none" points="100,50 150,85 130,145 70,145 50,85" stroke="rgba(255,255,255,.14)" />
-                  <polygon fill="rgba(99,102,241,.23)" points="100,38 158,82 138,148 76,140 42,92" stroke="#6366F1" strokeWidth="2" />
+                <svg className="h-60 w-60" viewBox="0 0 200 200" aria-hidden="true">
+                  <polygon fill="none" points="100,20 180,75 150,165 50,165 20,75" stroke="rgba(115,118,134,.35)" />
+                  <polygon fill="none" points="100,50 150,85 130,145 70,145 50,85" stroke="rgba(115,118,134,.35)" />
+                  <polygon fill="rgba(37,99,235,.18)" points="100,36 158,82 138,148 76,140 42,92" stroke="#004ac6" strokeWidth="2" />
                 </svg>
               </div>
-              <div className="mt-4 grid grid-cols-2 gap-3 text-xs text-[var(--tm-muted)]">
+              <div className="grid grid-cols-2 gap-3 text-xs font-semibold text-[var(--tm-muted)]">
                 <span><i className="mr-2 inline-block h-2 w-2 rounded-full bg-[var(--tm-primary)]" />Technical</span>
                 <span><i className="mr-2 inline-block h-2 w-2 rounded-full bg-[var(--tm-tertiary)]" />Behavioral</span>
               </div>
             </div>
           </section>
+          </div>
 
-          <section className="mt-8">
-            <div className="mb-4 flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
-              <div className="relative min-w-[280px] flex-1">
-                <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--tm-muted)]" />
-                <input
-                  className="tm-input py-3 pl-11 pr-4"
-                  value={query}
-                  onChange={(event) => setQuery(event.target.value)}
-                  placeholder="Search candidates by name or skill..."
-                />
+          <section id="candidates-report">
+            <div className="mb-5 flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
+              <div>
+                <h2 className="text-2xl font-bold text-[var(--tm-text)]">Top Candidates</h2>
+                <p className="text-sm text-[var(--tm-muted)]">Click a candidate to open the detailed AI profile.</p>
               </div>
-              <div className="flex flex-wrap gap-3">
-                <button className="tm-secondary-btn flex items-center gap-2 rounded-lg px-4 py-3 text-sm"><Filter className="h-4 w-4" /> Filter</button>
-                <button className="tm-primary-btn flex items-center gap-2 rounded-lg px-5 py-3 text-sm font-bold"><Download className="h-4 w-4" /> Export Report</button>
-                <button onClick={handleRestart} className="tm-secondary-btn rounded-lg px-4 py-3 text-sm">New Analysis</button>
+              <div data-html2canvas-ignore className="flex flex-wrap gap-3">
+                <button onClick={() => exportPDF("pdf-stats-report", "TalentMind_Stats.pdf")} className="tm-primary-btn flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-bold"><Download className="h-4 w-4" /> Export Report</button>
+                <button onClick={handleRestart} className="tm-secondary-btn rounded-xl px-5 py-3 text-sm font-bold">New Analysis</button>
               </div>
             </div>
-
-            <div className="tm-card overflow-hidden rounded-xl">
-              <div className="overflow-x-auto">
-                <table className="w-full min-w-[880px] text-left">
-                  <thead className="border-b border-white/10 bg-white/[0.03]">
-                    <tr>
-                      {["Rank", "Candidate", "Overall", "Semantic", "Skills", "Experience", "Behavior", "Status"].map((head) => (
-                        <th key={head} className="px-6 py-4 tm-label">{head}</th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-white/10">
-                    {candidates.map((candidate, index) => (
-                      <tr
-                        key={`${candidate.candidate.candidate_name}-${index}`}
-                        onClick={() => setSelectedCandidate(candidate)}
-                        className="cursor-pointer transition hover:bg-white/[0.04]"
-                      >
-                        <td className="px-6 py-4 tm-mono text-sm">#{String(index + 1).padStart(2, "0")}</td>
-                        <td className="px-6 py-4">
-                          <div className="flex items-center gap-3">
-                            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-indigo-400/15 text-sm font-bold text-[var(--tm-primary)]">
-                              {initials(candidate.candidate.candidate_name)}
-                            </span>
-                            <div>
-                              <p className="font-bold text-white">{candidate.candidate.candidate_name}</p>
-                              <p className="text-xs text-[var(--tm-muted)]">{candidate.candidate.skills.slice(0, 2).join(" / ") || "Candidate"}</p>
-                            </div>
-                          </div>
-                        </td>
-                        <ScoreCell value={candidate.score} />
-                        <td className="px-6 py-4 tm-mono text-sm text-[var(--tm-muted)]">{pct(candidate.semantic_score)}</td>
-                        <td className="px-6 py-4 tm-mono text-sm text-[var(--tm-muted)]">{pct(candidate.skill_score)}</td>
-                        <td className="px-6 py-4 tm-mono text-sm text-[var(--tm-muted)]">{pct(candidate.experience_score)}</td>
-                        <td className="px-6 py-4 tm-mono text-sm text-[var(--tm-muted)]">{candidate.behavior_score == null ? "N/A" : pct(candidate.behavior_score)}</td>
-                        <td className="px-6 py-4">
-                          <span className="rounded-full border border-emerald-300/30 px-2 py-1 tm-label text-[var(--tm-tertiary)]">
-                            {pct(candidate.score) >= 80 ? "Interview" : "Review"}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+            <div className="space-y-4">
+              {candidates.map((candidate, index) => (
+                <CandidateCard key={`${candidate.candidate.candidate_name}-${index}`} candidate={candidate} index={index} onSelect={() => setSelectedCandidate(candidate)} />
+              ))}
             </div>
           </section>
+
         </div>
       </main>
 
@@ -189,52 +214,80 @@ export default function RankedDashboardPage() {
   )
 }
 
-function Kpi({ label, value, detail, accent }: { label: string; value: string; detail: string; accent?: "primary" | "success" }) {
+function Kpi({ icon, label, value, detail }: { icon: React.ReactNode; label: string; value: string; detail: string }) {
   return (
-    <div className="tm-card rounded-xl p-6">
-      <p className="tm-label mb-1">{label}</p>
-      <h2 className={`text-4xl font-bold ${accent === "primary" ? "text-[var(--tm-primary)]" : accent === "success" ? "text-[var(--tm-tertiary)]" : "text-white"}`}>{value}</h2>
+    <div className="tm-card tm-slide-up rounded-2xl bg-white p-6">
+      <div className="mb-5 flex items-start justify-between">
+        <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[var(--tm-primary-soft)] text-[var(--tm-primary)] [&>svg]:h-5 [&>svg]:w-5">{icon}</span>
+        <span className="rounded-full bg-[var(--tm-tertiary-soft)] px-3 py-1 text-xs font-bold text-[var(--tm-tertiary)]">Live</span>
+      </div>
+      <p className="tm-label">{label}</p>
+      <h2 className="tm-count-pop mt-1 text-4xl font-extrabold text-[var(--tm-primary)]">{value}</h2>
       <p className="mt-4 truncate text-sm text-[var(--tm-muted)]">{detail}</p>
     </div>
   )
 }
 
-function ScoreCell({ value }: { value: number }) {
+function CandidateCard({ candidate, index, onSelect }: { candidate: RankingRunItem; index: number; onSelect: () => void }) {
+  const score = pct(candidate.score)
   return (
-    <td className="px-6 py-4">
-      <span className="tm-mono rounded-md bg-indigo-400/10 px-2 py-1 font-bold text-[var(--tm-primary)]">{pct(value)}</span>
-    </td>
+    <article onClick={onSelect} className="tm-card tm-slide-up group flex cursor-pointer flex-col gap-5 rounded-2xl bg-white p-5 transition hover:bg-[var(--tm-surface-low)] md:flex-row md:items-center" style={{ animationDelay: `${index * 70}ms` }}>
+      <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border-2 border-[var(--tm-border)] bg-[var(--tm-primary-soft)] text-xl font-bold text-[var(--tm-primary)]">
+        {initials(candidate.candidate.candidate_name)}
+      </div>
+      <div className="min-w-0 flex-1">
+        <div className="mb-1 flex flex-wrap items-center gap-2">
+          <h3 className="text-xl font-bold">{candidate.candidate.candidate_name}</h3>
+          {index === 0 && <span className="rounded bg-[var(--tm-primary-soft)] px-2 py-1 text-[10px] font-extrabold uppercase tracking-[0.05em] text-[var(--tm-primary)]">Top Talent</span>}
+          {score >= 85 && index !== 0 && <span className="rounded bg-[var(--tm-tertiary-soft)] px-2 py-1 text-[10px] font-extrabold uppercase tracking-[0.05em] text-[var(--tm-tertiary)]">Fast Track</span>}
+        </div>
+        <p className="mb-3 text-sm leading-6 text-[var(--tm-muted)]">{candidate.candidate.summary || `${Math.round(candidate.candidate.experience)} years experience`}</p>
+        <div className="flex flex-wrap gap-2">
+          {(candidate.matched_skills.length ? candidate.matched_skills : candidate.candidate.skills).slice(0, 4).map((skill) => (
+            <span key={skill} className="rounded-full bg-[var(--tm-surface-mid)] px-3 py-1 text-xs font-semibold text-[var(--tm-muted)]">{skill}</span>
+          ))}
+        </div>
+      </div>
+      <div className="text-left md:text-right">
+        <p className="tm-label">Match Score</p>
+        <p className="text-3xl font-extrabold text-[var(--tm-primary)]">{score}%</p>
+        <button className="tm-secondary-btn mt-3 rounded-lg px-5 py-2 text-sm font-bold group-hover:bg-[var(--tm-primary)] group-hover:text-white">View Profile</button>
+      </div>
+    </article>
   )
 }
 
 function CandidateDrawer({ candidate, onClose }: { candidate: RankingRunItem | null; onClose: () => void }) {
   if (!candidate) return null
   return (
-    <>
-      <div className="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm" onClick={onClose} />
-      <aside className="fixed right-0 top-0 z-[70] flex h-full w-full max-w-[620px] flex-col border-l border-white/10 bg-[var(--tm-surface)] shadow-2xl">
-        <header className="flex items-center justify-between border-b border-white/10 p-6">
-          <div className="flex items-center gap-4">
-            <span className="flex h-16 w-16 items-center justify-center rounded-2xl border border-indigo-300/25 bg-indigo-400/10 text-2xl font-bold text-[var(--tm-primary)]">
+    <div className="fixed inset-0 z-[70]">
+      <div className="absolute inset-0 bg-[rgba(20,27,43,0.42)] backdrop-blur-sm" onClick={onClose} />
+      <aside id="candidate-profile" className="tm-drawer absolute right-0 top-0 flex h-full w-full max-w-[760px] flex-col overflow-hidden border-l border-[var(--tm-border)] bg-white shadow-2xl">
+        <header className="flex items-start justify-between border-b border-[var(--tm-border)] p-6">
+          <div className="flex gap-4">
+            <span className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-[var(--tm-primary-soft)] text-2xl font-bold text-[var(--tm-primary)]">
               {initials(candidate.candidate.candidate_name)}
             </span>
             <div>
-              <h2 className="text-2xl font-bold text-white">{candidate.candidate.candidate_name}</h2>
-              <p className="text-sm text-[var(--tm-muted)]">{Math.round(candidate.candidate.experience)} years experience</p>
+              <div className="mb-2 inline-flex rounded-full bg-[var(--tm-tertiary-soft)] px-3 py-1 text-xs font-extrabold text-[var(--tm-tertiary)]">
+                {pct(candidate.score)}% Match
+              </div>
+              <h2 className="text-3xl font-bold">{candidate.candidate.candidate_name}</h2>
+              <p className="mt-1 text-[var(--tm-muted)]">{Math.round(candidate.candidate.experience)} years experience</p>
             </div>
           </div>
-          <button onClick={onClose} className="tm-icon-btn flex h-10 w-10 items-center justify-center rounded-full">
+          <button onClick={onClose} className="tm-icon-btn flex h-10 w-10 items-center justify-center rounded-full" aria-label="Close candidate drawer">
             <X className="h-5 w-5" />
           </button>
         </header>
 
-        <div className="flex-1 space-y-8 overflow-y-auto p-6">
-          <section className="rounded-xl border border-indigo-300/20 bg-indigo-400/10 p-5">
-            <p className="tm-label mb-3 text-[var(--tm-primary)]">TalentMind AI Insight</p>
-            <p className="italic leading-7 text-white">{candidate.explanation.explanation || candidate.candidate.summary}</p>
+        <div className="flex-1 overflow-y-auto p-6">
+          <section className="mb-8 rounded-2xl bg-[var(--tm-primary-soft)]/55 p-5">
+            <p className="tm-label mb-3 text-[var(--tm-primary)]">AI-Driven Insight</p>
+            <p className="leading-7 text-[var(--tm-text)]">{candidate.explanation.explanation || candidate.candidate.summary}</p>
           </section>
 
-          <section className="grid gap-4 sm:grid-cols-2">
+          <section className="mb-8 grid gap-4 sm:grid-cols-2">
             <Metric label="Semantic Alignment" value={pct(candidate.semantic_score)} />
             <Metric label="Skill Match" value={pct(candidate.skill_score)} />
             <Metric label="Experience" value={pct(candidate.experience_score)} />
@@ -245,30 +298,46 @@ function CandidateDrawer({ candidate, onClose }: { candidate: RankingRunItem | n
           <SkillSection title="Transferable Skills" skills={candidate.transferable_skills} />
           <SkillSection title="Areas to Explore" skills={candidate.missing_skills} muted />
 
-          <section className="grid gap-4 sm:grid-cols-2">
-            <ListPanel title="Strengths" items={candidate.explanation.strengths} />
-            <ListPanel title="Weaknesses" items={candidate.explanation.weaknesses} />
+          <section className="mt-8 grid gap-4 md:grid-cols-2">
+            <ListPanel title="Core Strengths" items={candidate.explanation.strengths} />
+            <ListPanel title="Growth Areas" items={candidate.explanation.weaknesses} muted />
+          </section>
+
+          <section className="mt-8">
+            <h3 className="tm-label mb-4">Experience Timeline</h3>
+            <div className="ml-4 space-y-6 border-l-2 border-[var(--tm-border)] pl-8">
+              {candidate.candidate.projects.slice(0, 3).map((project, index) => (
+                <div key={project} className="relative">
+                  <span className={`absolute -left-[41px] top-1 h-4 w-4 rounded-full border-4 border-white ${index === 0 ? "bg-[var(--tm-primary)]" : "bg-[var(--tm-border)]"}`} />
+                  <h4 className="font-bold">Project Evidence {index + 1}</h4>
+                  <p className="mt-1 text-sm leading-6 text-[var(--tm-muted)]">{project}</p>
+                </div>
+              ))}
+            </div>
           </section>
         </div>
 
-        <footer className="flex gap-3 border-t border-white/10 bg-black/20 p-6">
-          <button className="tm-primary-btn flex-1 rounded-xl px-5 py-4 font-bold">Schedule Interview</button>
-          <button className="tm-secondary-btn rounded-xl px-5 py-4"><Share2 className="h-5 w-5" /></button>
+        <footer className="flex flex-col justify-between gap-4 border-t border-[var(--tm-border)] bg-[var(--tm-surface-low)] p-6 sm:flex-row sm:items-center">
+          <div className="flex gap-5">
+            <button onClick={() => exportPDF("candidate-profile", `${candidate.candidate.candidate_name.replace(/\s+/g, "_")}_Profile.pdf`)} className="flex items-center gap-2 text-sm font-bold text-[var(--tm-muted)] transition hover:text-[var(--tm-primary)]"><Download className="h-4 w-4" /> Download Profile</button>
+            <button className="flex items-center gap-2 text-sm font-bold text-[var(--tm-muted)] transition hover:text-[var(--tm-primary)]"><Share2 className="h-4 w-4" /> Share Profile</button>
+          </div>
+          <button className="tm-primary-btn rounded-xl px-6 py-3 font-bold">Schedule Interview</button>
         </footer>
       </aside>
-    </>
+    </div>
   )
 }
 
 function Metric({ label, value }: { label: string; value: number }) {
   return (
-    <div className="tm-card rounded-xl p-5">
-      <p className="tm-label mb-4">{label}</p>
-      <div className="flex items-end gap-4">
-        <span className="text-3xl font-bold text-white">{value}%</span>
-        <div className="tm-progress mb-2 flex-1">
-          <span style={{ width: `${value}%` }} />
-        </div>
+    <div className="rounded-2xl border border-[var(--tm-border)] bg-white p-5">
+      <div className="mb-3 flex justify-between text-sm font-bold">
+        <span>{label}</span>
+        <span>{value}%</span>
+      </div>
+      <div className="tm-progress">
+        <span style={{ width: `${value}%` }} />
       </div>
     </div>
   )
@@ -276,12 +345,12 @@ function Metric({ label, value }: { label: string; value: number }) {
 
 function SkillSection({ title, skills, muted = false }: { title: string; skills: string[]; muted?: boolean }) {
   return (
-    <section>
-      <h3 className="mb-3 text-xl font-bold text-white">{title}</h3>
+    <section className="mb-6">
+      <h3 className="tm-label mb-3">{title}</h3>
       <div className="flex flex-wrap gap-2">
         {skills.length ? (
           skills.map((skill) => (
-            <span key={skill} className={`rounded-md border px-3 py-1 tm-mono text-xs ${muted ? "border-red-300/20 bg-red-400/10 text-red-200" : "border-white/15 bg-white/5 text-white"}`}>
+            <span key={skill} className={`rounded-full px-3 py-1 text-xs font-bold ${muted ? "bg-[var(--tm-error-soft)] text-[var(--tm-error)]" : "bg-[var(--tm-surface-mid)] text-[var(--tm-muted)]"}`}>
               {skill}
             </span>
           ))
@@ -293,10 +362,10 @@ function SkillSection({ title, skills, muted = false }: { title: string; skills:
   )
 }
 
-function ListPanel({ title, items }: { title: string; items: string[] }) {
+function ListPanel({ title, items, muted = false }: { title: string; items: string[]; muted?: boolean }) {
   return (
-    <div className="tm-card rounded-xl p-5">
-      <h3 className="tm-label mb-3 text-[var(--tm-primary)]">{title}</h3>
+    <div className={`rounded-2xl border p-5 ${muted ? "border-[var(--tm-error-soft)] bg-[var(--tm-error-soft)]/35" : "border-[var(--tm-tertiary-soft)] bg-[var(--tm-tertiary-soft)]/20"}`}>
+      <h3 className={`mb-3 font-bold ${muted ? "text-[var(--tm-error)]" : "text-[var(--tm-tertiary)]"}`}>{title}</h3>
       <ul className="space-y-2 text-sm leading-6 text-[var(--tm-muted)]">
         {(items.length ? items : ["No major notes detected."]).map((item) => (
           <li key={item}>{item}</li>
@@ -309,18 +378,22 @@ function ListPanel({ title, items }: { title: string; items: string[] }) {
 function SideNav() {
   const navigate = useNavigate()
   return (
-    <aside className="tm-sidebar px-4 py-6">
-      <div className="mb-8 flex items-center gap-3 px-2">
-        <Network className="h-7 w-7 text-[var(--tm-primary)]" />
-        <span className="tm-gradient-text text-2xl font-bold">TalentMind</span>
+    <aside className="tm-sidebar hidden flex-col p-6 md:flex">
+      <div className="mb-12">
+        <button onClick={() => navigate("/")} className="transition-opacity hover:opacity-80 text-left">
+          <h1 className="text-2xl font-extrabold text-[var(--tm-primary)]">TalentMind AI</h1>
+        </button>
+        <p className="text-sm font-semibold text-[var(--tm-muted)]">Enterprise Recruitment</p>
       </div>
-      <nav className="flex flex-col gap-2">
-        <button className="border-r-2 border-[var(--tm-primary)] bg-indigo-400/10 text-[var(--tm-primary)] rounded-lg px-3 py-3 text-left text-sm">Dashboard</button>
-        <button onClick={() => navigate("/job")} className="rounded-lg px-3 py-3 text-left text-sm text-[var(--tm-muted)] hover:bg-white/5 hover:text-white">Job Analysis</button>
-        <button onClick={() => navigate("/candidates")} className="rounded-lg px-3 py-3 text-left text-sm text-[var(--tm-muted)] hover:bg-white/5 hover:text-white">Resume Parser</button>
-        <span className="rounded-lg px-3 py-3 text-sm text-[var(--tm-muted)]">Talent Pipeline</span>
-        <span className="rounded-lg px-3 py-3 text-sm text-[var(--tm-muted)]">Settings</span>
+      <nav className="flex flex-1 flex-col gap-1">
+        <button className="tm-shell-link tm-shell-link-active"><BarChart3 className="h-5 w-5" /> Dashboard</button>
+        <button onClick={() => navigate("/job")} className="tm-shell-link"><BriefcaseBusiness className="h-5 w-5" /> Job Analysis</button>
+        <button onClick={() => navigate("/candidates")} className="tm-shell-link"><FileText className="h-5 w-5" /> Resumes</button>
+        <button onClick={() => navigate("/profile")} className="tm-shell-link"><User className="h-5 w-5" /> Profile</button>
       </nav>
+      <button onClick={() => navigate("/job")} className="tm-primary-btn mb-6 flex items-center justify-center gap-2 rounded-xl px-5 py-3 font-bold">
+        <Plus className="h-5 w-5" /> New Job Post
+      </button>
     </aside>
   )
 }

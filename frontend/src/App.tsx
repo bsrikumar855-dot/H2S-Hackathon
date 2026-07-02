@@ -5,6 +5,7 @@ import JobInputPage from "./pages/job/JobInputPage"
 import CandidateUploadPage from "./pages/candidates/CandidateUploadPage"
 import AIProcessingPage from "./pages/processing/AIProcessingPage"
 import RankedDashboardPage from "./pages/dashboard/RankedDashboardPage"
+import ProfilePage from "./pages/profile/ProfilePage"
 import "./App.css"
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
           <Route path="/candidates" element={<CandidateUploadPage />} />
           <Route path="/processing" element={<AIProcessingPage />} />
           <Route path="/dashboard" element={<RankedDashboardPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
         </Routes>
       </Router>
     </RecruitmentContextProvider>

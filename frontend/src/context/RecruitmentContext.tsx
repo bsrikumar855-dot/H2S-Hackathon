@@ -162,6 +162,22 @@ Projects:
 
   const loadMockFiles = () => {
     setUploadedFiles(mockProfileFiles)
+    if (!jobTitle) setJobTitle("Senior Full-Stack AI Engineer")
+    if (!jobDescription) {
+      setJobDescription(`Position: Senior Full-Stack AI Engineer
+Core Stack: React, TypeScript, Tailwind CSS, Python, FastAPI, SQLite, LangGraph
+
+Responsibilities:
+- Build state-of-the-art interactive recruiter workflows and dashboards using React and TypeScript.
+- Design and integrate multi-agent backend orchestrations using LangGraph and Gemini.
+- Implement vector database schemas with SQLite JSON vectors and optimize similarity searches.
+- Ensure 100% test coverage for complex agent state transitions and scoring heuristics.
+
+Prerequisites:
+- 4+ years of professional full-stack development experience.
+- Deep expertise in state management and web application architectures.
+- Experience with AI model integration, prompt engineering, or vector spaces.`)
+    }
   }
 
   const clearAll = () => {
@@ -175,6 +191,12 @@ Projects:
 
   const executeRanking = async () => {
     if (uploadedFiles.length === 0) return
+
+    if (!jobDescription.trim()) {
+      const errorMsg = "Job description is missing. Please return to the Jobs page to define the role before analyzing candidates."
+      setApiError(errorMsg)
+      throw new Error(errorMsg)
+    }
 
     setIsLoading(true)
     setApiError("")

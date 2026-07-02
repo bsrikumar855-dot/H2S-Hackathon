@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { CheckCircle2, Circle, Loader2, Network, X } from "lucide-react"
+import { BarChart3, CheckCircle2, Circle, Clock, Database, FileText, Info, Loader2, Network, Settings, ShieldCheck, User, Users, X } from "lucide-react"
 import { useRecruitment } from "../../context/RecruitmentContext"
 
 const stepLabels = [
@@ -15,13 +15,11 @@ const stepLabels = [
 
 export default function AIProcessingPage() {
   const navigate = useNavigate()
-  const { executeRanking, apiError } = useRecruitment()
+  const { executeRanking, apiError, jobTitle, uploadedFiles } = useRecruitment()
   const [progress, setProgress] = useState(0)
   const [activeStep, setActiveStep] = useState(0)
   const [errorMessage, setErrorMessage] = useState("")
-
-  const circumference = 2 * Math.PI * 45
-  const dashOffset = circumference - (progress / 100) * circumference
+  const remaining = useMemo(() => Math.max(0, 165 - Math.round(progress * 1.35)), [progress])
   const statusMessage = useMemo(() => stepLabels[Math.min(activeStep, stepLabels.length - 1)] || "Analysis Engine", [activeStep])
 
   const runPipeline = () => {
@@ -52,95 +50,67 @@ export default function AIProcessingPage() {
   }, [])
 
   return (
-    <div className="tm-page min-h-screen overflow-hidden">
-      <header className="tm-topbar">
-        <div className="flex h-full items-center justify-between px-4 md:px-12">
-          <div className="flex items-center gap-3">
-            <Network className="h-7 w-7 text-[var(--tm-primary)]" />
-            <span className="tm-gradient-text text-2xl font-bold">TalentMind AI</span>
-          </div>
-          <div className="hidden items-center gap-6 md:flex">
-            <span className="text-sm font-bold text-[var(--tm-primary)]">Job Analysis</span>
-            <span className="text-sm text-[var(--tm-muted)]">Talent Pipeline</span>
-          </div>
-        </div>
-      </header>
-
-      <main className="tm-topbar-offset relative flex min-h-screen items-center justify-center px-4 py-12">
-        <div className="tm-orbit absolute left-1/2 top-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(99,102,241,0.36),rgba(139,92,246,0.16),transparent_68%)]" />
-
-        <div className="relative z-10 grid w-full max-w-6xl items-center gap-10 lg:grid-cols-12">
-          <section className="flex flex-col items-center lg:col-span-5">
-            <div className="relative flex h-72 w-72 items-center justify-center">
-              <svg className="absolute inset-0 h-full w-full -rotate-90" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(255,255,255,0.10)" strokeWidth="2" />
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="45"
-                  fill="none"
-                  stroke="var(--tm-primary)"
-                  strokeDasharray={circumference}
-                  strokeDashoffset={dashOffset}
-                  strokeLinecap="round"
-                  strokeWidth="2.5"
-                />
-              </svg>
-              <div className="absolute inset-5 flex flex-col items-center justify-center rounded-full border border-indigo-300/20 bg-[rgba(42,42,44,0.45)] backdrop-blur-md">
-                <span className="text-6xl font-bold text-[var(--tm-primary)]">{Math.round(progress)}%</span>
-                <span className="tm-label mt-2">Analysis Engine</span>
-              </div>
+    <div className="tm-page">
+      <TopBar />
+      <SideNav />
+      <main className="tm-content-with-sidebar tm-topbar-offset mx-auto min-h-screen max-w-[1440px] px-4 py-8 md:px-8">
+        <section className="tm-slide-up mb-8">
+          <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
+            <div>
+              <h1 className="text-3xl font-bold text-[var(--tm-text)] md:text-4xl">{errorMessage ? "Pipeline Execution Error" : "Processing Candidates"}</h1>
+              <p className="mt-2 text-[var(--tm-muted)]">Role: {jobTitle || "Active role analysis"} - <span className="font-semibold text-[var(--tm-primary)]">{uploadedFiles.length} resumes queued</span></p>
             </div>
-            <div className="mt-8 text-center">
-              <h1 className="text-2xl font-bold text-white">{errorMessage ? "Pipeline Execution Error" : statusMessage}</h1>
-              <p className="mt-2 max-w-sm text-sm leading-6 text-[var(--tm-muted)]">
-                Processing language models and semantic clusters to find the strongest candidate matches.
-              </p>
+            <div className="flex items-center gap-2 rounded-full border border-[var(--tm-border)] bg-[var(--tm-surface-low)] px-4 py-2 text-[var(--tm-muted)]">
+              <Clock className="h-5 w-5" />
+              <span className="text-sm font-semibold">Est. Completion: <span className="text-[var(--tm-text)]">{formatTime(remaining)}</span></span>
             </div>
-          </section>
+          </div>
+        </section>
 
-          <section className="lg:col-span-7">
-            <div className="tm-card rounded-xl p-6 md:p-8">
+        <div className="grid gap-6 lg:grid-cols-12">
+          <section className="space-y-6 lg:col-span-7">
+            <div className="tm-card tm-slide-up rounded-2xl bg-white p-6 md:p-8">
               <div className="mb-8 flex items-center justify-between gap-4">
-                <span className="tm-label text-[var(--tm-muted)]">Pipeline Sequence</span>
-                <span className="tm-mono rounded-md bg-indigo-400/10 px-3 py-1 text-xs text-[var(--tm-primary)]">EST. TIME: 4.2s</span>
+                <div className="flex items-center gap-4">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--tm-primary)] text-white">
+                    <BarChart3 className="h-6 w-6" />
+                  </span>
+                  <div>
+                    <h2 className="text-xl font-bold text-[var(--tm-text)]">Analysis Progress</h2>
+                    <p className="text-sm text-[var(--tm-muted)]">{statusMessage}</p>
+                  </div>
+                </div>
+                <span className="tm-count-pop text-3xl font-extrabold text-[var(--tm-primary)]">{Math.round(progress)}%</span>
+              </div>
+              <div className="tm-progress h-3">
+                <span className={progress < 100 ? "tm-pulse-ring" : ""} style={{ width: `${progress}%` }} />
               </div>
 
               {errorMessage ? (
-                <div className="space-y-6">
-                  <div className="rounded-xl border border-red-300/20 bg-red-400/10 p-5 text-sm leading-6 text-red-100">
+                <div className="mt-8 space-y-5">
+                  <div className="rounded-2xl border border-[var(--tm-error)]/20 bg-[var(--tm-error-soft)] p-5 text-sm leading-6 text-[var(--tm-error)]">
                     {errorMessage}
                   </div>
                   <div className="flex flex-col gap-3 sm:flex-row">
-                    <button onClick={() => navigate("/candidates")} className="tm-secondary-btn flex-1 rounded-lg px-5 py-3 font-bold">
-                      Back to Uploads
-                    </button>
-                    <button onClick={runPipeline} className="tm-primary-btn flex-1 rounded-lg px-5 py-3 font-bold">
-                      Retry Analysis
-                    </button>
+                    <button onClick={() => navigate("/candidates")} className="tm-secondary-btn flex-1 rounded-xl px-5 py-3 font-bold">Back to Uploads</button>
+                    <button onClick={runPipeline} className="tm-primary-btn flex-1 rounded-xl px-5 py-3 font-bold">Retry Analysis</button>
                   </div>
                 </div>
               ) : (
-                <div className="relative space-y-4">
-                  <div className="absolute bottom-4 left-5 top-4 w-px bg-white/10" />
+                <div className="relative mt-8 space-y-5 pl-2">
+                  <div className="absolute bottom-5 left-7 top-5 w-px bg-[var(--tm-border)]" />
                   {stepLabels.map((label, index) => {
                     const completed = activeStep > index
                     const active = activeStep === index
                     return (
-                      <div key={label} className={`relative flex items-start gap-5 ${active || completed ? "opacity-100" : "opacity-45"}`}>
-                        <span className="z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/15 bg-[var(--tm-surface-high)]">
-                          {completed ? (
-                            <CheckCircle2 className="h-5 w-5 text-[var(--tm-tertiary)]" />
-                          ) : active ? (
-                            <Loader2 className="h-5 w-5 animate-spin text-[var(--tm-primary)]" />
-                          ) : (
-                            <Circle className="h-5 w-5 text-[var(--tm-muted)]" />
-                          )}
+                      <div key={label} className={`tm-slide-up relative flex items-start gap-5 ${active || completed ? "opacity-100" : "opacity-55"}`} style={{ animationDelay: `${index * 55}ms` }}>
+                        <span className="z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[var(--tm-border)] bg-white">
+                          {completed ? <CheckCircle2 className="h-5 w-5 text-[var(--tm-tertiary)]" /> : active ? <Loader2 className="h-5 w-5 animate-spin text-[var(--tm-primary)]" /> : <Circle className="h-5 w-5 text-[var(--tm-muted)]" />}
                         </span>
                         <div className="flex-1 pt-1">
-                          <h2 className={`font-semibold ${active ? "text-[var(--tm-primary)]" : "text-white"}`}>{label}</h2>
+                          <h3 className={`font-bold ${active ? "text-[var(--tm-primary)]" : "text-[var(--tm-text)]"}`}>{label}</h3>
                           <div className="tm-progress mt-3">
-                            <span style={{ width: completed ? "100%" : active ? "66%" : "0%" }} className={active ? "tm-shimmer" : ""} />
+                            <span className={active ? "tm-pulse-ring" : ""} style={{ width: completed ? "100%" : active ? "66%" : "0%" }} />
                           </div>
                         </div>
                       </div>
@@ -148,23 +118,102 @@ export default function AIProcessingPage() {
                   })}
                 </div>
               )}
+            </div>
 
-              {!errorMessage && (
-                <div className="mt-8 flex items-center justify-between border-t border-white/10 pt-6">
-                  <div className="flex -space-x-2">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-[var(--tm-surface-low)] bg-indigo-400/20 text-xs font-bold text-[var(--tm-primary)]">A</span>
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-[var(--tm-surface-low)] bg-emerald-400/20 text-xs font-bold text-[var(--tm-tertiary)]">B</span>
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-[var(--tm-surface-low)] bg-white/10 text-xs font-bold text-white">+24</span>
-                  </div>
-                  <button onClick={() => navigate("/candidates")} className="tm-secondary-btn flex items-center gap-2 rounded-lg px-5 py-2 text-sm">
-                    <X className="h-4 w-4" /> Abort
-                  </button>
-                </div>
-              )}
+            <div className="tm-card tm-slide-up rounded-2xl bg-white p-6" style={{ animationDelay: "140ms" }}>
+              <h2 className="mb-5 text-xl font-bold text-[var(--tm-text)]">System Diagnostics</h2>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <Diagnostic icon={<ShieldCheck />} text="API Connectivity: Stable" />
+                <Diagnostic icon={<Database />} text="Data Integrity: Verified" />
+                <Diagnostic icon={<CheckCircle2 />} text="Memory Allocation: Optimal" />
+                <Diagnostic icon={<Loader2 className="animate-spin" />} text={`Processing Batch ${Math.max(1, activeStep + 1)}/${stepLabels.length}`} active />
+              </div>
             </div>
           </section>
+
+          <aside className="space-y-6 lg:col-span-5">
+            <div className="tm-card tm-slide-up rounded-2xl border-dashed bg-white p-6" style={{ animationDelay: "180ms" }}>
+              <div className="mb-6 flex items-center justify-between">
+                <h2 className="text-xl font-bold text-[var(--tm-text)]">Live Preview</h2>
+                <span className="rounded bg-[var(--tm-surface-high)] px-3 py-1 text-xs font-bold text-[var(--tm-muted)]">Awaiting Data</span>
+              </div>
+              <div className="space-y-6">
+                {[0, 1, 2].map((item) => (
+                  <div key={item} className="flex items-center gap-4">
+                    <div className="tm-shimmer h-12 w-12 rounded-full" />
+                    <div className="flex-1 space-y-2">
+                      <div className="tm-shimmer h-4 w-1/2 rounded" />
+                      <div className="tm-shimmer h-3 w-3/4 rounded opacity-70" />
+                    </div>
+                    <div className="tm-shimmer h-6 w-12 rounded-full" />
+                  </div>
+                ))}
+              </div>
+              <p className="mt-8 text-center text-sm italic text-[var(--tm-muted)]">Insights will appear here as semantic analysis completes.</p>
+            </div>
+
+            <div className="tm-card tm-slide-up flex items-start gap-4 rounded-2xl border-[var(--tm-primary)]/20 bg-[var(--tm-primary-soft)]/45 p-5" style={{ animationDelay: "240ms" }}>
+              <Info className="h-5 w-5 shrink-0 text-[var(--tm-primary)]" />
+              <p className="text-sm leading-6 text-[var(--tm-primary)]">Navigating away from this page will pause the visible analysis experience. Ranking results are saved automatically when the backend completes.</p>
+            </div>
+
+            {!errorMessage && (
+              <button onClick={() => navigate("/candidates")} className="tm-secondary-btn flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 font-bold">
+                <X className="h-4 w-4" /> Abort
+              </button>
+            )}
+          </aside>
         </div>
       </main>
     </div>
+  )
+}
+
+function formatTime(seconds: number) {
+  const mins = Math.floor(seconds / 60)
+  const secs = seconds % 60
+  return `${mins}m ${secs.toString().padStart(2, "0")}s`
+}
+
+function Diagnostic({ icon, text, active = false }: { icon: React.ReactNode; text: string; active?: boolean }) {
+  return (
+    <div className="flex items-center gap-3 rounded-xl bg-[var(--tm-surface-low)] p-4">
+      <span className={`[&>svg]:h-5 [&>svg]:w-5 ${active ? "text-[var(--tm-primary)]" : "text-[var(--tm-tertiary)]"}`}>{icon}</span>
+      <span className="text-sm font-semibold text-[var(--tm-muted)]">{text}</span>
+    </div>
+  )
+}
+
+function TopBar() {
+  const navigate = useNavigate()
+  return (
+    <header className="tm-topbar">
+      <div className="flex h-full items-center justify-between px-4 md:px-8">
+        <button onClick={() => navigate("/")} className="flex items-center gap-3 transition-opacity hover:opacity-80">
+          <Network className="h-6 w-6 text-[var(--tm-primary)]" />
+          <span className="text-xl font-extrabold text-[var(--tm-primary)]">TalentMind AI</span>
+        </button>
+      </div>
+    </header>
+  )
+}
+
+function SideNav() {
+  const navigate = useNavigate()
+  return (
+    <aside className="tm-sidebar hidden flex-col p-5 pt-20 md:flex">
+      <nav className="flex flex-col gap-1">
+        <button onClick={() => navigate("/dashboard")} className="tm-shell-link"><BarChart3 className="h-5 w-5" /> Dashboard</button>
+        <button onClick={() => navigate("/job")} className="tm-shell-link"><FileText className="h-5 w-5" /> Jobs</button>
+        <button onClick={() => navigate("/candidates")} className="tm-shell-link"><Users className="h-5 w-5" /> Candidates</button>
+        <button className="tm-shell-link tm-shell-link-active"><BarChart3 className="h-5 w-5" /> Pipeline</button>
+        <button onClick={() => navigate("/profile")} className="tm-shell-link mt-6 border-t border-[var(--tm-border)] pt-6"><User className="h-5 w-5" /> Profile</button>
+      </nav>
+      <div className="mt-auto rounded-2xl border border-[var(--tm-border)] bg-white p-5">
+        <p className="tm-label text-[var(--tm-primary)]">Premium Plan</p>
+        <p className="mt-2 text-sm leading-6 text-[var(--tm-muted)]">Human-Centric Intelligence active for 12 roles.</p>
+        <button className="tm-primary-btn mt-4 w-full rounded-lg py-2 text-sm font-bold">Upgrade</button>
+      </div>
+    </aside>
   )
 }

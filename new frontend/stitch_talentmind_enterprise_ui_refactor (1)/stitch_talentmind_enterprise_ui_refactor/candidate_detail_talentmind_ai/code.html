@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Candidate Detail | TalentMind AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-secondary-container": "#5c647a",
+                        "tertiary-fixed": "#71f8e4",
+                        "surface-container": "#e9edff",
+                        "secondary-fixed": "#dae2fd",
+                        "primary": "#004ac6",
+                        "on-tertiary-fixed": "#00201c",
+                        "on-background": "#141b2b",
+                        "surface-tint": "#0053db",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-container": "#2563eb",
+                        "surface-container-high": "#e1e8fd",
+                        "surface-dim": "#d3daef",
+                        "tertiary-container": "#007b6e",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "tertiary": "#006056",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#dce2f7",
+                        "inverse-on-surface": "#edf0ff",
+                        "background": "#f9f9ff",
+                        "on-secondary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "surface": "#f9f9ff",
+                        "on-tertiary-container": "#b1fff1",
+                        "error": "#ba1a1a",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed-dim": "#4fdbc8",
+                        "inverse-surface": "#293040",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "primary-fixed": "#dbe1ff",
+                        "on-surface-variant": "#434655",
+                        "on-tertiary-fixed-variant": "#005048",
+                        "inverse-primary": "#b4c5ff",
+                        "surface-container-highest": "#dce2f7",
+                        "outline-variant": "#c3c6d7",
+                        "secondary": "#565e74",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "on-surface": "#141b2b",
+                        "surface-container-low": "#f1f3ff",
+                        "outline": "#737686",
+                        "on-secondary-fixed": "#131b2e",
+                        "on-primary-container": "#eeefff",
+                        "surface-bright": "#f9f9ff",
+                        "secondary-container": "#dae2fd",
+                        "on-primary-fixed": "#00174b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sidebar-width": "280px",
+                        "xl": "32px",
+                        "sm": "8px",
+                        "base": "4px",
+                        "container-max": "1440px",
+                        "xs": "4px",
+                        "md": "16px",
+                        "gutter": "24px",
+                        "lg": "24px",
+                        "2xl": "48px",
+                        "3xl": "64px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "display": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-md": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .drawer-backdrop {
+            background-color: rgba(20, 27, 43, 0.4);
+            backdrop-filter: blur(4px);
+            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .drawer-content {
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .drawer-open .drawer-content {
+            transform: translateX(0);
+        }
+        .drawer-open .drawer-backdrop {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .progress-bar-fill {
+            width: 0%;
+            transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #dce2f7;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #c3c6d7;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen overflow-x-hidden">
+<!-- Main Background Canvas (Dashboard Mockup for Context) -->
+<div class="flex">
+<!-- SideNavBar -->
+<aside class="fixed h-full w-sidebar-width left-0 top-0 border-r border-outline-variant bg-surface flex flex-col p-lg z-30">
+<div class="mb-3xl">
+<div class="flex items-center gap-md mb-xs">
+<div class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">psychology</span>
+</div>
+<div>
+<h1 class="text-headline-md font-headline-md font-bold text-primary">TalentMind AI</h1>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Enterprise Recruitment</p>
+</div>
+</div>
+</div>
+<nav class="flex flex-col gap-sm flex-grow">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm bg-secondary-container text-on-secondary-container rounded-lg font-bold" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="font-label-md text-label-md">Resumes</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-md text-label-md">Job Analysis</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">view_kanban</span>
+<span class="font-label-md text-label-md">Pipeline</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</nav>
+<div class="mt-auto pt-lg border-t border-outline-variant flex flex-col gap-sm">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-md text-label-md">Help Center</span>
+</a>
+<div class="flex items-center gap-md px-md py-sm">
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container-high">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a senior HR executive with a warm, confident expression. The lighting is soft and studio-quality, reflecting a high-end corporate environment. The background is a blurred, modern office interior with neutral tones of white and light grey, aligning with the minimalist corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-q23wboHIBsLBoTz1NszebWcUvTLMj5rB2_25mbpWIf-vapLY2BoYxFmLPDjSlv657hp8cC3Rum82pUzcXkcxVzDSu3O9uX_pFANZwh1yU2Kjgs_OV9ipXpGvcoBvi0y-2oE_a9AfuO0EnRX-spyNbXf7kWADuvwhfvY-PQsK9EDLPiUKtQLCeWfwMFoUviOyGKcYJpkjEEEBC34ebmNK6Q0mNgAN039lxXGMl7BWYK9JFZDtqChIF2CJ3gCVb29PM5F_69TqhwYr"/>
+</div>
+<div class="overflow-hidden">
+<p class="text-label-md font-label-md truncate">Alex Sterling</p>
+<p class="text-label-sm font-label-sm text-on-surface-variant truncate">Lead Recruiter</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area (Background) -->
+<main class="ml-sidebar-width flex-grow min-h-screen p-gutter bg-background">
+<header class="flex justify-between items-center mb-xl">
+<h2 class="text-headline-lg font-headline-lg">Active Pipeline</h2>
+<button class="px-lg py-sm bg-primary text-on-primary rounded-lg font-label-md flex items-center gap-sm shadow-sm hover:opacity-90 transition-all" onclick="openDrawer()">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+                    View Candidate Detail
+                </button>
+</header>
+<!-- Mock Content Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg">
+<!-- Mock Card -->
+<div class="bg-surface p-lg rounded-xl border border-outline-variant flex flex-col gap-md opacity-60">
+<div class="flex justify-between items-start">
+<div class="w-12 h-12 bg-surface-container-highest rounded-full"></div>
+<div class="bg-tertiary-container/10 px-sm py-xs rounded text-tertiary font-label-md">92% Match</div>
+</div>
+<div>
+<div class="h-6 w-32 bg-surface-container-highest rounded mb-xs"></div>
+<div class="h-4 w-48 bg-surface-container-high rounded"></div>
+</div>
+<div class="flex gap-sm">
+<div class="h-8 w-16 bg-surface-container-high rounded-full"></div>
+<div class="h-8 w-16 bg-surface-container-high rounded-full"></div>
+</div>
+</div>
+<div class="bg-surface p-lg rounded-xl border border-outline-variant flex flex-col gap-md opacity-60">
+<div class="flex justify-between items-start">
+<div class="w-12 h-12 bg-surface-container-highest rounded-full"></div>
+<div class="bg-tertiary-container/10 px-sm py-xs rounded text-tertiary font-label-md">88% Match</div>
+</div>
+<div>
+<div class="h-6 w-40 bg-surface-container-highest rounded mb-xs"></div>
+<div class="h-4 w-32 bg-surface-container-high rounded"></div>
+</div>
+<div class="flex gap-sm">
+<div class="h-8 w-20 bg-surface-container-high rounded-full"></div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Slide-over Drawer Component -->
+<div class="fixed inset-0 z-50 pointer-events-none drawer-root" id="candidateDrawer">
+<!-- Backdrop -->
+<div class="absolute inset-0 drawer-backdrop opacity-0" onclick="closeDrawer()"></div>
+<!-- Drawer Panel -->
+<div class="absolute inset-y-0 right-0 w-full max-w-2xl bg-surface shadow-2xl drawer-content pointer-events-auto flex flex-col">
+<!-- Drawer Header -->
+<header class="h-20 px-xl border-b border-outline-variant flex items-center justify-between bg-surface-bright sticky top-0 z-10">
+<div class="flex items-center gap-md">
+<button class="p-sm rounded-full hover:bg-surface-container-high text-on-surface-variant transition-colors" onclick="closeDrawer()">
+<span class="material-symbols-outlined">close</span>
+</button>
+<h3 class="text-headline-sm font-headline-sm">Candidate Profile</h3>
+</div>
+<div class="flex gap-sm">
+<button class="px-lg py-sm border border-outline-variant text-on-surface rounded-lg font-label-md hover:bg-surface-container-low transition-colors">
+                        Shortlist
+                    </button>
+<button class="px-lg py-sm bg-primary text-on-primary rounded-lg font-label-md hover:opacity-90 transition-all">
+                        Schedule Interview
+                    </button>
+</div>
+</header>
+<!-- Scrollable Content Area -->
+<div class="flex-grow overflow-y-auto custom-scrollbar p-xl">
+<!-- Profile Header Card -->
+<div class="bg-white rounded-xl border border-outline-variant p-lg flex flex-col md:flex-row gap-xl mb-xl">
+<div class="relative">
+<div class="w-24 h-24 rounded-2xl overflow-hidden shadow-sm">
+<img class="w-full h-full object-cover" data-alt="A professional portrait of a senior product designer, featuring a clear, modern background. The individual is wearing professional yet creative attire. The lighting is natural and bright, emphasizing a human-centric intelligence aesthetic. The color palette is composed of soft blues, crisp whites, and neutral greys." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2NBI8OrTp1WX_2_pfZdu0Oxwjv596zSYDI1LqtHf70NcYVl7xoc-9Zo0af_DcxVdIYdidff7k0wpgpi9hUdS69-s5Lq9UbDTqnuq23Znp3Fp4fCzRP-eQO81cX_X4g5N-cCrlO9jOPQ9aiNnMOiztIwmg9iAwwPG2rysh2mJrvLbDTTsj0THo42fdmP181UdSHNrmaOwbXkFhJfQ-ehgm9Fh6COQE1Df7W-AwjNMpsvAnMdbDNtJ3bdWAyLZBFu7_C1Xz0lCiYuGt"/>
+</div>
+<div class="absolute -bottom-2 -right-2 bg-primary-container text-on-primary-container p-xs rounded-lg border-2 border-white flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<span class="text-label-sm font-label-sm">Expert</span>
+</div>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start mb-sm">
+<div>
+<h4 class="text-headline-md font-headline-md">Julianne Vancini</h4>
+<p class="text-body-md text-on-surface-variant">Senior UX Architect • 8+ Years Experience</p>
+</div>
+<div class="flex flex-col items-end">
+<div class="text-primary font-headline-lg">94%</div>
+<div class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider">Match Score</div>
+</div>
+</div>
+<div class="flex flex-wrap gap-xs">
+<span class="px-sm py-xs bg-surface-container-high rounded-full text-label-md font-label-md">San Francisco, CA</span>
+<span class="px-sm py-xs bg-surface-container-high rounded-full text-label-md font-label-md">$185k - $210k</span>
+<span class="px-sm py-xs bg-surface-container-high rounded-full text-label-md font-label-md">Available: 2 Weeks</span>
+</div>
+</div>
+</div>
+<!-- Professional Summary -->
+<section class="mb-xl">
+<h5 class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-widest mb-md">Professional Summary</h5>
+<p class="text-body-lg font-body-lg text-on-surface leading-relaxed">
+                        Accomplished UX Architect with a proven track record of designing scalable design systems for Fortune 500 fintech platforms. Julianne excels at bridging the gap between complex system architecture and intuitive visual storytelling. Her approach is data-informed and human-centric, ensuring that technical rigor never compromises the end-user experience.
+                    </p>
+</section>
+<!-- Competency Grid -->
+<section class="mb-xl">
+<h5 class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-widest mb-md">Competency Analysis</h5>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-xl gap-y-md">
+<div class="space-y-xs">
+<div class="flex justify-between text-label-md">
+<span>Visual Design</span>
+<span class="font-bold">92%</span>
+</div>
+<div class="h-2 bg-surface-container-high rounded-full overflow-hidden">
+<div class="progress-bar-fill h-full bg-primary" data-progress="92"></div>
+</div>
+</div>
+<div class="space-y-xs">
+<div class="flex justify-between text-label-md">
+<span>System Architecture</span>
+<span class="font-bold">98%</span>
+</div>
+<div class="h-2 bg-surface-container-high rounded-full overflow-hidden">
+<div class="progress-bar-fill h-full bg-primary" data-progress="98"></div>
+</div>
+</div>
+<div class="space-y-xs">
+<div class="flex justify-between text-label-md">
+<span>User Research</span>
+<span class="font-bold">85%</span>
+</div>
+<div class="h-2 bg-surface-container-high rounded-full overflow-hidden">
+<div class="progress-bar-fill h-full bg-primary" data-progress="85"></div>
+</div>
+</div>
+<div class="space-y-xs">
+<div class="flex justify-between text-label-md">
+<span>Stakeholder Management</span>
+<span class="font-bold">89%</span>
+</div>
+<div class="h-2 bg-surface-container-high rounded-full overflow-hidden">
+<div class="progress-bar-fill h-full bg-primary" data-progress="89"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- AI Insights Bento -->
+<section class="mb-xl">
+<h5 class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-widest mb-md">AI-Driven Insights</h5>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<!-- Strengths -->
+<div class="p-lg rounded-xl bg-tertiary/5 border border-tertiary-container/20">
+<div class="flex items-center gap-sm text-tertiary mb-sm">
+<span class="material-symbols-outlined">trending_up</span>
+<span class="font-bold">Core Strengths</span>
+</div>
+<ul class="space-y-sm">
+<li class="flex gap-sm items-start text-body-sm">
+<span class="material-symbols-outlined text-[18px] text-tertiary mt-0.5">check_circle</span>
+<span>Exceptional ability to modularize complex workflows into reusable design components.</span>
+</li>
+<li class="flex gap-sm items-start text-body-sm">
+<span class="material-symbols-outlined text-[18px] text-tertiary mt-0.5">check_circle</span>
+<span>High emotional intelligence when presenting to executive leadership.</span>
+</li>
+</ul>
+</div>
+<!-- Weaknesses/Growth -->
+<div class="p-lg rounded-xl bg-error/5 border border-error-container/20">
+<div class="flex items-center gap-sm text-error mb-sm">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-bold">Growth Areas</span>
+</div>
+<ul class="space-y-sm">
+<li class="flex gap-sm items-start text-body-sm">
+<span class="material-symbols-outlined text-[18px] text-error mt-0.5">info</span>
+<span>Limited experience with early-stage consumer-facing mobile apps.</span>
+</li>
+<li class="flex gap-sm items-start text-body-sm">
+<span class="material-symbols-outlined text-[18px] text-error mt-0.5">info</span>
+<span>Potential overhead in hyper-agile, low-documentation environments.</span>
+</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Experience Timeline -->
+<section class="mb-xl">
+<h5 class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-widest mb-md">Experience Timeline</h5>
+<div class="relative pl-8 border-l-2 border-outline-variant space-y-xl ml-4">
+<!-- Job 1 -->
+<div class="relative">
+<div class="absolute -left-[41px] top-0 w-4 h-4 rounded-full bg-primary border-4 border-white"></div>
+<div>
+<div class="flex justify-between items-start mb-xs">
+<h6 class="font-bold text-body-md">Lead UX Architect</h6>
+<span class="text-label-sm text-on-surface-variant">2021 — Present</span>
+</div>
+<p class="text-label-md text-primary mb-sm">FinStream Global</p>
+<p class="text-body-sm text-on-surface-variant">Spearheaded the redesign of the enterprise trading terminal, resulting in a 32% increase in trader efficiency and a reduction in training time.</p>
+</div>
+</div>
+<!-- Job 2 -->
+<div class="relative">
+<div class="absolute -left-[41px] top-0 w-4 h-4 rounded-full bg-outline-variant border-4 border-white"></div>
+<div>
+<div class="flex justify-between items-start mb-xs">
+<h6 class="font-bold text-body-md">Senior Product Designer</h6>
+<span class="text-label-sm text-on-surface-variant">2018 — 2021</span>
+</div>
+<p class="text-label-md text-primary mb-sm">Nexus Data Systems</p>
+<p class="text-body-sm text-on-surface-variant">Owned the end-to-end design for the Core BI Platform. Developed the company's first internal Design System 'Prism'.</p>
+</div>
+</div>
+<!-- Job 3 -->
+<div class="relative">
+<div class="absolute -left-[41px] top-0 w-4 h-4 rounded-full bg-outline-variant border-4 border-white"></div>
+<div>
+<div class="flex justify-between items-start mb-xs">
+<h6 class="font-bold text-body-md">Product Designer</h6>
+<span class="text-label-sm text-on-surface-variant">2015 — 2018</span>
+</div>
+<p class="text-label-md text-primary mb-sm">BrightLoop Creative</p>
+<p class="text-body-sm text-on-surface-variant">Collaborated with diverse clients on mobile application designs and interactive web experiences.</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Drawer Footer (Secondary Actions) -->
+<footer class="p-xl border-t border-outline-variant bg-surface-container-low flex justify-between items-center">
+<div class="flex gap-md">
+<button class="flex items-center gap-xs text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">download</span>
+<span class="text-label-md">Download CV</span>
+</button>
+<button class="flex items-center gap-xs text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">share</span>
+<span class="text-label-md">Share Profile</span>
+</button>
+</div>
+<button class="text-on-surface-variant hover:text-error transition-colors flex items-center gap-xs">
+<span class="material-symbols-outlined text-[20px]">flag</span>
+<span class="text-label-md">Report</span>
+</button>
+</footer>
+</div>
+</div>
+<script>
+        function openDrawer() {
+            const drawer = document.getElementById('candidateDrawer');
+            drawer.classList.remove('pointer-events-none');
+            drawer.classList.add('drawer-open');
+            document.body.classList.add('overflow-hidden');
+
+            // Trigger animations for progress bars
+            setTimeout(() => {
+                document.querySelectorAll('.progress-bar-fill').forEach(bar => {
+                    const targetWidth = bar.getAttribute('data-progress');
+                    bar.style.width = targetWidth + '%';
+                });
+            }, 400);
+        }
+
+        function closeDrawer() {
+            const drawer = document.getElementById('candidateDrawer');
+            drawer.classList.remove('drawer-open');
+            document.body.classList.remove('overflow-hidden');
+            
+            // Reset progress bars for next time
+            setTimeout(() => {
+                drawer.classList.add('pointer-events-none');
+                document.querySelectorAll('.progress-bar-fill').forEach(bar => {
+                    bar.style.width = '0%';
+                });
+            }, 400);
+        }
+
+        // Initialize state (closed)
+        window.addEventListener('DOMContentLoaded', () => {
+            // Optional: Automatically open on load to showcase
+            setTimeout(openDrawer, 800);
+        });
+
+        // Micro-interactions for buttons
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('mousedown', () => {
+                btn.style.transform = 'scale(0.97)';
+            });
+            btn.addEventListener('mouseup', () => {
+                btn.style.transform = 'scale(1)';
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body></html>

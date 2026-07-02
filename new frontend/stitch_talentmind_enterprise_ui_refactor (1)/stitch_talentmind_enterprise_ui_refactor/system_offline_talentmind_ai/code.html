@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>System Status | TalentMind AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "on-secondary-container": "#5c647a",
+                    "tertiary-fixed": "#71f8e4",
+                    "surface-container": "#e9edff",
+                    "secondary-fixed": "#dae2fd",
+                    "primary": "#004ac6",
+                    "on-tertiary-fixed": "#00201c",
+                    "on-background": "#141b2b",
+                    "surface-tint": "#0053db",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-container": "#2563eb",
+                    "surface-container-high": "#e1e8fd",
+                    "surface-dim": "#d3daef",
+                    "tertiary-container": "#007b6e",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "on-primary-fixed-variant": "#003ea8",
+                    "tertiary": "#006056",
+                    "on-error-container": "#93000a",
+                    "surface-variant": "#dce2f7",
+                    "inverse-on-surface": "#edf0ff",
+                    "background": "#f9f9ff",
+                    "on-secondary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "surface": "#f9f9ff",
+                    "on-tertiary-container": "#b1fff1",
+                    "error": "#ba1a1a",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-fixed-dim": "#4fdbc8",
+                    "inverse-surface": "#293040",
+                    "primary-fixed-dim": "#b4c5ff",
+                    "primary-fixed": "#dbe1ff",
+                    "on-surface-variant": "#434655",
+                    "on-tertiary-fixed-variant": "#005048",
+                    "inverse-primary": "#b4c5ff",
+                    "surface-container-highest": "#dce2f7",
+                    "outline-variant": "#c3c6d7",
+                    "secondary": "#565e74",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "on-surface": "#141b2b",
+                    "surface-container-low": "#f1f3ff",
+                    "outline": "#737686",
+                    "on-secondary-fixed": "#131b2e",
+                    "on-primary-container": "#eeefff",
+                    "surface-bright": "#f9f9ff",
+                    "secondary-container": "#dae2fd",
+                    "on-primary-fixed": "#00174b"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "sidebar-width": "280px",
+                    "xl": "32px",
+                    "sm": "8px",
+                    "base": "4px",
+                    "container-max": "1440px",
+                    "xs": "4px",
+                    "md": "16px",
+                    "gutter": "24px",
+                    "lg": "24px",
+                    "2xl": "48px",
+                    "3xl": "64px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "display": ["Inter"],
+                    "headline-sm": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "headline-md": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "letterSpacing": "0em", "fontWeight": "400"}],
+                    "display": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "letterSpacing": "0em", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .retry-animate {
+            animation: spin 2s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface">
+<!-- SideNavBar (Fixed) -->
+<aside class="fixed h-full w-sidebar-width left-0 top-0 border-r border-outline-variant bg-surface flex flex-col p-lg z-50">
+<div class="mb-3xl">
+<h1 class="text-headline-md font-headline-md font-bold text-primary">TalentMind AI</h1>
+<p class="text-label-md font-label-md text-on-surface-variant">Enterprise Recruitment</p>
+</div>
+<nav class="flex-1 space-y-sm">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-md">Job Analysis</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span class="font-label-md">Resumes</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="view_kanban">view_kanban</span>
+<span class="font-label-md">Pipeline</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm bg-secondary-container text-on-secondary-container rounded-lg font-bold" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-md">Settings</span>
+</a>
+</nav>
+<div class="mt-auto space-y-sm pt-xl border-t border-outline-variant">
+<button class="w-full bg-primary-container text-on-primary-container py-md px-lg rounded-lg font-bold mb-md hover:opacity-90 transition-all active:scale-95">
+                New Job Post
+            </button>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-label-md">Help Center</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="headset_mic">headset_mic</span>
+<span class="font-label-md">Support</span>
+</a>
+</div>
+</aside>
+<!-- TopNavBar (Fixed) -->
+<header class="fixed top-0 right-0 w-[calc(100%-280px)] h-16 bg-surface border-b border-outline-variant flex justify-between items-center px-gutter z-40 shadow-sm">
+<div class="relative w-96">
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
+<input class="w-full pl-xl pr-md py-sm bg-surface-container-low border border-outline-variant rounded-lg focus:outline-none focus:border-primary text-body-sm" placeholder="Search talent..." type="text"/>
+</div>
+<div class="flex items-center gap-lg">
+<button class="relative text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute -top-1 -right-1 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="chat_bubble">chat_bubble</span>
+</button>
+<div class="flex items-center gap-md pl-md border-l border-outline-variant">
+<div class="text-right">
+<p class="text-label-md font-bold leading-none">Sarah Jenkins</p>
+<p class="text-label-sm text-on-surface-variant">Director of Talent</p>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a middle-aged woman with a confident smile, wearing a structured navy blazer, set against a blurred modern office background with soft daylight. The lighting is high-end and corporate-editorial, reflecting a sophisticated recruitment executive aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD49yCeW-oWtlMXiF4pgk3xtew1MJneshX9WH97JofBwAyCwbf6pIE18tY8BghgPOERZYDZJl-bb15eQ4MS7oE09huMpXhw3s1MsFXsMvUh2Z8agrmtjye11ut3hS2cfHSiz19JrO0fQyI-nmQORTQaFGejXVgvcVhvhiCOGUbkmOmx4C6kOXkecDFAOJbZCr1g-rM-0OeXinkWHGfRhEjA18vEVX0TFZs68H6mRMlu7VIL6PX1DezOpUVGack3Y7I1UtNBYyKg1Oke"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-sidebar-width pt-16 min-h-screen flex flex-col">
+<div class="flex-1 flex items-center justify-center p-2xl">
+<div class="max-w-4xl w-full grid grid-cols-1 md:grid-cols-2 gap-3xl items-center">
+<!-- Illustration Section -->
+<div class="relative animate-in fade-in slide-in-from-bottom-8 duration-700">
+<div class="relative z-10 rounded-2xl overflow-hidden shadow-2xl border border-outline-variant bg-white">
+<img class="w-full aspect-square object-cover" data-alt="A beautiful, minimalist 3D illustration of a floating architectural server tower with soft blue and silver metallic textures. The tower has small glowing indicators that have turned from green to a soft, pulsing amber. Surrounding the tower are delicate, translucent glass-like data paths that are disconnected. The entire scene is set against a clean, light-mode background with soft ambient shadows and an editorial, high-end tech aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjm52RG-Ujh5OCn8hVuaZ3Hc5pi_mul1SxhbjVdEVK5wCEkuT39SbikWfUDaYdv4OGafyYMX3FzvnuYUuNIqhrc53_IMjfn77-h7WhY4-DzKgoK_DquU128ydr469l4OxKroa7MqWeG8Q-zomFsEICdIlKb7HMvGS-KyR_dmXxzXitB2TclX2sVDZ1bhiiXlhwRaRYbIBbrxBxV9iC2wRnx1nP1MgrmQ2dCVzhnuSpjalqo78ZjJhpjYnojfqE-Sei2kKIxTLpZE9x"/>
+</div>
+<!-- Decorative background blur -->
+<div class="absolute -top-12 -left-12 w-48 h-48 bg-primary/10 blur-3xl rounded-full -z-10"></div>
+<div class="absolute -bottom-12 -right-12 w-64 h-64 bg-secondary/5 blur-3xl rounded-full -z-10"></div>
+</div>
+<!-- Text & Actions Section -->
+<div class="space-y-lg animate-in fade-in slide-in-from-right-8 duration-700 delay-200">
+<div class="inline-flex items-center gap-sm px-md py-xs bg-error-container text-on-error-container rounded-full text-label-sm uppercase tracking-wider font-bold">
+<span class="material-symbols-outlined text-[16px]" data-icon="error">error</span>
+                        System Error 503
+                    </div>
+<div class="space-y-md">
+<h2 class="text-display font-display text-on-surface leading-tight">Backend Offline</h2>
+<p class="text-body-lg text-on-surface-variant max-w-md">
+                            Our servers are currently undergoing a brief moment of quiet contemplation. We're working diligently to restore the intelligence behind your recruitment engine.
+                        </p>
+</div>
+<div class="pt-md space-y-md">
+<div class="flex flex-wrap gap-md">
+<button class="flex items-center gap-sm bg-primary text-on-primary font-bold py-md px-2xl rounded-lg shadow-sm hover:opacity-90 active:scale-95 transition-all" id="retryBtn">
+<span class="material-symbols-outlined" data-icon="refresh" id="retryIcon">refresh</span>
+                                Retry Connection
+                            </button>
+<button class="bg-surface-container-high text-on-surface font-bold py-md px-2xl rounded-lg hover:bg-surface-container-highest transition-colors active:scale-95">
+                                Contact Support
+                            </button>
+</div>
+<div class="flex items-center gap-md pt-lg">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-surface bg-surface-container-high overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A small circular avatar portrait of a technical support specialist with a calm expression, professional lighting, modern minimalist background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6KoD1lY-XD8xep03c0hoi-T9N1cifOAkx8zQ1tWjNKi9HLu3Mrlk5uMRkXULzKlKoWA-uhOS2RPQkJa5pCDPg4f15CxBEosB0JaTsO-Do7X_NqBM9qS76PPtm9f1YNHItEXDPV1FmSf8W0MOJ6E2p-8dj_Iq_GFM8pyVkgrRyjYDfx24g_wcL7RHpuawhqktWXI7aVjUl-Ie8e6amHNdjUELJBCDZxBuujO-i16zIY6r8u9xRNG1ipEv-xSn8p5ha75oncr1imrK8"/>
+</div>
+<div class="w-8 h-8 rounded-full border-2 border-surface bg-surface-container-high overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A small circular avatar portrait of a system engineer with a friendly expression, soft office lighting, clean professional attire." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCC4IjsrbtyiuBXIMk5IGeTTqUh5oSNbItoDnpQo50dL0scLPUtkV6754qIPhydJtzynUolt3ybElaDzYfDcIp28NaESW_b6W6D8DbeXnYSpiNt4nKK4GBuY3bQp2r9iRk7wMtLKnctfkEwxOGP3fZKwyKvFvVqkBswnr0o1oxpfI0NMavle6D3wP7VUD0l_dQhU4vYMMrJr1DgSK5owhTzuJPUdg4znGbhBTB_9g8cFFWCrRWq6_nz6lrBnlk1Zc1VueHhtFKImcpl"/>
+</div>
+</div>
+<p class="text-body-sm text-on-surface-variant italic">
+                                Our engineers are already on the case.
+                            </p>
+</div>
+</div>
+<div class="pt-xl grid grid-cols-2 gap-lg border-t border-outline-variant">
+<div>
+<p class="text-label-sm font-bold text-on-surface uppercase mb-xs">Status</p>
+<div class="flex items-center gap-xs text-body-sm text-on-surface-variant">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+                                Investigating
+                            </div>
+</div>
+<div>
+<p class="text-label-sm font-bold text-on-surface uppercase mb-xs">Uptime</p>
+<div class="text-body-sm text-on-surface-variant">
+                                99.98% (Last 30 Days)
+                            </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="w-full py-md border-t border-outline-variant bg-background">
+<div class="flex flex-row justify-between items-center px-gutter w-full max-w-container-max mx-auto">
+<p class="text-label-sm font-label-sm text-on-surface-variant">© 2024 TalentMind AI. All rights reserved.</p>
+<div class="flex gap-lg">
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary underline transition-all" href="#">Privacy Policy</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary underline transition-all" href="#">Terms of Service</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary underline transition-all" href="#">Support</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary underline transition-all" href="#">Security</a>
+</div>
+</div>
+</footer>
+</main>
+<script>
+        const retryBtn = document.getElementById('retryBtn');
+        const retryIcon = document.getElementById('retryIcon');
+
+        retryBtn.addEventListener('click', () => {
+            // Visual feedback for retry
+            retryIcon.classList.add('retry-animate');
+            retryBtn.classList.add('opacity-80', 'pointer-events-none');
+            retryBtn.innerText = 'Retrying...';
+            
+            // Artificial delay to simulate a real connection check
+            setTimeout(() => {
+                retryIcon.classList.remove('retry-animate');
+                retryBtn.classList.remove('opacity-80', 'pointer-events-none');
+                retryBtn.innerHTML = `
+                    <span id="retryIcon" class="material-symbols-outlined" data-icon="refresh">refresh</span>
+                    Retry Connection
+                `;
+                // Show a small toast notification for "still offline"
+                const toast = document.createElement('div');
+                toast.className = 'fixed bottom-lg right-lg bg-inverse-surface text-inverse-on-surface px-lg py-md rounded-lg shadow-xl flex items-center gap-md animate-in slide-in-from-right duration-300 z-50';
+                toast.innerHTML = `
+                    <span class="material-symbols-outlined text-tertiary-fixed" data-icon="cloud_off">cloud_off</span>
+                    <span class="text-label-md">System still unreachable. Please try again in a moment.</span>
+                `;
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.classList.add('animate-out', 'fade-out', 'duration-300');
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }, 1500);
+        });
+
+        // Simple subtle parallax effect for the illustration container
+        document.addEventListener('mousemove', (e) => {
+            const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
+            const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
+            const illustrations = document.querySelectorAll('.relative.z-10');
+            illustrations.forEach(el => {
+                el.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            });
+        });
+    </script>
+</body></html>

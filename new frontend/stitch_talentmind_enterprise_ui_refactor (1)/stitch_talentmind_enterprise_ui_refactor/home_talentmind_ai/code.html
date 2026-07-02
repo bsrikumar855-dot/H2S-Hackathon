@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TalentMind AI | Human-Centric Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        @keyframes subtle-float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .animate-float { animation: subtle-float 6s ease-in-out infinite; }
+        .stagger-in { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .stagger-in.visible { opacity: 1; transform: translateY(0); }
+        
+        .bento-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .bento-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary": "#ffffff",
+                      "on-error": "#ffffff",
+                      "on-secondary-container": "#5c647a",
+                      "tertiary-fixed": "#71f8e4",
+                      "surface-container": "#e9edff",
+                      "secondary-fixed": "#dae2fd",
+                      "primary": "#004ac6",
+                      "on-tertiary-fixed": "#00201c",
+                      "on-background": "#141b2b",
+                      "surface-tint": "#0053db",
+                      "surface-container-lowest": "#ffffff",
+                      "primary-container": "#2563eb",
+                      "surface-container-high": "#e1e8fd",
+                      "surface-dim": "#d3daef",
+                      "tertiary-container": "#007b6e",
+                      "secondary-fixed-dim": "#bec6e0",
+                      "on-primary-fixed-variant": "#003ea8",
+                      "tertiary": "#006056",
+                      "on-error-container": "#93000a",
+                      "surface-variant": "#dce2f7",
+                      "inverse-on-surface": "#edf0ff",
+                      "background": "#f9f9ff",
+                      "on-secondary": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "surface": "#f9f9ff",
+                      "on-tertiary-container": "#b1fff1",
+                      "error": "#ba1a1a",
+                      "on-tertiary": "#ffffff",
+                      "tertiary-fixed-dim": "#4fdbc8",
+                      "inverse-surface": "#293040",
+                      "primary-fixed-dim": "#b4c5ff",
+                      "primary-fixed": "#dbe1ff",
+                      "on-surface-variant": "#434655",
+                      "on-tertiary-fixed-variant": "#005048",
+                      "inverse-primary": "#b4c5ff",
+                      "surface-container-highest": "#dce2f7",
+                      "outline-variant": "#c3c6d7",
+                      "secondary": "#565e74",
+                      "on-secondary-fixed-variant": "#3f465c",
+                      "on-surface": "#141b2b",
+                      "surface-container-low": "#f1f3ff",
+                      "outline": "#737686",
+                      "on-secondary-fixed": "#131b2e",
+                      "on-primary-container": "#eeefff",
+                      "surface-bright": "#f9f9ff",
+                      "secondary-container": "#dae2fd",
+                      "on-primary-fixed": "#00174b"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "sidebar-width": "280px",
+                      "xl": "32px",
+                      "sm": "8px",
+                      "base": "4px",
+                      "container-max": "1440px",
+                      "xs": "4px",
+                      "md": "16px",
+                      "gutter": "24px",
+                      "lg": "24px",
+                      "2xl": "48px",
+                      "3xl": "64px"
+              },
+              "fontFamily": {
+                      "body-md": ["Inter"],
+                      "label-sm": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "display": ["Inter"],
+                      "headline-sm": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "body-sm": ["Inter"],
+                      "label-md": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "headline-md": ["Inter"]
+              },
+              "fontSize": {
+                      "body-md": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "letterSpacing": "0em", "fontWeight": "400"}],
+                      "display": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-sm": ["20px", {"lineHeight": "28px", "letterSpacing": "0em", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400"}],
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-surface text-on-surface font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-lg h-16 bg-surface border-b border-outline-variant">
+<div class="flex items-center gap-md">
+<span class="font-headline-md text-headline-md font-bold text-primary">TalentMind AI</span>
+</div>
+<nav class="hidden md:flex gap-lg">
+<a class="font-label-md text-label-md text-primary font-medium hover:text-primary transition-colors" href="#">Home</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#features">Features</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#stats">Performance</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Pricing</a>
+</nav>
+<div class="flex items-center gap-md">
+<button class="font-label-md text-label-md text-on-surface font-medium px-md py-sm hover:bg-surface-container-low rounded-lg transition-all">Sign In</button>
+<button class="bg-primary text-on-primary font-label-md text-label-md px-lg py-sm rounded-lg active:scale-95 transition-all shadow-sm">Get Started</button>
+</div>
+</header>
+<main class="pt-16">
+<!-- Hero Section -->
+<section class="relative min-h-[921px] flex flex-col items-center justify-center text-center px-lg overflow-hidden">
+<!-- Background Decoration -->
+<div class="absolute inset-0 z-0 pointer-events-none opacity-40">
+<div class="absolute top-[-10%] right-[-10%] w-[600px] h-[600px] bg-primary-container rounded-full blur-[120px] mix-blend-multiply animate-float"></div>
+<div class="absolute bottom-[-20%] left-[-10%] w-[500px] h-[500px] bg-tertiary-fixed rounded-full blur-[100px] mix-blend-multiply" style="animation: subtle-float 8s ease-in-out infinite reverse;"></div>
+</div>
+<div class="z-10 max-w-container-max mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-2xl items-center">
+<div class="text-left stagger-in" id="hero-content">
+<span class="inline-block bg-primary-container/10 text-primary font-label-sm text-label-sm px-md py-1 rounded-full mb-md">V2.4 Powered by Neural Match</span>
+<h1 class="font-display text-display text-on-surface mb-md tracking-tight leading-[1.1]">
+                        Hire Smarter. <br/>Hire Faster.
+                    </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-lg mb-xl">
+                        Find the most relevant candidates with intelligent resume analysis. Our human-centric AI identifies talent depth where others see keywords.
+                    </p>
+<div class="flex flex-wrap gap-md">
+<button class="bg-primary text-on-primary font-label-md text-label-md px-3xl py-md rounded-lg active:scale-95 transition-all shadow-lg hover:shadow-primary/20">Start Analysis</button>
+<button class="bg-surface border border-outline-variant text-on-surface font-label-md text-label-md px-3xl py-md rounded-lg hover:bg-surface-container-low active:scale-95 transition-all">Learn More</button>
+</div>
+<!-- Backend Status Card -->
+<div class="mt-2xl stagger-in" style="transition-delay: 200ms;">
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-md flex items-center gap-md max-w-xs shadow-sm">
+<div class="relative flex h-3 w-3">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-tertiary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-tertiary"></span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface font-bold">API Status</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> 
+                                    Systems Operational
+                                </span>
+</div>
+</div>
+</div>
+</div>
+<div class="relative stagger-in hidden lg:block" style="transition-delay: 400ms;">
+<div class="bg-white border border-outline-variant p-md rounded-2xl shadow-2xl overflow-hidden bento-card">
+<div class="flex justify-between items-center mb-md border-b border-outline-variant pb-md">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined text-sm">psychology</span>
+</div>
+<span class="font-label-md text-label-md font-bold">Neural Engine View</span>
+</div>
+<div class="flex gap-base">
+<div class="w-2 h-2 rounded-full bg-outline-variant"></div>
+<div class="w-2 h-2 rounded-full bg-outline-variant"></div>
+</div>
+</div>
+<div class="space-y-md">
+<div class="flex items-center gap-md p-sm bg-surface-container rounded-lg">
+<div class="w-10 h-10 rounded bg-outline-variant flex-shrink-0" data-alt="Professional portrait of a diverse software engineer with a neutral expression, crisp lighting, high-end photography style, suitable for a recruiter dashboard." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAOmAfVlN-_S11GAg9sE5eO5L_CIpudnewlQ8gS0-fMLjRqxk5Jj-_Q20-fp3q7VwJhGAHH8SqKn-69ViHtPFuDEcnuRN5kaDmbwi4NxgZ_VweyIn-DNg8ge4nQC5Axdna9rHMDOpK-TfSoUy21ZNxvzXudpBMoLD5UQ-7AkALOqTP2zbM012LJP3wi5XrAkEonNes5lhJvihvAMBhfzItO25yxbOsOWaYaNVfdVDqZo_FXHIbFHOZ2WtZfrn1psZwlRcSMcGsngwmo')"></div>
+<div class="flex-grow h-4 bg-outline-variant/30 rounded w-2/3"></div>
+<div class="h-6 w-12 bg-primary rounded-full flex items-center justify-center text-[10px] text-white">98%</div>
+</div>
+<div class="flex items-center gap-md p-sm bg-surface-container rounded-lg opacity-80">
+<div class="w-10 h-10 rounded bg-outline-variant flex-shrink-0" data-alt="Professional headshot of a business woman in executive attire, modern corporate setting, clean white background, soft ambient lighting." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBanbrGdbJSwwRqbWC0RgV4P0-IrBwku5lim5cOSZyYULiVSvAzKXUhRbCHwuX9oLFbmt6ROIctGa8a95vtxCfYOtzAIrZV8ePbhtOUiFtUR5BEsG2-SHP2e-NzNkA6a19PfkBiMveQ4-qsF_2ATqf5sQrFhB23LE28VgoGorgS15evdPPSDzI1pTxTmVgYh-beeBf-sHLUP7uNPPbpw5HHkjnKdHzikv6iJx1yQoOP6dR3voa7rRYicv8oX7DpwCHlvR7pu4p868Pa')"></div>
+<div class="flex-grow h-4 bg-outline-variant/30 rounded w-1/2"></div>
+<div class="h-6 w-12 bg-secondary rounded-full flex items-center justify-center text-[10px] text-white">82%</div>
+</div>
+<div class="grid grid-cols-2 gap-md">
+<div class="h-32 bg-primary-fixed/20 rounded-lg border border-primary-fixed p-sm">
+<div class="h-2 w-1/2 bg-primary-fixed rounded mb-sm"></div>
+<div class="flex flex-col gap-base">
+<div class="h-1 w-full bg-primary-fixed/40 rounded"></div>
+<div class="h-1 w-3/4 bg-primary-fixed/40 rounded"></div>
+</div>
+</div>
+<div class="h-32 bg-surface-container-high rounded-lg p-sm">
+<div class="h-2 w-1/2 bg-outline-variant rounded mb-sm"></div>
+<div class="flex items-center justify-center h-20">
+<span class="material-symbols-outlined text-4xl text-outline">analytics</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Stats Section -->
+<section class="py-2xl bg-surface-container-lowest" id="stats">
+<div class="max-w-container-max mx-auto px-lg">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-xl">
+<div class="stagger-in flex flex-col items-center p-xl border-outline-variant/50 border-r last:border-r-0">
+<span class="font-headline-lg text-headline-lg text-primary mb-xs">10k+</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Resumes Processed</span>
+</div>
+<div class="stagger-in flex flex-col items-center p-xl border-outline-variant/50 border-r last:border-r-0" style="transition-delay: 100ms;">
+<span class="font-headline-lg text-headline-lg text-primary mb-xs">94%</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Match Accuracy</span>
+</div>
+<div class="stagger-in flex flex-col items-center p-xl border-outline-variant/50 border-r last:border-r-0" style="transition-delay: 200ms;">
+<span class="font-headline-lg text-headline-lg text-primary mb-xs">4.2x</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Faster Screening</span>
+</div>
+<div class="stagger-in flex flex-col items-center p-xl" style="transition-delay: 300ms;">
+<span class="font-headline-lg text-headline-lg text-primary mb-xs">500+</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Enterprise Teams</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Features Grid -->
+<section class="py-3xl" id="features">
+<div class="max-w-container-max mx-auto px-lg">
+<div class="text-center mb-2xl stagger-in">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-sm">Precision Hiring Ecosystem</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl mx-auto">
+                        Elevate your talent acquisition strategy with tools designed for high-performance HR teams.
+                    </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+<!-- Feature Card 1 -->
+<div class="stagger-in bg-white border border-outline-variant p-xl rounded-2xl bento-card" style="transition-delay: 100ms;">
+<div class="w-12 h-12 bg-primary-container/10 text-primary rounded-xl flex items-center justify-center mb-xl">
+<span class="material-symbols-outlined" data-icon="search_spark">search_spark</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-md">Semantic Analysis</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                            Beyond keywords: our AI understands the nuance of experience, soft skills, and career progression paths.
+                        </p>
+</div>
+<!-- Feature Card 2 -->
+<div class="stagger-in bg-white border border-outline-variant p-xl rounded-2xl bento-card" style="transition-delay: 200ms;">
+<div class="w-12 h-12 bg-tertiary-container/10 text-tertiary rounded-xl flex items-center justify-center mb-xl">
+<span class="material-symbols-outlined" data-icon="diversity_3">diversity_3</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-md">Bias Suppression</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                            Human-centric AI trained to focus purely on merit, reducing unconscious bias throughout the screening funnel.
+                        </p>
+</div>
+<!-- Feature Card 3 -->
+<div class="stagger-in bg-white border border-outline-variant p-xl rounded-2xl bento-card" style="transition-delay: 300ms;">
+<div class="w-12 h-12 bg-secondary-container/10 text-secondary rounded-xl flex items-center justify-center mb-xl">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-md">Instant Shortlisting</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                            Process 500+ resumes in seconds and get a ranked list of the most qualified candidates automatically.
+                        </p>
+</div>
+</div>
+<!-- Featured Image / Bento Section -->
+<div class="mt-xl grid grid-cols-1 lg:grid-cols-5 gap-lg stagger-in" style="transition-delay: 400ms;">
+<div class="lg:col-span-3 bg-inverse-surface text-inverse-on-surface p-2xl rounded-2xl relative overflow-hidden flex flex-col justify-end min-h-[400px]">
+<div class="absolute inset-0 z-0 opacity-20">
+<div class="absolute inset-0 bg-gradient-to-tr from-primary to-transparent"></div>
+</div>
+<div class="relative z-10">
+<span class="font-label-sm text-label-sm uppercase tracking-widest mb-md block">Executive Suite</span>
+<h3 class="font-headline-lg text-headline-lg mb-md">Data Driven Decision Making</h3>
+<p class="font-body-md text-body-md max-w-md opacity-80">
+                                Gain visibility into your recruitment pipeline with real-time analytics and predictive hiring insights.
+                            </p>
+</div>
+</div>
+<div class="lg:col-span-2 bg-primary-container text-on-primary-container p-2xl rounded-2xl flex flex-col justify-center gap-md">
+<div class="space-y-md">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-4xl">rocket_launch</span>
+<div>
+<h4 class="font-headline-sm text-headline-sm">Scale Fast</h4>
+<p class="text-body-sm opacity-90">Handle surges in applications without compromising on quality.</p>
+</div>
+</div>
+<hr class="border-on-primary-container/20"/>
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-4xl">security</span>
+<div>
+<h4 class="font-headline-sm text-headline-sm">GDPR Secure</h4>
+<p class="text-body-sm opacity-90">Enterprise-grade encryption for sensitive candidate data.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="py-3xl">
+<div class="max-w-container-max mx-auto px-lg">
+<div class="bg-surface-container-high rounded-[2rem] p-3xl text-center relative overflow-hidden">
+<div class="relative z-10">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-md">Ready to transform your hiring?</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto mb-2xl">
+                            Join the ranks of high-growth companies using TalentMind AI to build their dream teams.
+                        </p>
+<div class="flex flex-col sm:flex-row justify-center gap-md">
+<button class="bg-primary text-on-primary font-label-md text-label-md px-3xl py-md rounded-xl shadow-lg active:scale-95 transition-all">Create Free Account</button>
+<button class="bg-white border border-outline-variant text-on-surface font-label-md text-label-md px-3xl py-md rounded-xl hover:bg-surface active:scale-95 transition-all">Schedule Demo</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-xl px-lg flex flex-col md:flex-row justify-between items-center gap-md bg-surface-container-lowest border-t border-outline-variant">
+<div class="flex flex-col gap-xs">
+<span class="font-headline-sm text-headline-sm text-primary font-bold">TalentMind AI</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">© 2024 TalentMind AI. Human-Centric Intelligence.</p>
+</div>
+<div class="flex flex-wrap gap-xl">
+<a class="font-body-sm text-body-sm text-secondary hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="font-body-sm text-body-sm text-secondary hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="font-body-sm text-body-sm text-secondary hover:text-primary transition-colors" href="#">Contact Support</a>
+</div>
+<div class="flex gap-md">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center hover:bg-primary-container/20 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-sm">public</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center hover:bg-primary-container/20 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-sm">share</span>
+</div>
+</div>
+</footer>
+<script>
+        // Entrance Animations with Intersection Observer
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // Once animated, no need to watch anymore
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.stagger-in').forEach(el => observer.observe(el));
+
+        // Mock Health Check Micro-interaction
+        async function checkHealth() {
+            const statusIndicator = document.querySelector('.animate-ping');
+            const statusText = statusIndicator?.closest('div').nextElementSibling.querySelector('.font-body-sm');
+            
+            try {
+                // Mimicking GET /health
+                // In a real app, you'd fetch() here
+                await new Promise(resolve => setTimeout(resolve, 800));
+                if (statusIndicator) {
+                    statusIndicator.classList.remove('bg-tertiary');
+                    statusIndicator.classList.add('bg-tertiary');
+                }
+            } catch (e) {
+                if (statusIndicator) {
+                    statusIndicator.classList.remove('bg-tertiary');
+                    statusIndicator.classList.add('bg-error');
+                }
+                if (statusText) statusText.innerHTML = "System Maintenance";
+            }
+        }
+        
+        checkHealth();
+
+        // Smooth scroll for anchors
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body></html>

@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Processing Status | TalentMind AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-secondary-container": "#5c647a",
+                        "tertiary-fixed": "#71f8e4",
+                        "surface-container": "#e9edff",
+                        "secondary-fixed": "#dae2fd",
+                        "primary": "#004ac6",
+                        "on-tertiary-fixed": "#00201c",
+                        "on-background": "#141b2b",
+                        "surface-tint": "#0053db",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-container": "#2563eb",
+                        "surface-container-high": "#e1e8fd",
+                        "surface-dim": "#d3daef",
+                        "tertiary-container": "#007b6e",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "tertiary": "#006056",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#dce2f7",
+                        "inverse-on-surface": "#edf0ff",
+                        "background": "#f9f9ff",
+                        "on-secondary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "surface": "#f9f9ff",
+                        "on-tertiary-container": "#b1fff1",
+                        "error": "#ba1a1a",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed-dim": "#4fdbc8",
+                        "inverse-surface": "#293040",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "primary-fixed": "#dbe1ff",
+                        "on-surface-variant": "#434655",
+                        "on-tertiary-fixed-variant": "#005048",
+                        "inverse-primary": "#b4c5ff",
+                        "surface-container-highest": "#dce2f7",
+                        "outline-variant": "#c3c6d7",
+                        "secondary": "#565e74",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "on-surface": "#141b2b",
+                        "surface-container-low": "#f1f3ff",
+                        "outline": "#737686",
+                        "on-secondary-fixed": "#131b2e",
+                        "on-primary-container": "#eeefff",
+                        "surface-bright": "#f9f9ff",
+                        "secondary-container": "#dae2fd",
+                        "on-primary-fixed": "#00174b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sidebar-width": "280px",
+                        "xl": "32px",
+                        "sm": "8px",
+                        "base": "4px",
+                        "container-max": "1440px",
+                        "xs": "4px",
+                        "md": "16px",
+                        "gutter": "24px",
+                        "lg": "24px",
+                        "2xl": "48px",
+                        "3xl": "64px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "display": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "display": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "letterSpacing": "0em", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .skeleton-shimmer {
+            background: linear-gradient(90deg, #f1f3ff 25%, #e1e8fd 50%, #f1f3ff 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        .pipeline-track {
+            position: relative;
+        }
+        .pipeline-track::before {
+            content: '';
+            position: absolute;
+            left: 19px;
+            top: 24px;
+            bottom: 24px;
+            width: 2px;
+            background: #e9edff;
+            z-index: 0;
+        }
+        .step-active .step-icon {
+            box-shadow: 0 0 0 4px #dae2fd;
+        }
+        .transition-all-300 {
+            transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen">
+<!-- Top Navigation -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-lg h-16 bg-surface border-b border-outline-variant">
+<div class="flex items-center gap-md">
+<span class="font-headline-md text-headline-md font-bold text-primary">TalentMind AI</span>
+</div>
+<div class="flex items-center gap-md">
+<div class="hidden md:flex items-center gap-xl mr-xl">
+<span class="text-on-surface-variant font-label-md cursor-pointer hover:text-primary transition-colors">Dashboard</span>
+<span class="text-primary font-label-md cursor-pointer font-bold">Pipeline</span>
+<span class="text-on-surface-variant font-label-md cursor-pointer hover:text-primary transition-colors">Candidates</span>
+<span class="text-on-surface-variant font-label-md cursor-pointer hover:text-primary transition-colors">Settings</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a recruitment executive, Alex Sterling, in a modern, brightly lit office environment. The lighting is clean and professional, with a shallow depth of field. Alex has a friendly, authoritative expression, wearing a tailored navy blazer. The overall aesthetic is minimalist corporate, using a palette of soft whites and professional blues." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC37d9N3zYdUXeoKP7ReJ9HzNXv9VY4P3AQtpWGivlWMV8GHuYNUG4QLNe2XNBYhmYaQWQhhKB1BwQP3aYlZgqFSbZjmLNEumH8cSRenu0HGla2TBWiLg_S0fdYo9XeEk4MsqthlnBZTJ-4xu2ek_9QgWG6_c1v0UQrvmI9ZnW3zZhsLxP0X6K0CLTQ9-bnzVMHlDJPQE8wQHnIzlPWZXp5tF5naXYQNa9Q9SCjGZtBIWlQzD9Ll7nOTpcuZGvaGudknZxAiwjFy6W6"/>
+</div>
+</div>
+</header>
+<!-- Side Navigation (Desktop Only) -->
+<aside class="fixed left-0 top-0 h-full w-sidebar-width z-40 hidden md:flex flex-col p-md bg-surface border-r border-outline-variant pt-20">
+<div class="flex flex-col gap-sm">
+<button class="flex items-center gap-md p-md w-full rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md">Dashboard</span>
+</button>
+<button class="flex items-center gap-md p-md w-full rounded-lg bg-secondary-container text-on-secondary-container font-bold transition-all">
+<span class="material-symbols-outlined">account_tree</span>
+<span class="font-label-md">Pipeline</span>
+</button>
+<button class="flex items-center gap-md p-md w-full rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-md">Candidates</span>
+</button>
+<button class="flex items-center gap-md p-md w-full rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined">work</span>
+<span class="font-label-md">Jobs</span>
+</button>
+<div class="mt-xl pt-xl border-t border-outline-variant">
+<button class="flex items-center gap-md p-md w-full rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md">Settings</span>
+</button>
+</div>
+</div>
+<div class="mt-auto p-md bg-surface-container-lowest rounded-xl border border-outline-variant">
+<div class="flex items-center gap-sm mb-sm">
+<span class="material-symbols-outlined text-primary text-[20px]">verified</span>
+<span class="font-label-sm text-primary uppercase tracking-wider">Premium Plan</span>
+</div>
+<p class="font-body-sm text-on-surface-variant mb-md">Human-Centric Intelligence active for 12 roles.</p>
+<button class="w-full py-sm bg-primary text-on-primary rounded-lg font-label-md hover:opacity-90 transition-opacity">Upgrade</button>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="md:ml-sidebar-width pt-20 pb-2xl px-md md:px-2xl max-w-container-max mx-auto">
+<!-- Header Section -->
+<section class="mb-xl animate-in slide-in-from-bottom-2 fade-in duration-700">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div>
+<h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-xs">Processing Candidates</h1>
+<p class="font-body-md text-on-surface-variant">Role: Senior Product Designer • <span class="font-medium text-primary">#SP-442</span></p>
+</div>
+<div class="flex items-center gap-sm text-on-surface-variant bg-surface-container-low px-md py-sm rounded-full border border-outline-variant">
+<span class="material-symbols-outlined text-[18px]">schedule</span>
+<span class="font-label-md">Est. Completion: <span class="font-bold text-on-surface" id="timer">2m 45s</span></span>
+</div>
+</div>
+</section>
+<!-- Status Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
+<!-- Left Column: Pipeline visualization -->
+<div class="lg:col-span-7 space-y-lg">
+<!-- Main Progress Card -->
+<div class="bg-surface-container-lowest p-xl rounded-xl border border-outline-variant shadow-sm transition-all-300">
+<div class="flex justify-between items-center mb-xl">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 bg-primary-container rounded-lg flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined text-[28px]">analytics</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Analysis Progress</h2>
+<p class="font-body-sm text-on-surface-variant">Real-time status of the recruitment engine</p>
+</div>
+</div>
+<span class="text-headline-sm font-bold text-primary" id="percent-val">45%</span>
+</div>
+<!-- Progress Bar -->
+<div class="w-full h-3 bg-surface-container rounded-full overflow-hidden mb-lg">
+<div class="h-full bg-primary transition-all duration-1000 ease-in-out" id="progress-bar" style="width: 45%;"></div>
+</div>
+<!-- Pipeline Steps -->
+<div class="pipeline-track space-y-xl mt-xl">
+<!-- Step 1: Complete -->
+<div class="flex items-start gap-lg relative z-10">
+<div class="step-icon w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary transition-all-300">
+<span class="material-symbols-outlined text-[20px]">check</span>
+</div>
+<div class="flex-1 pt-1">
+<div class="flex justify-between items-start">
+<h3 class="font-label-md text-on-surface font-bold">Reading Job Description</h3>
+<span class="text-tertiary font-label-sm font-bold">COMPLETED</span>
+</div>
+<p class="font-body-sm text-on-surface-variant">Extracted 14 key technical competencies and 4 soft skills.</p>
+</div>
+</div>
+<!-- Step 2: Complete -->
+<div class="flex items-start gap-lg relative z-10">
+<div class="step-icon w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary transition-all-300">
+<span class="material-symbols-outlined text-[20px]">check</span>
+</div>
+<div class="flex-1 pt-1">
+<div class="flex justify-between items-start">
+<h3 class="font-label-md text-on-surface font-bold">Parsing Resume</h3>
+<span class="text-tertiary font-label-sm font-bold">COMPLETED</span>
+</div>
+<p class="font-body-sm text-on-surface-variant">Scanned 124 documents. Successfully extracted metadata.</p>
+</div>
+</div>
+<!-- Step 3: Active -->
+<div class="flex items-start gap-lg relative z-10 step-active">
+<div class="step-icon w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container transition-all-300 animate-pulse">
+<span class="material-symbols-outlined text-[20px]">sync</span>
+</div>
+<div class="flex-1 pt-1">
+<div class="flex justify-between items-start">
+<h3 class="font-label-md text-primary font-bold">Semantic Matching</h3>
+<span class="text-primary font-label-sm font-bold animate-pulse">IN PROGRESS</span>
+</div>
+<p class="font-body-sm text-on-surface font-medium">Cross-referencing historical success patterns...</p>
+<!-- Mini Skeleton in progress step -->
+<div class="mt-sm grid grid-cols-3 gap-sm">
+<div class="h-1.5 skeleton-shimmer rounded-full"></div>
+<div class="h-1.5 skeleton-shimmer rounded-full"></div>
+<div class="h-1.5 skeleton-shimmer rounded-full opacity-50"></div>
+</div>
+</div>
+</div>
+<!-- Step 4: Pending -->
+<div class="flex items-start gap-lg relative z-10 opacity-40">
+<div class="step-icon w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant transition-all-300">
+<span class="material-symbols-outlined text-[20px]">psychology</span>
+</div>
+<div class="flex-1 pt-1">
+<h3 class="font-label-md text-on-surface">Behavior Analysis</h3>
+<p class="font-body-sm text-on-surface-variant">Waiting for preceding steps...</p>
+</div>
+</div>
+<!-- Step 5: Pending -->
+<div class="flex items-start gap-lg relative z-10 opacity-40">
+<div class="step-icon w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant transition-all-300">
+<span class="material-symbols-outlined text-[20px]">leaderboard</span>
+</div>
+<div class="flex-1 pt-1">
+<h3 class="font-label-md text-on-surface">Ranking Candidates</h3>
+<p class="font-body-sm text-on-surface-variant">Awaiting final scoring data.</p>
+</div>
+</div>
+<!-- Step 6: Pending -->
+<div class="flex items-start gap-lg relative z-10 opacity-40">
+<div class="step-icon w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant transition-all-300">
+<span class="material-symbols-outlined text-[20px]">description</span>
+</div>
+<div class="flex-1 pt-1">
+<h3 class="font-label-md text-on-surface">Generating Report</h3>
+<p class="font-body-sm text-on-surface-variant">Compiling PDF summaries and insights.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Secondary Info & Skeletons -->
+<div class="lg:col-span-5 space-y-lg">
+<!-- Quick Checklist -->
+<div class="bg-surface-container-lowest p-xl rounded-xl border border-outline-variant shadow-sm">
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-md">System Checks</h3>
+<div class="space-y-md">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-tertiary">check_circle</span>
+<span class="font-body-md text-on-surface-variant">API Connectivity: Stable</span>
+</div>
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-tertiary">check_circle</span>
+<span class="font-body-md text-on-surface-variant">Data Integrity: Verified</span>
+</div>
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-tertiary">check_circle</span>
+<span class="font-body-md text-on-surface-variant">Memory Allocation: Optimal</span>
+</div>
+<div class="flex items-center gap-md">
+<div class="w-5 h-5 border-2 border-primary rounded-full border-t-transparent animate-spin"></div>
+<span class="font-body-md text-on-surface">Processing Batch 4/12</span>
+</div>
+</div>
+</div>
+<!-- Preview Area with Skeleton Loaders -->
+<div class="bg-surface p-xl rounded-xl border border-outline-variant border-dashed">
+<div class="flex justify-between items-center mb-xl">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Live Preview</h3>
+<div class="px-sm py-xs bg-surface-container-high rounded text-on-surface-variant font-label-sm">Awaiting Data</div>
+</div>
+<!-- Candidate Preview Skeletons -->
+<div class="space-y-lg">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-full skeleton-shimmer"></div>
+<div class="flex-1 space-y-sm">
+<div class="h-4 w-1/2 skeleton-shimmer rounded"></div>
+<div class="h-3 w-3/4 skeleton-shimmer rounded opacity-60"></div>
+</div>
+<div class="w-10 h-6 skeleton-shimmer rounded-full"></div>
+</div>
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-full skeleton-shimmer"></div>
+<div class="flex-1 space-y-sm">
+<div class="h-4 w-2/3 skeleton-shimmer rounded"></div>
+<div class="h-3 w-1/2 skeleton-shimmer rounded opacity-60"></div>
+</div>
+<div class="w-10 h-6 skeleton-shimmer rounded-full"></div>
+</div>
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-full skeleton-shimmer"></div>
+<div class="flex-1 space-y-sm">
+<div class="h-4 w-1/3 skeleton-shimmer rounded"></div>
+<div class="h-3 w-5/6 skeleton-shimmer rounded opacity-60"></div>
+</div>
+<div class="w-10 h-6 skeleton-shimmer rounded-full"></div>
+</div>
+</div>
+<p class="mt-xl font-body-sm text-center text-on-surface-variant italic">Insights will appear here as semantic analysis completes.</p>
+</div>
+<!-- Action Guard -->
+<div class="bg-primary-container/10 p-md rounded-xl border border-primary/20 flex gap-md items-start">
+<span class="material-symbols-outlined text-primary">info</span>
+<p class="font-body-sm text-primary-fixed-dim">Navigating away from this page will pause the current analysis batch. Reports will be saved automatically upon completion.</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center bg-surface py-2 pb-safe md:hidden border-t border-outline-variant shadow-lg">
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center text-primary font-semibold">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="font-label-sm">Pipeline</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-sm">Candidates</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-sm">Settings</span>
+</div>
+</nav>
+<!-- Footer -->
+<footer class="w-full py-xl px-lg flex flex-col md:flex-row justify-between items-center gap-md md:ml-sidebar-width bg-surface-container-lowest border-t border-outline-variant mt-2xl">
+<div class="font-headline-sm text-headline-sm text-primary font-bold">TalentMind AI</div>
+<p class="font-body-sm text-secondary">© 2024 TalentMind AI. Human-Centric Intelligence.</p>
+<div class="flex gap-lg">
+<span class="text-secondary hover:text-primary transition-all cursor-pointer font-body-sm underline">Privacy Policy</span>
+<span class="text-secondary hover:text-primary transition-all cursor-pointer font-body-sm underline">Contact Support</span>
+</div>
+</footer>
+<script>
+        // Micro-interactions and Status Updates
+        let progress = 45;
+        let timeLeft = 165; // seconds
+
+        const progressBar = document.getElementById('progress-bar');
+        const percentVal = document.getElementById('percent-val');
+        const timer = document.getElementById('timer');
+
+        function updateProgress() {
+            if (progress < 100) {
+                // Slower increment for realism
+                const inc = Math.random() * 0.5;
+                progress = Math.min(100, progress + inc);
+                progressBar.style.width = `${progress}%`;
+                percentVal.innerText = `${Math.floor(progress)}%`;
+            }
+        }
+
+        function updateTimer() {
+            if (timeLeft > 0) {
+                timeLeft--;
+                const mins = Math.floor(timeLeft / 60);
+                const secs = timeLeft % 60;
+                timer.innerText = `${mins}m ${secs.toString().padStart(2, '0')}s`;
+            } else {
+                timer.innerText = "Completed";
+                timer.classList.add('text-tertiary');
+            }
+        }
+
+        // Simulating periodic state updates
+        setInterval(updateProgress, 1000);
+        setInterval(updateTimer, 1000);
+
+        // Simple Fade in for page elements
+        document.addEventListener('DOMContentLoaded', () => {
+            const steps = document.querySelectorAll('.pipeline-track > div');
+            steps.forEach((step, index) => {
+                step.style.opacity = '0';
+                step.style.transform = 'translateY(10px)';
+                setTimeout(() => {
+                    step.style.transition = 'all 0.5s ease-out';
+                    step.style.opacity = index > 2 ? '0.4' : '1';
+                    step.style.transform = 'translateY(0)';
+                }, 100 * index);
+            });
+        });
+    </script>
+</body></html>

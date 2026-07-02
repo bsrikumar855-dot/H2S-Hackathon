@@ -1,154 +1,187 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, type ReactNode } from "react"
 import { useNavigate } from "react-router-dom"
-import { Activity, ArrowRight, BrainCircuit, Cloud, Database, Gauge, Network, Sparkles } from "lucide-react"
+import { ArrowRight, BrainCircuit, CheckCircle2, Database, Gauge, ListOrdered, Network, Rocket, Search, ShieldCheck, Sparkles, Users } from "lucide-react"
 
 export default function LandingPage() {
   const navigate = useNavigate()
-  const [demoProgress, setDemoProgress] = useState(28)
+  const [processed, setProcessed] = useState(9840)
+  const [accuracy, setAccuracy] = useState(91)
 
   useEffect(() => {
     const timer = window.setInterval(() => {
-      setDemoProgress((value) => (value > 92 ? 18 : value + 9))
-    }, 850)
+      setProcessed((value) => (value >= 10000 ? 9840 : value + 20))
+      setAccuracy((value) => (value >= 94 ? 91 : value + 1))
+    }, 900)
     return () => window.clearInterval(timer)
   }, [])
 
   return (
     <div className="tm-page">
       <header className="tm-topbar">
-        <div className="mx-auto flex h-full max-w-[1440px] items-center justify-between px-4 md:px-12">
+        <div className="mx-auto flex h-full max-w-[1440px] items-center justify-between px-4 md:px-8">
           <button onClick={() => navigate("/")} className="flex items-center gap-3">
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-indigo-300/20 bg-indigo-400/10">
-              <Network className="h-5 w-5 text-[var(--tm-primary)]" />
+            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--tm-primary)] text-white">
+              <Network className="h-5 w-5" />
             </span>
-            <span className="tm-gradient-text text-xl font-bold tracking-tight md:text-2xl">TalentMind AI</span>
+            <span className="text-xl font-extrabold text-[var(--tm-primary)]">TalentMind AI</span>
           </button>
-          <div className="flex items-center gap-3 rounded-full border border-emerald-300/20 bg-emerald-400/10 px-4 py-2">
-            <span className="tm-status-dot" />
-            <span className="tm-label text-[10px] text-[var(--tm-tertiary)]">System Online</span>
+          <nav className="hidden items-center gap-8 md:flex">
+            <a className="text-sm font-semibold text-[var(--tm-primary)]" href="#top">Home</a>
+            <a className="text-sm font-semibold text-[var(--tm-muted)] transition hover:text-[var(--tm-primary)]" href="#features">Features</a>
+            <a className="text-sm font-semibold text-[var(--tm-muted)] transition hover:text-[var(--tm-primary)]" href="#stats">Performance</a>
+          </nav>
+          <div className="flex items-center gap-3">
+            <button onClick={() => navigate("/job")} className="hidden rounded-lg px-4 py-2 text-sm font-bold text-[var(--tm-text)] transition hover:bg-[var(--tm-surface-low)] sm:block">
+              Sign In
+            </button>
+            <button onClick={() => navigate("/job")} className="tm-primary-btn rounded-lg px-5 py-2 text-sm font-bold">
+              Get Started
+            </button>
           </div>
         </div>
       </header>
 
-      <main className="tm-topbar-offset mx-auto max-w-[1440px] px-4 pb-20 md:px-12">
-        <section className="mx-auto flex min-h-[calc(100vh-64px)] md:min-h-[calc(100vh-72px)] max-w-5xl flex-col items-center justify-center text-center py-12 md:py-16">
-          <div className="tm-card mb-7 inline-flex items-center gap-2 rounded-full px-5 py-2">
-            <Sparkles className="h-4 w-4 text-[var(--tm-primary)]" />
-            <span className="tm-label text-[var(--tm-primary)]">Next-Gen Recruitment</span>
+      <main id="top" className="tm-topbar-offset">
+        <section className="relative flex min-h-[calc(100vh-64px)] items-center overflow-hidden px-4 py-16 md:px-8">
+          <div className="pointer-events-none absolute inset-0 opacity-70">
+            <div className="tm-float absolute -right-24 -top-24 h-[560px] w-[560px] rounded-full bg-[var(--tm-primary-soft)] blur-[120px]" />
+            <div className="tm-float absolute -bottom-32 -left-24 h-[460px] w-[460px] rounded-full bg-[var(--tm-tertiary-soft)] blur-[105px]" style={{ animationDirection: "reverse" }} />
           </div>
-          <h1 className="max-w-5xl text-5xl font-extrabold leading-tight tracking-tight text-white md:text-6xl xl:text-7xl">
-            Hire Smarter with <span className="tm-gradient-text">Neural Intelligence</span>
-          </h1>
-          <p className="mt-7 max-w-2xl text-lg leading-8 text-[var(--tm-muted)]">
-            Understand candidate intent beyond keywords. Map expertise, activity signals, and fit across technical
-            dimensions with explainable AI ranking.
-          </p>
-          <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-            <button
-              onClick={() => navigate("/job")}
-              className="tm-primary-btn inline-flex items-center justify-center gap-3 rounded-xl px-8 py-4 font-bold transition hover:-translate-y-0.5"
-            >
-              Start Analysis <ArrowRight className="h-5 w-5" />
-            </button>
-            <button
-              onClick={() => navigate("/candidates")}
-              className="tm-secondary-btn inline-flex items-center justify-center rounded-xl px-8 py-4 font-bold transition"
-            >
-              View Interactive Demo
-            </button>
+
+          <div className="relative z-10 mx-auto flex w-full max-w-[1440px] flex-col items-center justify-center gap-12">
+            <div className="tm-slide-up flex flex-col items-center text-center">
+              <span className="inline-flex items-center gap-2 rounded-full bg-[var(--tm-primary-soft)] px-4 py-2 text-xs font-bold uppercase tracking-[0.05em] text-[var(--tm-primary)]">
+                <Sparkles className="h-4 w-4" /> V2.4 powered by Neural Match
+              </span>
+              <h1 className="mt-6 max-w-4xl text-5xl font-extrabold leading-tight text-[var(--tm-text)] md:text-7xl">
+                Hire Smarter. <br /> Hire Faster.
+              </h1>
+              <p className="mt-5 max-w-2xl text-lg leading-8 text-[var(--tm-muted)]">
+                Find the most relevant candidates with intelligent resume analysis. Human-centric AI identifies talent depth where others see keywords.
+              </p>
+              <div className="mt-8 flex flex-wrap justify-center gap-4">
+                <button onClick={() => navigate("/job")} className="tm-primary-btn flex items-center gap-2 rounded-lg px-8 py-4 font-bold">
+                  Start Analysis <ArrowRight className="h-5 w-5" />
+                </button>
+                <button onClick={() => navigate("/candidates")} className="tm-secondary-btn rounded-lg px-8 py-4 font-bold">
+                  Load Demo
+                </button>
+              </div>
+              <div className="tm-card mt-12 flex max-w-xs items-center gap-4 rounded-xl p-4">
+                <span className="relative flex h-3 w-3">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--tm-tertiary)] opacity-70" />
+                  <span className="relative inline-flex h-3 w-3 rounded-full bg-[var(--tm-tertiary)]" />
+                </span>
+                <div className="text-left">
+                  <p className="text-xs font-extrabold uppercase tracking-[0.05em] text-[var(--tm-text)]">API Status</p>
+                  <p className="flex items-center gap-1 text-sm text-[var(--tm-muted)]">
+                    <CheckCircle2 className="h-4 w-4 text-[var(--tm-tertiary)]" /> Systems Operational
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
-        <section className="mt-20 grid grid-cols-1 items-stretch gap-6 md:grid-cols-12">
-          <article className="tm-card flex min-h-[320px] flex-col rounded-2xl p-8 md:col-span-8 md:p-10">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-indigo-300/20 bg-indigo-400/10">
-              <BrainCircuit className="h-7 w-7 text-[var(--tm-primary)]" />
-            </div>
-            <h2 className="mt-8 text-3xl font-bold tracking-tight text-white">Intent-Based Matching</h2>
-            <p className="mt-4 max-w-2xl text-lg leading-8 text-[var(--tm-muted)]">
-              Go beyond string matching. TalentMind interprets semantic nuance in resumes to reveal what a candidate
-              actually contributes.
-            </p>
-            <div className="mt-10 grid gap-4 sm:grid-cols-2">
-              <MetricPill label="Relevance Score" value="98.2%" percent={98} />
-              <MetricPill label="Bias Reduction" value="Active" percent={100} accent />
-            </div>
-          </article>
-
-          <article className="tm-card flex min-h-[320px] flex-col rounded-2xl p-8 md:col-span-4 md:p-10">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-emerald-300/20 bg-emerald-400/10">
-              <Gauge className="h-7 w-7 text-[var(--tm-tertiary)]" />
-            </div>
-            <h2 className="mt-8 text-3xl font-bold tracking-tight text-white">Real-Time Pipeline</h2>
-            <p className="mt-4 text-lg leading-8 text-[var(--tm-muted)]">
-              Instant parsing and scoring for high-growth teams.
-            </p>
-            <div className="mt-auto rounded-2xl border border-white/10 bg-black/30 p-5">
-              <div className="mb-4 flex items-center gap-3">
-                <Cloud className="h-5 w-5 text-[var(--tm-primary)]" />
-                <span className="text-sm text-white/80">Parsing 1,200 CVs...</span>
-              </div>
-              <div className="tm-progress">
-                <span style={{ width: `${demoProgress}%` }} />
-              </div>
-            </div>
-          </article>
+        <section id="stats" className="border-y border-[var(--tm-border)] bg-white py-12">
+          <div className="mx-auto grid max-w-[1440px] grid-cols-1 gap-6 px-4 text-center md:grid-cols-4 md:px-8">
+            <Stat value={`${processed.toLocaleString()}+`} label="Resumes Processed" />
+            <Stat value={`${accuracy}%`} label="Match Accuracy" />
+            <Stat value="4.2x" label="Faster Screening" />
+            <Stat value="500+" label="Enterprise Teams" />
+          </div>
         </section>
 
-        <section className="mx-auto mt-24 max-w-4xl">
-          <div className="tm-card rounded-2xl p-8 md:p-10">
-            <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
-              <div>
-                <h2 className="flex items-center gap-3 text-2xl font-bold text-white">
-                  <Database className="h-6 w-6 text-[var(--tm-tertiary)]" /> Infrastructure Health
-                </h2>
-                <p className="mt-2 text-[var(--tm-muted)]">Real-time node performance and API availability</p>
-              </div>
-              <div className="tm-mono rounded-xl border border-white/10 bg-black/30 px-4 py-2 text-sm">
-                <span className="text-white/45">GET /health</span>
-                <span className="ml-3 font-bold text-[var(--tm-tertiary)]">200 OK</span>
+        <section id="features" className="mx-auto max-w-[1440px] px-4 py-16 md:px-8">
+          <div className="tm-slide-up mx-auto mb-12 max-w-2xl text-center">
+            <h2 className="text-3xl font-bold text-[var(--tm-text)]">Precision Hiring Ecosystem</h2>
+            <p className="mt-3 leading-7 text-[var(--tm-muted)]">Elevate your talent acquisition strategy with tools designed for high-performance HR teams.</p>
+          </div>
+          <div className="grid gap-6 md:grid-cols-3">
+            <Feature icon={<Search className="h-6 w-6" />} title="Semantic Analysis" text="Beyond keywords: understand the nuance of experience, soft skills, and career progression." />
+            <Feature icon={<ShieldCheck className="h-6 w-6" />} title="Bias Suppression" text="Focus scoring on evidence, skills, and role fit throughout the screening funnel." />
+            <Feature icon={<Rocket className="h-6 w-6" />} title="Instant Shortlisting" text="Process uploaded resumes and receive a ranked list through the existing agent pipeline." />
+          </div>
+          <div className="mt-6 flex justify-center">
+            <div className="tm-card flex w-full max-w-2xl rounded-3xl bg-[var(--tm-primary-soft)] p-10">
+              <div className="my-auto w-full space-y-8">
+                <ValueRow icon={<Rocket />} title="Scale Fast" text="Handle surges in applications without losing quality." />
+                <div className="h-px bg-[var(--tm-primary)]/20" />
+                <ValueRow icon={<Users />} title="Recruit Better" text="Keep every existing upload, ranking, and dashboard workflow intact." />
               </div>
             </div>
-            <div className="mt-8 grid gap-4 sm:grid-cols-2">
-              <StatusCard icon={<Cloud className="h-5 w-5" />} title="Edge Gateway" subtitle="Production v2.4" />
-              <StatusCard icon={<Activity className="h-5 w-5" />} title="Vector DB" subtitle="Cluster 4 active" />
-            </div>
+          </div>
+        </section>
+
+        <section id="how-it-works" className="mx-auto max-w-[1440px] px-4 py-16 md:px-8">
+          <div className="tm-slide-up mx-auto mb-12 max-w-2xl text-center">
+            <h2 className="text-3xl font-bold text-[var(--tm-text)]">Multi-Agent AI Workflow</h2>
+            <p className="mt-3 leading-7 text-[var(--tm-muted)]">Our platform leverages a sophisticated LangGraph pipeline to analyze and rank candidates objectively.</p>
+          </div>
+          <div className="grid gap-6 md:grid-cols-3">
+            <Feature icon={<Database className="h-6 w-6" />} title="1. Resume Ingestion" text="Extracts structured data, skills, and experience metrics from varied resume formats." />
+            <Feature icon={<BrainCircuit className="h-6 w-6" />} title="2. Neural Evaluation" text="Our specialized LLM agents assess technical fit and domain expertise against the job criteria." />
+            <Feature icon={<ListOrdered className="h-6 w-6" />} title="3. Objective Ranking" text="Provides a synthesized final score and clear justification for every candidate." />
           </div>
         </section>
       </main>
-    </div>
-  )
-}
 
-function MetricPill({ label, value, percent, accent = false }: { label: string; value: string; percent: number; accent?: boolean }) {
-  return (
-    <div className="rounded-xl border border-white/10 bg-black/25 p-5">
-      <div className="mb-3 flex items-center justify-between">
-        <span className="tm-label text-[var(--tm-primary)]">{label}</span>
-        <span className="tm-mono text-sm font-bold text-[var(--tm-tertiary)]">{value}</span>
-      </div>
-      <div className="tm-progress">
-        <span style={{ width: `${percent}%`, background: accent ? "var(--tm-tertiary)" : undefined }} />
-      </div>
-    </div>
-  )
-}
-
-function StatusCard({ icon, title, subtitle }: { icon: React.ReactNode; title: string; subtitle: string }) {
-  return (
-    <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-black/25 p-5">
-      <div className="flex items-center gap-4">
-        <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-emerald-300/20 bg-emerald-400/10 text-[var(--tm-tertiary)]">
-          {icon}
-        </span>
-        <div>
-          <p className="font-bold text-white">{title}</p>
-          <p className="text-sm text-[var(--tm-muted)]">{subtitle}</p>
+      <footer className="border-t border-[var(--tm-border)] bg-white py-12 text-center">
+        <div className="mx-auto flex max-w-[1440px] flex-col items-center justify-between gap-6 px-4 md:flex-row md:px-8">
+          <div className="flex items-center gap-3">
+            <Network className="h-6 w-6 text-[var(--tm-primary)]" />
+            <span className="text-lg font-extrabold text-[var(--tm-primary)]">TalentMind AI</span>
+          </div>
+          <p className="text-sm text-[var(--tm-muted)]">
+            © {new Date().getFullYear()} TalentMind AI. All rights reserved.
+          </p>
+          <div className="flex gap-6">
+            <a href="#" className="text-sm text-[var(--tm-muted)] hover:text-[var(--tm-primary)]">Privacy</a>
+            <a href="#" className="text-sm text-[var(--tm-muted)] hover:text-[var(--tm-primary)]">Terms</a>
+          </div>
         </div>
+      </footer>
+    </div>
+  )
+}
+
+function CandidatePreview({ name, score, tone }: { name: string; score: string; tone: "primary" | "secondary" }) {
+  return (
+    <div className="flex items-center gap-4 rounded-xl bg-[var(--tm-surface-low)] p-3">
+      <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-[var(--tm-surface-high)] font-bold text-[var(--tm-primary)]">{name[0]}</div>
+      <div className="h-4 flex-1 rounded bg-[var(--tm-border)]/35" />
+      <span className={`rounded-full px-3 py-1 text-xs font-bold text-white ${tone === "primary" ? "bg-[var(--tm-primary)]" : "bg-[var(--tm-secondary)]"}`}>{score}</span>
+    </div>
+  )
+}
+
+function Stat({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="tm-count-pop p-6">
+      <p className="text-3xl font-extrabold text-[var(--tm-primary)]">{value}</p>
+      <p className="mt-2 text-sm font-semibold text-[var(--tm-muted)]">{label}</p>
+    </div>
+  )
+}
+
+function Feature({ icon, title, text }: { icon: ReactNode; title: string; text: string }) {
+  return (
+    <article className="tm-card tm-slide-up rounded-2xl bg-white p-8 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.03] hover:shadow-xl">
+      <span className="mb-8 flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--tm-primary-soft)] text-[var(--tm-primary)]">{icon}</span>
+      <h3 className="text-xl font-bold text-[var(--tm-text)]">{title}</h3>
+      <p className="mt-3 text-sm leading-6 text-[var(--tm-muted)]">{text}</p>
+    </article>
+  )
+}
+
+function ValueRow({ icon, title, text }: { icon: ReactNode; title: string; text: string }) {
+  return (
+    <div className="flex gap-4">
+      <span className="text-[var(--tm-primary)] [&>svg]:h-9 [&>svg]:w-9">{icon}</span>
+      <div>
+        <h4 className="text-xl font-bold">{title}</h4>
+        <p className="mt-1 text-sm leading-6 text-[var(--tm-muted)]">{text}</p>
       </div>
-      <span className="flex items-center gap-2 text-sm font-bold text-[var(--tm-tertiary)]">
-        <span className="tm-status-dot" /> Online
-      </span>
     </div>
   )
 }

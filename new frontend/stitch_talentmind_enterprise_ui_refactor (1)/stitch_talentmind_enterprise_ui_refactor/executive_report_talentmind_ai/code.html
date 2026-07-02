@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TalentMind AI | PDF Report Preview</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "on-secondary-container": "#5c647a",
+                    "tertiary-fixed": "#71f8e4",
+                    "surface-container": "#e9edff",
+                    "secondary-fixed": "#dae2fd",
+                    "primary": "#004ac6",
+                    "on-tertiary-fixed": "#00201c",
+                    "on-background": "#141b2b",
+                    "surface-tint": "#0053db",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-container": "#2563eb",
+                    "surface-container-high": "#e1e8fd",
+                    "surface-dim": "#d3daef",
+                    "tertiary-container": "#007b6e",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "on-primary-fixed-variant": "#003ea8",
+                    "tertiary": "#006056",
+                    "on-error-container": "#93000a",
+                    "surface-variant": "#dce2f7",
+                    "inverse-on-surface": "#edf0ff",
+                    "background": "#f9f9ff",
+                    "on-secondary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "surface": "#f9f9ff",
+                    "on-tertiary-container": "#b1fff1",
+                    "error": "#ba1a1a",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-fixed-dim": "#4fdbc8",
+                    "inverse-surface": "#293040",
+                    "primary-fixed-dim": "#b4c5ff",
+                    "primary-fixed": "#dbe1ff",
+                    "on-surface-variant": "#434655",
+                    "on-tertiary-fixed-variant": "#005048",
+                    "inverse-primary": "#b4c5ff",
+                    "surface-container-highest": "#dce2f7",
+                    "outline-variant": "#c3c6d7",
+                    "secondary": "#565e74",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "on-surface": "#141b2b",
+                    "surface-container-low": "#f1f3ff",
+                    "outline": "#737686",
+                    "on-secondary-fixed": "#131b2e",
+                    "on-primary-container": "#eeefff",
+                    "surface-bright": "#f9f9ff",
+                    "secondary-container": "#dae2fd",
+                    "on-primary-fixed": "#00174b"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "sidebar-width": "280px",
+                    "xl": "32px",
+                    "sm": "8px",
+                    "base": "4px",
+                    "container-max": "1440px",
+                    "xs": "4px",
+                    "md": "16px",
+                    "gutter": "24px",
+                    "lg": "24px",
+                    "2xl": "48px",
+                    "3xl": "64px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "display": ["Inter"],
+                    "headline-sm": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "headline-md": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "letterSpacing": "0em", "fontWeight": "400"}],
+                    "display": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "letterSpacing": "0em", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .report-shadow {
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.05);
+        }
+        .fade-in-preview {
+            animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            opacity: 0;
+            transform: translateY(12px);
+        }
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .chart-bar {
+            transition: width 1s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Sidebar Navigation -->
+<aside class="fixed h-full w-sidebar-width left-0 top-0 border-r border-outline-variant bg-surface flex flex-col p-lg z-50">
+<div class="mb-3xl">
+<h1 class="text-headline-md font-headline-md font-bold text-primary">TalentMind AI</h1>
+<p class="text-label-md font-label-md text-on-surface-variant">Enterprise Recruitment</p>
+</div>
+<nav class="flex-1 space-y-base">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm bg-secondary-container text-on-secondary-container rounded-lg font-bold" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-md">Job Analysis</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="font-label-md">Resumes</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">view_kanban</span>
+<span class="font-label-md">Pipeline</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md">Settings</span>
+</a>
+</nav>
+<div class="mt-auto pt-lg border-t border-outline-variant">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-md">Help Center</span>
+</a>
+<div class="mt-md flex items-center gap-md px-md">
+<img class="w-8 h-8 rounded-full border border-outline-variant object-cover" data-alt="A professional headshot of a corporate executive in a light, high-end office setting, soft bokeh background, wearing a modern charcoal blazer, lit with warm natural light, looking confident and approachable." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6I_fMSpjqiES3o-0H7MoCGWI7AN4ftuh5zWwDJuGvCPV0cRuxaOSRJEvqHp2wCnkfnDs4BeLVhVBjVy-DlHd_CXcw9LK4R8rH6wjul7hkLF2sFKVxpZFrA5CnE-dTK6H7CObTvZIIIfQ_L8Vdfq5h3L_J0a4HtsTiZnshTHXvatmt_AeO9IAf1jVvOBtQeRCY2Aj4P4_KVgfb0-ZASc5UdgC2nQwuUbtJNwYYd-EOwYlnCHVduFFgy95A2KVDcEibsLv1TvXvO3l1"/>
+<div>
+<p class="text-label-md font-bold">Alex Sterling</p>
+<p class="text-label-sm text-on-surface-variant">Director of Talent</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Top Navigation -->
+<header class="fixed top-0 right-0 w-[calc(100%-280px)] h-16 bg-surface shadow-sm flex justify-between items-center px-gutter z-40">
+<div class="flex items-center gap-md w-1/2">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-xl pr-md py-sm bg-surface-container-low border border-outline-variant rounded-lg focus:outline-none focus:border-primary text-body-sm" placeholder="Search reports, candidates..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-lg">
+<button class="relative p-base text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="p-base text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">chat_bubble</span>
+</button>
+<button class="flex items-center gap-sm bg-primary text-on-primary px-md py-sm rounded-lg font-label-md hover:bg-primary-container transition-all active:scale-95">
+<span class="material-symbols-outlined">download</span>
+                Download Report
+            </button>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-sidebar-width pt-16 min-h-screen">
+<div class="max-w-container-max mx-auto px-gutter py-xl">
+<!-- Breadcrumbs & Header -->
+<div class="mb-xl">
+<div class="flex items-center gap-xs text-label-sm text-on-surface-variant mb-base">
+<span>Reports</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span>Q4 Engineering Recruitment</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-primary font-bold">Executive Preview</span>
+</div>
+<div class="flex justify-between items-end">
+<div>
+<h2 class="text-headline-lg font-headline-lg text-on-surface">Recruitment Batch Summary</h2>
+<p class="text-body-md text-on-surface-variant">Project: Senior Software Engineer (EMEA Region) • Ref: #RE-9042</p>
+</div>
+<div class="flex gap-md">
+<button class="flex items-center gap-sm px-md py-sm border border-outline-variant rounded-lg text-label-md hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">share</span>
+                            Share Link
+                        </button>
+<button class="flex items-center gap-sm px-md py-sm border border-outline-variant rounded-lg text-label-md hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">print</span>
+                            Print
+                        </button>
+</div>
+</div>
+</div>
+<!-- PDF Preview Container -->
+<div class="flex justify-center bg-surface-dim rounded-xl p-2xl report-shadow fade-in-preview">
+<!-- Mock "Paper" Page -->
+<div class="bg-white w-[842px] min-h-[1190px] p-3xl shadow-xl flex flex-col relative overflow-hidden">
+<!-- Decorative Header Element -->
+<div class="absolute top-0 left-0 w-full h-2 bg-primary"></div>
+<!-- Report Header -->
+<div class="flex justify-between items-start mb-3xl">
+<div>
+<h3 class="text-headline-md font-headline-md text-on-surface uppercase tracking-widest mb-xs">TalentMind AI</h3>
+<p class="text-label-sm text-on-surface-variant tracking-tighter">INTELLIGENT RECRUITMENT INSIGHTS • Q4 2024</p>
+</div>
+<div class="text-right">
+<p class="text-label-md font-bold">DATE GENERATED</p>
+<p class="text-body-sm text-on-surface-variant">October 24, 2024</p>
+</div>
+</div>
+<div class="mb-2xl">
+<h1 class="text-display font-display text-on-surface mb-md">Executive Summary</h1>
+<div class="w-xl h-1 bg-primary mb-lg"></div>
+<p class="text-body-lg text-on-surface-variant leading-relaxed italic border-l-4 border-surface-container px-lg">
+                            "This recruitment cycle for the Senior Software Engineering role has yielded an exceptionally high caliber of candidates, with a 24% increase in skill-alignment compared to previous quarters."
+                        </p>
+</div>
+<!-- KPI Section -->
+<div class="grid grid-cols-3 gap-lg mb-3xl">
+<div class="p-lg bg-surface-container-low rounded-lg">
+<p class="text-label-sm text-on-surface-variant uppercase mb-xs">Total Applicants</p>
+<p class="text-headline-lg font-headline-lg text-on-surface">1,248</p>
+<p class="text-label-sm text-tertiary font-bold mt-xs">↑ 12% vs Market Avg</p>
+</div>
+<div class="p-lg bg-surface-container-low rounded-lg">
+<p class="text-label-sm text-on-surface-variant uppercase mb-xs">Sourced Talent</p>
+<p class="text-headline-lg font-headline-lg text-on-surface">42</p>
+<p class="text-label-sm text-on-surface-variant mt-xs">Highly Qualified Tier</p>
+</div>
+<div class="p-lg bg-surface-container-low rounded-lg">
+<p class="text-label-sm text-on-surface-variant uppercase mb-xs">Avg. AI Score</p>
+<p class="text-headline-lg font-headline-lg text-primary">92.4%</p>
+<div class="w-full bg-outline-variant h-1 mt-md rounded-full overflow-hidden">
+<div class="bg-primary h-full chart-bar" style="width: 92%"></div>
+</div>
+</div>
+</div>
+<!-- Skills Distribution -->
+<div class="mb-3xl">
+<h4 class="text-headline-sm font-headline-sm text-on-surface mb-lg">Skill Distribution Analysis</h4>
+<div class="space-y-md">
+<div>
+<div class="flex justify-between text-label-md mb-xs">
+<span>Cloud Architecture (AWS/Azure)</span>
+<span class="font-bold">88%</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full chart-bar" style="width: 88%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-label-md mb-xs">
+<span>Distributed Systems</span>
+<span class="font-bold">74%</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full chart-bar" style="width: 74%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-label-md mb-xs">
+<span>Team Leadership &amp; Mentoring</span>
+<span class="font-bold">62%</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full chart-bar" style="width: 62%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Top Candidates -->
+<div>
+<h4 class="text-headline-sm font-headline-sm text-on-surface mb-lg">Top Strategic Matches</h4>
+<div class="divide-y divide-outline-variant">
+<div class="py-md flex items-center justify-between">
+<div class="flex items-center gap-md">
+<img class="w-12 h-12 rounded-full object-cover" data-alt="Portrait of a senior male engineer, professional lighting, minimal grey background, wearing a smart casual sweater, warm expression, high resolution photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2DxzCl_cMdrNvf6d2l3Q4mqmkgQx_tux6_gdlcA5pf409KwpWULF2Oyqy7IvW53dlPVsBPCfEHkc_95ewXo69_nKCT70o8iFpRsvuJpKKa3obzngS0S-73ovT_yUAbbAxWZGMIPy8AGRnxX5xzEqCkz3NJR2A6Sl0VbmXdABnt1jNHSDwbAL5HMknjcMEukjCsIKN0cRrKA6SzUDYrqVfcwCd8wyKw_lP3h-oiJfv8FQtNRbmpKUrr2q_qzrKIxWtkrouhEj2JQbF"/>
+<div>
+<p class="text-body-lg font-bold">Marcus Thorne</p>
+<p class="text-body-sm text-on-surface-variant">Ex-Google • 12 Yrs Exp</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-label-sm font-bold text-primary">98/100</p>
+<p class="text-label-sm text-on-surface-variant">AI Match Score</p>
+</div>
+</div>
+<div class="py-md flex items-center justify-between">
+<div class="flex items-center gap-md">
+<img class="w-12 h-12 rounded-full object-cover" data-alt="Portrait of a professional woman in engineering leadership, sharp office environment, confident pose, modern minimal aesthetic, soft key lighting, neutral tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAz38pecv909llI70FLQZnEeU2gv5tnxgXb2IeCHj6pTSr7hSdYV4C5Pz2rL6iMr4D8nGA-empoJLK3R90nhRmhV-sOvrAl_UBH5XVyEPx2QrGJeia-iwVNa80zjMMtp0ExTWdji5y7Y_rdP5_xJ3hxSvXzKvxFlqRopdREEaux0QUwU5VVljx-GAW3cmGpaF02f42leywgomyWtRb3gx5LHAMXrjrPrnLuwmDG0RLioMlAz_dr9w4BieMp-DY-h3UXD-klNkozz3K-"/>
+<div>
+<p class="text-body-lg font-bold">Elena Rodriguez</p>
+<p class="text-body-sm text-on-surface-variant">Scale-up CTO • 9 Yrs Exp</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-label-sm font-bold text-primary">95/100</p>
+<p class="text-label-sm text-on-surface-variant">AI Match Score</p>
+</div>
+</div>
+<div class="py-md flex items-center justify-between">
+<div class="flex items-center gap-md">
+<img class="w-12 h-12 rounded-full object-cover" data-alt="Close up professional headshot of a developer, diverse background, bright natural lighting, focus on eyes, wearing a simple blue shirt, tech corporate style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuATF-VC1uleqXlCDesiONhnocBQm70qK1MckIz96RR5fI8onYI7wEPOzkk05xIuxMPNPFZPonleP5SNlTHumPawGkD7vpOMujwxqalndU1qhNOt3mPNX8QHbPENrzrNJek7c9XX_sugjFZ7o5uWzuPDQwXn1iHaqEpRCJmnlSCWi-8Ya0k6kSpbTCdWPKcdSv_-9zR-OVmWNbII0E9McNW0bfWnUbcu55uoE0xAulUXivN0rcNTzly_Ve4qbdMP3jCM2C3_bsDdIpID"/>
+<div>
+<p class="text-body-lg font-bold">David Chen</p>
+<p class="text-body-sm text-on-surface-variant">Systems Specialist • 15 Yrs Exp</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-label-sm font-bold text-primary">92/100</p>
+<p class="text-label-sm text-on-surface-variant">AI Match Score</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Page Info -->
+<div class="mt-auto pt-2xl flex justify-between items-center text-label-sm text-on-surface-variant border-t border-outline-variant">
+<span>CONFIDENTIAL - FOR INTERNAL USE ONLY</span>
+<span>Page 01 of 14</span>
+</div>
+</div>
+</div>
+<!-- Page Selection / Thumbnails -->
+<div class="mt-xl flex justify-center gap-md">
+<div class="w-24 h-32 bg-white border-2 border-primary rounded-sm shadow-sm cursor-pointer p-sm flex flex-col gap-xs">
+<div class="w-full h-1 bg-surface-container"></div>
+<div class="w-2/3 h-1 bg-surface-container"></div>
+<div class="flex-1 bg-surface-container-low rounded-xs"></div>
+</div>
+<div class="w-24 h-32 bg-white/50 border border-outline-variant rounded-sm shadow-sm cursor-pointer p-sm opacity-60 hover:opacity-100 transition-opacity flex flex-col gap-xs">
+<div class="flex-1 bg-surface-container-low rounded-xs"></div>
+<div class="w-full h-1 bg-surface-container"></div>
+</div>
+<div class="w-24 h-32 bg-white/50 border border-outline-variant rounded-sm shadow-sm cursor-pointer p-sm opacity-60 hover:opacity-100 transition-opacity flex flex-col gap-xs">
+<div class="w-3/4 h-2 bg-surface-container"></div>
+<div class="flex-1 bg-surface-container-low rounded-xs"></div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="ml-sidebar-width py-md border-t border-outline-variant bg-background">
+<div class="flex flex-row justify-between items-center px-gutter w-full max-w-container-max mx-auto">
+<span class="text-label-sm text-on-surface-variant">© 2024 TalentMind AI. All rights reserved.</span>
+<div class="flex gap-lg">
+<a class="text-label-sm text-on-surface-variant hover:text-primary underline transition-all duration-200" href="#">Privacy Policy</a>
+<a class="text-label-sm text-on-surface-variant hover:text-primary underline transition-all duration-200" href="#">Terms of Service</a>
+<a class="text-label-sm text-on-surface-variant hover:text-primary underline transition-all duration-200" href="#">Support</a>
+<a class="text-label-sm text-on-surface-variant hover:text-primary underline transition-all duration-200" href="#">Security</a>
+</div>
+</div>
+</footer>
+<script>
+        // Simple micro-interaction for the report page selection
+        document.querySelectorAll('.cursor-pointer').forEach(thumb => {
+            thumb.addEventListener('click', function() {
+                document.querySelectorAll('.cursor-pointer').forEach(t => {
+                    t.classList.remove('border-primary', 'opacity-100');
+                    t.classList.add('border-outline-variant', 'opacity-60');
+                });
+                this.classList.add('border-primary', 'opacity-100');
+                this.classList.remove('border-outline-variant', 'opacity-60');
+            });
+        });
+    </script>
+</body></html>

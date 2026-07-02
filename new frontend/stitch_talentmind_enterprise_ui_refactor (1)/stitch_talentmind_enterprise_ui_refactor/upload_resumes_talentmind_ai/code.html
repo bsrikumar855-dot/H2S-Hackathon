@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TalentMind AI - Resume Queue</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(229, 231, 235, 0.5);
+        }
+        .drag-active {
+            border-color: #004ac6 !important;
+            background-color: #f1f3ff !important;
+            transform: scale(1.01);
+        }
+        @keyframes pulse-subtle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .shimmer {
+            background: linear-gradient(90deg, #f1f3ff 0%, #e1e8fd 50%, #f1f3ff 100%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-secondary-container": "#5c647a",
+                        "tertiary-fixed": "#71f8e4",
+                        "surface-container": "#e9edff",
+                        "secondary-fixed": "#dae2fd",
+                        "primary": "#004ac6",
+                        "on-tertiary-fixed": "#00201c",
+                        "on-background": "#141b2b",
+                        "surface-tint": "#0053db",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-container": "#2563eb",
+                        "surface-container-high": "#e1e8fd",
+                        "surface-dim": "#d3daef",
+                        "tertiary-container": "#007b6e",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "tertiary": "#006056",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#dce2f7",
+                        "inverse-on-surface": "#edf0ff",
+                        "background": "#f9f9ff",
+                        "on-secondary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "surface": "#f9f9ff",
+                        "on-tertiary-container": "#b1fff1",
+                        "error": "#ba1a1a",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed-dim": "#4fdbc8",
+                        "inverse-surface": "#293040",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "primary-fixed": "#dbe1ff",
+                        "on-surface-variant": "#434655",
+                        "on-tertiary-fixed-variant": "#005048",
+                        "inverse-primary": "#b4c5ff",
+                        "surface-container-highest": "#dce2f7",
+                        "outline-variant": "#c3c6d7",
+                        "secondary": "#565e74",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "on-surface": "#141b2b",
+                        "surface-container-low": "#f1f3ff",
+                        "outline": "#737686",
+                        "on-secondary-fixed": "#131b2e",
+                        "on-primary-container": "#eeefff",
+                        "surface-bright": "#f9f9ff",
+                        "secondary-container": "#dae2fd",
+                        "on-primary-fixed": "#00174b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sidebar-width": "280px",
+                        "xl": "32px",
+                        "sm": "8px",
+                        "base": "4px",
+                        "container-max": "1440px",
+                        "xs": "4px",
+                        "md": "16px",
+                        "gutter": "24px",
+                        "lg": "24px",
+                        "2xl": "48px",
+                        "3xl": "64px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "display": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "display": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "letterSpacing": "0em", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen">
+<!-- Top Navigation Anchor -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-lg h-16 bg-surface border-b border-outline-variant">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary" data-icon="menu">menu</span>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">TalentMind AI</h1>
+</div>
+<div class="flex items-center gap-md">
+<button class="p-base rounded-full hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="search">search</span>
+</button>
+<button class="p-base rounded-full hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="notifications">notifications</span>
+</button>
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional high-resolution studio portrait of a corporate executive in a light gray blazer, set against a soft blurred office background with warm afternoon lighting. The image conveys leadership, approachability, and professional intelligence, fitting for a premium recruitment AI platform's user profile avatar." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUbsSxTtw-FD2Xj75VGbx-d2SpVJXBnDxWKdWo_tovyHjJJOXkTPAFeHo3KrXCoQvnbDFDy1VNKrvwQtZxCugiUd1DlAMNA3ozOY44D1wK584NsIRmS-dA8OtfPIvMmbPFI6JTU3GR4p1yrKJ07T0r9J3RAd0bmHRXgWeRarBQEedw0kzOBPse6nQu-HkZzb-gj6WNWuway6Tv28rw_kLnimIbk4KzdyQb4N1GcvoilEnZ8hN4fM0VhLTbvEjX0wVMmDsG62a0ahMd"/>
+</div>
+</div>
+</header>
+<!-- Side Navigation Shell -->
+<aside class="fixed left-0 top-0 h-full w-sidebar-width z-40 hidden md:flex flex-col p-md bg-surface border-r border-outline-variant pt-20">
+<div class="mb-xl px-sm">
+<div class="flex items-center gap-sm mb-base">
+<div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary text-[18px]" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<span class="font-label-md text-label-md text-primary font-bold">Premium Recruiter</span>
+</div>
+<p class="font-headline-sm text-headline-sm font-bold text-on-surface">Alex Sterling</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Lead Recruiter</p>
+</div>
+<nav class="flex flex-col gap-base">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-lg group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-lg group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="work">work</span>
+<span class="font-label-md text-label-md">Jobs</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm bg-secondary-container text-on-secondary-container font-bold rounded-lg transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="upload_file">upload_file</span>
+<span class="font-label-md text-label-md">Resumes</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-lg group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="account_tree">account_tree</span>
+<span class="font-label-md text-label-md">Pipeline</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-lg group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</nav>
+<div class="mt-auto p-md bg-surface-container-low rounded-xl">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-sm">AI CAPACITY</p>
+<div class="h-1 w-full bg-outline-variant rounded-full overflow-hidden mb-base">
+<div class="h-full bg-primary-container w-3/4"></div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface">75% of Monthly Tokens</p>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:ml-sidebar-width pt-16 min-h-screen flex flex-col">
+<div class="p-lg md:p-3xl max-w-container-max mx-auto w-full flex-grow">
+<!-- Page Header -->
+<div class="mb-2xl flex flex-col md:flex-row md:items-end justify-between gap-lg">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-xs">Resume Upload</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Batch process and rank candidates using autonomous intelligence.</p>
+</div>
+<button class="px-xl py-md bg-outline-variant text-on-surface-variant font-bold rounded-xl transition-all duration-300 flex items-center gap-sm cursor-not-allowed" disabled="" id="analyzeBtn">
+<span class="material-symbols-outlined" data-icon="bolt">bolt</span>
+                    Analyze Resumes
+                </button>
+</div>
+<!-- Bento Layout Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-xl items-start">
+<!-- Upload Zone (Bento Primary) -->
+<div class="lg:col-span-12 xl:col-span-5 flex flex-col gap-xl">
+<div class="relative group bg-surface border-2 border-dashed border-outline-variant rounded-3xl p-3xl flex flex-col items-center justify-center text-center transition-all duration-300 hover:border-primary-container hover:bg-surface-container-low cursor-pointer min-h-[400px]" id="dropZone">
+<input class="absolute inset-0 opacity-0 cursor-pointer" id="fileInput" multiple="" type="file"/>
+<!-- Empty State Illustration -->
+<div class="mb-xl relative">
+<div class="absolute inset-0 bg-primary-container/10 rounded-full blur-2xl animate-pulse"></div>
+<div class="relative w-32 h-32 bg-surface-container-high rounded-3xl flex items-center justify-center border border-outline-variant shadow-sm rotate-3 group-hover:rotate-0 transition-transform">
+<span class="material-symbols-outlined text-primary text-5xl" data-icon="cloud_upload">cloud_upload</span>
+</div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-sm">Drag and drop resumes</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xs mx-auto">Support for PDF, DOCX, and TXT files. Max 50 files per batch.</p>
+<div class="mt-2xl flex items-center gap-md">
+<span class="h-px w-8 bg-outline-variant"></span>
+<span class="font-label-md text-label-md text-on-surface-variant">OR</span>
+<span class="h-px w-8 bg-outline-variant"></span>
+</div>
+<button class="mt-lg px-xl py-sm bg-primary text-on-primary font-bold rounded-lg shadow-sm hover:bg-primary-container active:scale-95 transition-all">
+                            Browse Files
+                        </button>
+</div>
+<!-- Usage Stats Card -->
+<div class="bg-surface border border-outline-variant rounded-2xl p-lg flex items-center justify-between">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 bg-tertiary-fixed rounded-xl flex items-center justify-center">
+<span class="material-symbols-outlined text-on-tertiary-fixed" data-icon="verified">verified</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Quality Score</p>
+<p class="font-headline-sm text-headline-sm text-on-surface font-bold">98.4% Accuracy</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-body-sm text-body-sm text-on-surface-variant">OCR Engine v4.2</p>
+<p class="font-label-md text-label-md text-tertiary font-bold">Active</p>
+</div>
+</div>
+</div>
+<!-- Queue Manager (Bento Secondary) -->
+<div class="lg:col-span-12 xl:col-span-7">
+<div class="bg-surface border border-outline-variant rounded-3xl overflow-hidden shadow-sm flex flex-col h-full min-h-[540px]">
+<div class="px-xl py-lg border-b border-outline-variant flex items-center justify-between bg-surface-container-lowest">
+<div class="flex items-center gap-md">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Queue Manager</h3>
+<span class="px-base py-[2px] bg-secondary-container text-on-secondary-container text-[11px] font-bold rounded-full" id="queueCount">0 FILES</span>
+</div>
+<button class="text-error font-label-md text-label-md hover:underline transition-all" id="clearAll">Clear All</button>
+</div>
+<!-- Queue List -->
+<div class="flex-grow overflow-y-auto p-md space-y-md" id="queueList">
+<!-- Empty State for List -->
+<div class="h-full flex flex-col items-center justify-center py-3xl text-on-surface-variant/40" id="emptyListState">
+<span class="material-symbols-outlined text-6xl mb-md" data-icon="inventory_2">inventory_2</span>
+<p class="font-body-md text-body-md">Your upload queue is empty</p>
+</div>
+</div>
+<!-- Summary Footer -->
+<div class="p-xl bg-surface-container-low border-t border-outline-variant mt-auto">
+<div class="flex items-center justify-between mb-md">
+<span class="font-body-md text-body-md text-on-surface-variant">Total Size</span>
+<span class="font-label-md text-label-md text-on-surface" id="totalSize">0.0 MB</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-body-md text-body-md text-on-surface-variant">Processing Time (Est.)</span>
+<span class="font-label-md text-label-md text-on-surface" id="estTime">-- min</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Shell -->
+<footer class="w-full py-xl px-lg flex flex-col md:flex-row justify-between items-center gap-md bg-surface-container-lowest border-t border-outline-variant mt-3xl">
+<p class="font-body-sm text-body-sm text-secondary">© 2024 TalentMind AI. Human-Centric Intelligence.</p>
+<div class="flex gap-lg">
+<a class="font-body-sm text-body-sm text-secondary hover:text-primary underline transition-opacity" href="#">Privacy Policy</a>
+<a class="font-body-sm text-body-sm text-secondary hover:text-primary underline transition-opacity" href="#">Terms of Service</a>
+<a class="font-body-sm text-body-sm text-secondary hover:text-primary underline transition-opacity" href="#">Contact Support</a>
+</div>
+</footer>
+</main>
+<!-- Bottom Nav for Mobile -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center bg-surface py-2 pb-safe md:hidden border-t border-outline-variant shadow-lg">
+<a class="flex flex-col items-center justify-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-sm text-label-sm">Pipeline</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary font-semibold" href="#">
+<span class="material-symbols-outlined" data-icon="upload_file" data-weight="fill" style="font-variation-settings: 'FILL' 1;">upload_file</span>
+<span class="font-label-sm text-label-sm">Resumes</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-sm text-label-sm">Settings</span>
+</a>
+</nav>
+<script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const queueList = document.getElementById('queueList');
+        const emptyListState = document.getElementById('emptyListState');
+        const queueCountLabel = document.getElementById('queueCount');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        const clearAllBtn = document.getElementById('clearAll');
+        const totalSizeLabel = document.getElementById('totalSize');
+        const estTimeLabel = document.getElementById('estTime');
+
+        let files = [];
+
+        // Drag and drop handlers
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                dropZone.classList.add('drag-active');
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('drag-active');
+            }, false);
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            const newFiles = Array.from(dt.files);
+            handleFiles(newFiles);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const newFiles = Array.from(e.target.files);
+            handleFiles(newFiles);
+        });
+
+        function handleFiles(newFiles) {
+            newFiles.forEach(file => {
+                const fileObj = {
+                    id: Math.random().toString(36).substr(2, 9),
+                    name: file.name,
+                    size: (file.size / 1024 / 1024).toFixed(2),
+                    type: file.name.split('.').pop().toUpperCase(),
+                    status: 'Ready',
+                    progress: 100
+                };
+                files.push(fileObj);
+            });
+            updateUI();
+        }
+
+        function updateUI() {
+            if (files.length > 0) {
+                emptyListState.classList.add('hidden');
+                analyzeBtn.disabled = false;
+                analyzeBtn.classList.remove('bg-outline-variant', 'text-on-surface-variant', 'cursor-not-allowed');
+                analyzeBtn.classList.add('bg-primary-container', 'text-on-primary-container', 'hover:shadow-lg', 'active:scale-95');
+                
+                queueList.innerHTML = '';
+                files.forEach(file => {
+                    const fileRow = document.createElement('div');
+                    fileRow.className = 'group flex items-center gap-md p-md bg-white border border-outline-variant rounded-2xl hover:shadow-md transition-all duration-300 transform animate-slide-up';
+                    fileRow.innerHTML = `
+                        <div class="w-10 h-10 bg-surface-container-high rounded-xl flex items-center justify-center flex-shrink-0">
+                            <span class="material-symbols-outlined text-primary" data-icon="description">description</span>
+                        </div>
+                        <div class="flex-grow overflow-hidden">
+                            <div class="flex items-center justify-between mb-xs">
+                                <h4 class="font-label-md text-label-md text-on-surface truncate pr-md">${file.name}</h4>
+                                <span class="font-label-sm text-label-sm text-primary font-bold">${file.status}</span>
+                            </div>
+                            <div class="flex items-center gap-md">
+                                <span class="font-body-sm text-body-sm text-on-surface-variant">${file.type} • ${file.size} MB</span>
+                                <div class="h-1 flex-grow bg-outline-variant rounded-full overflow-hidden">
+                                    <div class="h-full bg-primary-container transition-all duration-1000" style="width: ${file.progress}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="removeFile('${file.id}')" class="p-sm text-on-surface-variant hover:text-error hover:bg-error-container rounded-lg transition-all opacity-0 group-hover:opacity-100">
+                            <span class="material-symbols-outlined text-[20px]" data-icon="delete">delete</span>
+                        </button>
+                    `;
+                    queueList.appendChild(fileRow);
+                });
+            } else {
+                emptyListState.classList.remove('hidden');
+                queueList.innerHTML = '';
+                queueList.appendChild(emptyListState);
+                analyzeBtn.disabled = true;
+                analyzeBtn.classList.add('bg-outline-variant', 'text-on-surface-variant', 'cursor-not-allowed');
+                analyzeBtn.classList.remove('bg-primary-container', 'text-on-primary-container', 'hover:shadow-lg', 'active:scale-95');
+            }
+
+            queueCountLabel.textContent = `${files.length} FILES`;
+            const totalSize = files.reduce((acc, f) => acc + parseFloat(f.size), 0).toFixed(2);
+            totalSizeLabel.textContent = `${totalSize} MB`;
+            estTimeLabel.textContent = files.length > 0 ? `${Math.ceil(files.length * 0.4)} min` : '-- min';
+        }
+
+        window.removeFile = function(id) {
+            files = files.filter(f => f.id !== id);
+            updateUI();
+        };
+
+        clearAllBtn.addEventListener('click', () => {
+            files = [];
+            updateUI();
+        });
+
+        // Micro-interaction for Analyze Button
+        analyzeBtn.addEventListener('click', () => {
+            if (files.length === 0) return;
+            analyzeBtn.innerHTML = `
+                <span class="material-symbols-outlined animate-spin" data-icon="progress_activity">progress_activity</span>
+                Processing...
+            `;
+            setTimeout(() => {
+                alert(`Starting AI analysis for ${files.length} resumes.`);
+                analyzeBtn.innerHTML = `
+                    <span class="material-symbols-outlined" data-icon="bolt">bolt</span>
+                    Analyze Resumes
+                `;
+            }, 2000);
+        });
+    </script>
+</body></html>
