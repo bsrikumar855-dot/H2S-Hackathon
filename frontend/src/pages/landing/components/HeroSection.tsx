@@ -1,149 +1,168 @@
-import { useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom"
-import { ArrowRight, Network } from "lucide-react"
+import { motion } from "framer-motion"
+import { CheckCircle2, Brain, BarChart2 } from "lucide-react"
+
+const fadeUp: any = {
+  hidden: { opacity: 0, y: 24 },
+  visible: (delay = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, delay, ease: [0.4, 0, 0.2, 1] },
+  }),
+}
 
 export default function HeroSection() {
   const navigate = useNavigate()
-  const videoRef = useRef<HTMLVideoElement>(null)
-
-  useEffect(() => {
-    const video = videoRef.current
-    if (!video) return
-
-    let animationFrameId: number
-
-    const handleCanPlay = () => {
-      video.play().catch(() => {})
-      let start: number
-      const duration = 500
-      
-      const fadeIn = (timestamp: number) => {
-        if (!start) start = timestamp
-        const progress = Math.min((timestamp - start) / duration, 1)
-        video.style.opacity = progress.toString()
-        if (progress < 1) {
-          animationFrameId = requestAnimationFrame(fadeIn)
-        }
-      }
-      animationFrameId = requestAnimationFrame(fadeIn)
-    }
-
-    const handleTimeUpdate = () => {
-      if (video.duration - video.currentTime <= 0.55) {
-        let start: number
-        const duration = 500
-        const initialOpacity = parseFloat(video.style.opacity || "1")
-
-        const fadeOut = (timestamp: number) => {
-          if (!start) start = timestamp
-          const progress = Math.min((timestamp - start) / duration, 1)
-          video.style.opacity = (initialOpacity * (1 - progress)).toString()
-          if (progress < 1) {
-            animationFrameId = requestAnimationFrame(fadeOut)
-          }
-        }
-        requestAnimationFrame(fadeOut)
-      }
-    }
-
-    const handleEnded = () => {
-      video.style.opacity = "0"
-      setTimeout(() => {
-        video.currentTime = 0
-        video.play().catch(() => {})
-        
-        let start: number
-        const duration = 500
-        const fadeIn = (timestamp: number) => {
-          if (!start) start = timestamp
-          const progress = Math.min((timestamp - start) / duration, 1)
-          video.style.opacity = progress.toString()
-          if (progress < 1) {
-            animationFrameId = requestAnimationFrame(fadeIn)
-          }
-        }
-        animationFrameId = requestAnimationFrame(fadeIn)
-      }, 100)
-    }
-
-    video.addEventListener("canplay", handleCanPlay)
-    video.addEventListener("timeupdate", handleTimeUpdate)
-    video.addEventListener("ended", handleEnded)
-
-    return () => {
-      cancelAnimationFrame(animationFrameId)
-      video.removeEventListener("canplay", handleCanPlay)
-      video.removeEventListener("timeupdate", handleTimeUpdate)
-      video.removeEventListener("ended", handleEnded)
-    }
-  }, [])
 
   return (
-    <section className="relative flex min-h-screen flex-col overflow-hidden bg-black">
-      <video
-        ref={videoRef}
-        className="absolute inset-0 h-full w-full object-cover object-bottom"
-        style={{ opacity: 0 }}
-        muted
-        autoPlay
-        playsInline
-        preload="auto"
-        src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_074625_a81f018a-956b-43fb-9aee-4d1508e30e6a.mp4"
-      />
-
-      <div className="relative z-20 px-6 py-6">
-        <nav className="liquid-glass mx-auto flex max-w-5xl items-center justify-between rounded-full px-6 py-3">
-          <div className="flex items-center gap-3">
-            <Network className="h-6 w-6 text-white" />
-            <span className="text-lg font-semibold text-white">TalentMind AI</span>
-            <div className="ml-8 hidden items-center gap-8 md:flex">
-              <a href="#features" className="text-sm font-medium text-white/80 transition-colors hover:text-white">Features</a>
-              <a href="#about" className="text-sm font-medium text-white/80 transition-colors hover:text-white">About</a>
-            </div>
-          </div>
-          <div className="flex items-center gap-4">
-            <button onClick={() => navigate("/dashboard")} className="text-sm font-medium text-white transition-opacity hover:opacity-80">Dashboard</button>
-            <button onClick={() => navigate("/dashboard")} className="liquid-glass rounded-full px-6 py-2 text-sm font-medium text-white transition-transform hover:scale-105 active:scale-95">Login</button>
-          </div>
-        </nav>
+    <section className="relative min-h-[920px] flex flex-col items-center justify-center text-center px-lg overflow-hidden">
+      {/* Floating background blobs */}
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
+        <div className="absolute top-[-10%] right-[-10%] w-[600px] h-[600px] bg-primary-container rounded-full blur-[120px] mix-blend-multiply animate-float" />
+        <div className="absolute bottom-[-20%] left-[-10%] w-[500px] h-[500px] bg-tertiary-fixed rounded-full blur-[100px] mix-blend-multiply animate-float-reverse" />
       </div>
 
-      <div className="relative z-10 flex flex-1 flex-col items-center justify-center px-6 py-12 text-center -translate-y-[5%]">
-        <div className="mb-8 flex justify-center">
-          <span className="liquid-glass flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-bold text-white/90">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-75"></span>
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-blue-500"></span>
-            </span>
-            Agentic Pipeline v2.0 Live
-          </span>
+      <div className="z-10 max-w-[1440px] mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-2xl items-center">
+        {/* Left column: Hero Content */}
+        <div className="text-left flex flex-col items-start">
+          <motion.span
+            custom={0}
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            className="inline-block bg-primary-container/10 text-primary text-label-sm px-md py-1 rounded-full mb-md"
+          >
+            V2.4 Powered by Neural Match
+          </motion.span>
+
+          <motion.h1
+            custom={0.1}
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            className="text-display font-display text-on-surface mb-md tracking-tight leading-[1.1]"
+          >
+            Hire Smarter. <br /> Hire Faster.
+          </motion.h1>
+
+          <motion.p
+            custom={0.2}
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            className="text-body-lg text-on-surface-variant max-w-lg mb-xl text-left"
+          >
+            Find the most relevant candidates with intelligent resume analysis. Our human-centric AI
+            identifies talent depth where others see keywords.
+          </motion.p>
+
+          <motion.div
+            custom={0.3}
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            className="flex flex-wrap gap-md justify-start"
+          >
+            <motion.button
+              whileHover={{ scale: 1.02, boxShadow: "0 8px 32px rgba(0,74,198,0.25)" }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => navigate("/job")}
+              className="bg-primary text-on-primary text-label-md px-3xl py-md rounded-lg shadow-lg transition-all"
+            >
+              Start Analysis
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.97 }}
+              className="bg-surface border border-outline-variant text-on-surface text-label-md px-3xl py-md rounded-lg hover:bg-surface-container-low transition-all"
+            >
+              Learn More
+            </motion.button>
+          </motion.div>
+
+          {/* API Status Card */}
+          <motion.div
+            custom={0.5}
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            className="mt-2xl"
+          >
+            <div className="bg-surface-container-low border border-outline-variant rounded-xl p-md flex items-center gap-md max-w-xs shadow-sm">
+              <div className="relative flex h-3 w-3 flex-shrink-0">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-tertiary opacity-75" />
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-tertiary" />
+              </div>
+              <div className="flex flex-col text-left">
+                <span className="text-label-sm font-bold text-on-surface">API Status</span>
+                <span className="text-body-sm text-on-surface-variant flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3" />
+                  Systems Operational
+                </span>
+              </div>
+            </div>
+          </motion.div>
         </div>
 
-        <h1 className="whitespace-normal md:whitespace-nowrap font-serif text-5xl tracking-tight text-white md:text-7xl drop-shadow-2xl">
-          The Intelligent Way to <em className="italic">Hire</em>.
-        </h1>
-        
-        <p className="mt-6 max-w-2xl px-4 text-base leading-relaxed text-white/80 md:text-lg drop-shadow-md">
-          Automate screening, slash bias, and let specialized AI agents interview, rank, and shortlist your ideal candidates.
-        </p>
-
-        <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
-          <button onClick={() => navigate("/job")} className="liquid-glass flex items-center justify-center gap-2 rounded-2xl px-8 py-4 text-base font-bold text-white transition-transform hover:scale-105 active:scale-95 shadow-[0_0_40px_rgba(255,255,255,0.1)]">
-            Start Hiring <ArrowRight className="h-5 w-5" />
-          </button>
-          <button className="flex items-center justify-center gap-2 rounded-2xl border border-white/20 bg-black/40 px-8 py-4 text-base font-bold text-white backdrop-blur-md transition-colors hover:bg-white/10 shadow-xl">
-            Watch Demo
-          </button>
-        </div>
-
-        <div className="mt-16 border-t border-white/10 pt-10">
-          <p className="text-sm font-bold tracking-widest text-white/40 uppercase drop-shadow">TRUSTED BY INNOVATIVE ENGINEERING TEAMS</p>
-          <div className="mt-8 flex flex-wrap justify-center gap-8 text-white/50 md:gap-16">
-            <div className="flex items-center gap-2 text-xl font-bold tracking-tighter drop-shadow-sm">StartupX</div>
-            <div className="flex items-center gap-2 text-xl font-bold tracking-tighter drop-shadow-sm">ScaleCorp</div>
-            <div className="flex items-center gap-2 text-xl font-bold tracking-tighter drop-shadow-sm">TalentFlow</div>
+        {/* Right column: Neural Engine View */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4, ease: [0.4, 0, 0.2, 1] }}
+          className="relative hidden lg:block"
+        >
+          <div className="bg-white border border-outline-variant p-md rounded-2xl shadow-2xl overflow-hidden hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(0,0,0,0.05)] transition-all duration-300">
+            <div className="flex justify-between items-center mb-md border-b border-outline-variant pb-md">
+              <div className="flex items-center gap-sm">
+                <div className="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+                  <Brain className="w-4 h-4" />
+                </div>
+                <span className="text-label-md font-bold">Neural Engine View</span>
+              </div>
+              <div className="flex gap-1">
+                <div className="w-2 h-2 rounded-full bg-outline-variant" />
+                <div className="w-2 h-2 rounded-full bg-outline-variant" />
+              </div>
+            </div>
+            <div className="space-y-md">
+              <div className="flex items-center gap-md p-sm bg-surface-container rounded-lg">
+                <div
+                  className="w-10 h-10 rounded bg-outline-variant flex-shrink-0 bg-cover bg-center"
+                  style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuAOmAfVlN-_S11GAg9sE5eO5L_CIpudnewlQ8gS0-fMLjRqxk5Jj-_Q20-fp3q7VwJhGAHH8SqKn-69ViHtPFuDEcnuRN5kaDmbwi4NxgZ_VweyIn-DNg8ge4nQC5Axdna9rHMDOpK-TfSoUy21ZNxvzXudpBMoLD5UQ-7AkALOqTP2zbM012LJP3wi5XrAkEonNes5lhJvihvAMBhfzItO25yxbOsOWaYaNVfdVDqZo_FXHIbFHOZ2WtZfrn1psZwlRcSMcGsngwmo')" }}
+                />
+                <div className="flex-grow h-4 bg-outline-variant/30 rounded w-2/3" />
+                <div className="h-6 w-12 bg-primary rounded-full flex items-center justify-center text-[10px] text-white">
+                  98%
+                </div>
+              </div>
+              <div className="flex items-center gap-md p-sm bg-surface-container rounded-lg opacity-80">
+                <div
+                  className="w-10 h-10 rounded bg-outline-variant flex-shrink-0 bg-cover bg-center"
+                  style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuBanbrGdbJSwwRqbWC0RgV4P0-IrBwku5lim5cOSZyYULiVSvAzKXUhRbCHwuX9oLFbmt6ROIctGa8a95vtxCfYOtzAIrZV8ePbhtOUiFtUR5BEsG2-SHP2e-NzNkA6a19PfkBiMveQ4-qsF_2ATqf5sQrFhB23LE28VgoGorgS15evdPPSDzI1pTxTmVgYh-beeBf-sHLUP7uNPPbpw5HHkjnKdHzikv6iJx1yQoOP6dR3voa7rRYicv8oX7DpwCHlvR7pu4p868Pa')" }}
+                />
+                <div className="flex-grow h-4 bg-outline-variant/30 rounded w-1/2" />
+                <div className="h-6 w-12 bg-secondary rounded-full flex items-center justify-center text-[10px] text-white">
+                  82%
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-md">
+                <div className="h-32 bg-primary-fixed/20 rounded-lg border border-primary-fixed p-sm">
+                  <div className="h-2 w-1/2 bg-primary-fixed rounded mb-sm" />
+                  <div className="flex flex-col gap-1">
+                    <div className="h-1 w-full bg-primary-fixed/40 rounded" />
+                    <div className="h-1 w-3/4 bg-primary-fixed/40 rounded" />
+                  </div>
+                </div>
+                <div className="h-32 bg-surface-container-high rounded-lg p-sm">
+                  <div className="h-2 w-1/2 bg-outline-variant rounded mb-sm" />
+                  <div className="flex items-center justify-center h-20">
+                    <BarChart2 className="w-8 h-8 text-outline" />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   )

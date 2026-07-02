@@ -60,7 +60,12 @@ class RankingRunItem(BaseModel):
     semantic_score: float
     skill_score: float
     experience_score: float
+    education_score: float
+    project_score: float
+    certification_score: float
     behavior_score: Optional[float] = None
+    resume_quality_score: float
+    recommendation: str
     matched_skills: List[str]
     missing_skills: List[str]
     transferable_skills: List[str]

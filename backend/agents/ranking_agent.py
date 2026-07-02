@@ -2,7 +2,8 @@ from backend.graph.state import RecruitmentState
 
 class RankingAgent:
     """
-    Agent responsible for scoring and ranking parsed candidates against a job description.
+    Agent responsible for scoring and ranking parsed candidates against a job description
+    using a strictly deterministic ATS engine.
     """
     def run(self, state: RecruitmentState) -> RecruitmentState:
         print("[Ranking Agent] Scoring and sorting candidate shortlist...")
@@ -33,10 +34,10 @@ class RankingAgent:
                     "transferable_skills": []
                 }
 
-            # 1. Semantic Similarity (normalized to [0, 100])
+            # 1. Semantic Similarity (30%)
             semantic_score = float(match_data.get("semantic_score", 0.0))
 
-            # 2. Skill Overlap (percentage of required skills matching)
+            # 2. Skill Match (25%)
             matched_skills_count = len(match_data.get("matched_skills", []))
             total_skills_count = len(req_skills_raw)
             if total_skills_count > 0:
@@ -44,7 +45,7 @@ class RankingAgent:
             else:
                 skill_overlap = 100.0
 
-            # 3. Experience Match
+            # 3. Experience Match (15%)
             cand_exp = float(cand.get("experience", 0.0))
             if experience_req > 0.0:
                 if cand_exp >= experience_req:
@@ -54,51 +55,105 @@ class RankingAgent:
             else:
                 experience_match = 100.0
 
-            # 3b. Profile Completeness scoring (0-100)
+            # 4. Education Match (10%) & 6. Certifications (5%)
+            education_list = cand.get("education", [])
+            education_score = 0.0
+            certification_score = 0.0
+            for item in education_list:
+                item_lower = item.lower()
+                if any(x in item_lower for x in ["bachelor", "bs", "master", "ms", "phd", "degree", "university", "college"]):
+                    education_score += 50.0
+                if any(x in item_lower for x in ["cert", "aws", "google", "azure", "coursera", "udemy"]):
+                    certification_score += 100.0
+            
+            education_score = min(100.0, education_score if education_list else 40.0)
+            certification_score = min(100.0, certification_score if education_list else 0.0)
+
+            # 5. Project Relevance (8%)
+            projects_list = cand.get("projects", [])
+            project_score = 0.0
+            if projects_list:
+                # Reward based on project count/depth
+                project_score = min(100.0, len(projects_list) * 33.33)
+            else:
+                project_score = 20.0
+
+            # 8. Resume Quality (3%)
             completeness = 0.0
             if cand.get("candidate_name") and str(cand.get("candidate_name")).strip() not in ["Unknown", "Unknown Candidate"]:
                 completeness += 20.0
             if cand.get("skills"):
                 completeness += 20.0
-            if cand.get("experience") is not None and float(cand.get("experience", -1.0)) >= 0.0:
+            if cand.get("experience") is not None and cand_exp >= 0.0:
                 completeness += 20.0
-            if cand.get("projects") and len(cand.get("projects", [])) > 0:
+            if projects_list:
                 completeness += 20.0
-            if cand.get("education") and len(cand.get("education", [])) > 0:
+            if education_list:
                 completeness += 20.0
+            resume_quality_score = completeness
 
-            # 3c. Confidence Score calculation
-            confidence = (0.40 * semantic_score) + (0.30 * skill_overlap) + (0.20 * experience_match) + (0.10 * completeness)
-
-            # 3d. Check for behavioral signals and score
-            behavior_score = None
-            has_behavior = False
+            # 7. Behavioral Signals (4%)
+            behavior_score = 75.0 # default assuming decent baseline
             if match_data and "behavior" in match_data:
                 b_info = match_data["behavior"]
-                has_behavior = b_info.get("has_data", False)
-                if has_behavior:
-                    behavior_score = float(b_info.get("score", 0.0))
+                if b_info.get("has_data", False):
+                    behavior_score = float(b_info.get("score", behavior_score))
 
-            # 4. Formula selection depending on behavioral availability
-            if has_behavior and behavior_score is not None:
-                final_score = (0.55 * semantic_score) + (0.15 * skill_overlap) + (0.10 * experience_match) + (0.20 * behavior_score)
+            # --- Compute Final Score ---
+            final_score = (
+                (0.30 * semantic_score) +
+                (0.25 * skill_overlap) +
+                (0.15 * experience_match) +
+                (0.10 * education_score) +
+                (0.08 * project_score) +
+                (0.05 * certification_score) +
+                (0.04 * behavior_score) +
+                (0.03 * resume_quality_score)
+            )
+            
+            # Add small deterministic tie-breaker based on name hash to ensure unique scores
+            name_hash = sum(ord(c) for c in name)
+            tie_breaker = (name_hash % 100) / 100.0  # 0.0 to 0.99
+            final_score += tie_breaker
+            
+            final_score = min(100.0, round(final_score, 2))
+
+            # --- Confidence Score Calculation ---
+            confidence = round((semantic_score + skill_overlap + resume_quality_score + experience_match) / 4.0, 2)
+
+            # --- Recommendation Engine ---
+            if final_score >= 95.0:
+                recommendation = "Outstanding Match"
+            elif final_score >= 90.0:
+                recommendation = "Strong Hire"
+            elif final_score >= 80.0:
+                recommendation = "Recommended"
+            elif final_score >= 70.0:
+                recommendation = "Interview"
+            elif final_score >= 60.0:
+                recommendation = "Potential Fit"
             else:
-                final_score = (0.70 * semantic_score) + (0.20 * skill_overlap) + (0.10 * experience_match)
+                recommendation = "Backup Candidate"
 
             ranked_shortlist.append({
                 "candidate": cand,
-                "score": round(final_score, 2),
-                "confidence": round(confidence, 2),
+                "score": final_score,
+                "confidence": confidence,
                 "semantic_score": round(semantic_score, 2),
                 "skill_score": round(skill_overlap, 2),
                 "experience_score": round(experience_match, 2),
-                "behavior_score": round(behavior_score, 2) if behavior_score is not None else None,
+                "education_score": round(education_score, 2),
+                "project_score": round(project_score, 2),
+                "certification_score": round(certification_score, 2),
+                "resume_quality_score": round(resume_quality_score, 2),
+                "behavior_score": round(behavior_score, 2),
+                "recommendation": recommendation,
                 "matched_skills": match_data.get("matched_skills", []),
                 "missing_skills": match_data.get("missing_skills", []),
                 "transferable_skills": match_data.get("transferable_skills", [])
             })
 
-        # Sort descending by final score
+        # Sort descending by final overall score
         ranked_shortlist.sort(key=lambda x: x["score"], reverse=True)
 
         # Inject rank numerical values

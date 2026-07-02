@@ -52,30 +52,44 @@ class ExplainabilityAgent:
                     genai.configure(api_key=api_key)
                     model = genai.GenerativeModel("models/gemini-2.5-flash")
                     prompt = (
-                        "You are an expert technical recruiter auditing suitability score rankings. "
-                        "Given the job description details, candidate profile, computed suitability metrics, "
-                        "and behavioral activity signals, produce a recruiter-friendly justification. "
+                        "You are an expert technical recruiter auditing deterministic ATS compatibility scores. "
+                        "Given the job description details, candidate profile, and the computed suitability metrics, "
+                        "produce a recruiter-friendly justification. Do NOT generate new numerical scores. "
                         "You must return a single JSON object matching this schema exactly:\n"
                         "{\n"
                         '  "strengths": ["List of 2-3 key technical/experience/intent strengths (array of strings)"],\n'
                         '  "weaknesses": ["List of identified gaps, missing skills, or low activity indicators (array of strings)"],\n'
-                        '  "explanation": "A clear, professional 2-sentence summary explaining why this candidate was ranked at this score. If they show high activity/recent profile updates, call out their high job-seeking intent. (string)"\n'
+                        '  "explanation": "A clear, professional 2-sentence summary explaining why this candidate was given their specific score based on the categories. (string)"\n'
                         "}\n\n"
                         f"Job Profile: {json.dumps(job)}\n"
                         f"Candidate Profile: {json.dumps(cand)}\n"
                         f"{behavior_context}"
-                        f"Computed Match Metrics: "
-                        f"Score={item['score']}, Confidence={item['confidence']}, "
-                        f"Semantic Score={item['semantic_score']}, Skill Score={item['skill_score']}, "
-                        f"Experience Score={item['experience_score']}, "
-                        f"Matched Skills={item['matched_skills']}, Missing Skills={item['missing_skills']}, "
-                        f"Transferable Skills={item['transferable_skills']}\n"
+                        f"Computed Match Metrics:\n"
+                        f"Overall Score: {item['score']}\n"
+                        f"Confidence: {item['confidence']}\n"
+                        f"Semantic Score: {item['semantic_score']}\n"
+                        f"Skill Score: {item['skill_score']}\n"
+                        f"Experience Score: {item['experience_score']}\n"
+                        f"Education Score: {item.get('education_score', 0)}\n"
+                        f"Project Score: {item.get('project_score', 0)}\n"
+                        f"Certification Score: {item.get('certification_score', 0)}\n"
+                        f"Resume Quality Score: {item.get('resume_quality_score', 0)}\n"
+                        f"Recommendation: {item.get('recommendation', 'Unknown')}\n"
+                        f"Matched Skills: {item['matched_skills']}\n"
+                        f"Missing Skills: {item['missing_skills']}\n"
                     )
                     response = model.generate_content(
                         prompt,
                         generation_config={"response_mime_type": "application/json"}
                     )
-                    explanation = json.loads(response.text)
+                    explanation_json = json.loads(response.text)
+                    
+                    # Map the JSON output to the ExplanationModel schema expected by the frontend
+                    explanation = {
+                        "strengths": explanation_json.get("strengths", []),
+                        "weaknesses": explanation_json.get("weaknesses", []),
+                        "explanation": explanation_json.get("explanation", "")
+                    }
                 except Exception as e:
                     print(f"[Explainability Agent] Gemini call failed, falling back to templates: {e}")
                     explanation = self._mock_explanation(state, job, item)

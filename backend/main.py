@@ -1,5 +1,11 @@
 import uvicorn
 from fastapi import FastAPI
+import sys
+import os
+
+# Add parent directory to sys.path so 'backend' can be resolved even if run from inside backend folder
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from backend.settings import settings
 from backend.database.database import engine
 from backend.database.base import Base
@@ -20,7 +26,7 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )

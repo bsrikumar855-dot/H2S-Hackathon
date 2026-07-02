@@ -125,6 +125,10 @@ def run_end_to_end_ranking(payload: RankingRunRequest):
     # 4. Map back to output schema
     output_items = []
     for item in rankings:
+        cand_dict = item.get("candidate", {})
+        if not cand_dict.get("candidate_name"):
+            cand_dict["candidate_name"] = "Unknown Candidate"
+            
         output_items.append(RankingRunItem(
             rank=item["rank"],
             score=item["score"],
@@ -132,11 +136,16 @@ def run_end_to_end_ranking(payload: RankingRunRequest):
             semantic_score=item["semantic_score"],
             skill_score=item["skill_score"],
             experience_score=item["experience_score"],
+            education_score=item.get("education_score", 0.0),
+            project_score=item.get("project_score", 0.0),
+            certification_score=item.get("certification_score", 0.0),
             behavior_score=item.get("behavior_score"),
+            resume_quality_score=item.get("resume_quality_score", 0.0),
+            recommendation=item.get("recommendation", "Unknown"),
             matched_skills=item["matched_skills"],
             missing_skills=item["missing_skills"],
             transferable_skills=item["transferable_skills"],
             explanation=item["explanation"],
-            candidate=item["candidate"]
+            candidate=cand_dict
         ))
     return output_items

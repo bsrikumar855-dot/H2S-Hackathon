@@ -1,250 +1,241 @@
-import React, { useMemo, useRef, useState } from "react"
+import { useState, useCallback } from "react"
 import { useNavigate } from "react-router-dom"
-import { BarChart3, Bell, Bolt, CloudUpload, FileText, Home, Network, Search, Settings, Trash2, UploadCloud, User, Verified } from "lucide-react"
+import { motion, AnimatePresence } from "framer-motion"
+import { CloudUpload, Bolt, FileText, Delete, Verified, Inbox } from "lucide-react"
 import { useRecruitment } from "../../context/RecruitmentContext"
+import AppLayout from "../../layouts/AppLayout"
+import { cn } from "../../lib/utils"
 
 export default function CandidateUploadPage() {
   const navigate = useNavigate()
-  const fileInputRef = useRef<HTMLInputElement>(null)
-  const [isDragActive, setIsDragActive] = useState(false)
-  const { uploadedFiles, addUploadedFile, removeUploadedFile, loadMockFiles, clearAll, jobDescription } = useRecruitment()
-  const totalSize = useMemo(() => uploadedFiles.reduce((sum, file) => sum + file.size, 0), [uploadedFiles])
+  const { uploadedFiles, addUploadedFile, removeUploadedFile, clearAll, loadMockFiles, executeRanking } = useRecruitment()
+  const [isDragging, setIsDragging] = useState(false)
+  const [isProcessing, setIsProcessing] = useState(false)
 
-  const addFiles = async (files: File[]) => {
-    for (const file of files) {
-      await addUploadedFile(file)
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault()
+    setIsDragging(true)
+  }, [])
+
+  const handleDragLeave = useCallback((e: React.DragEvent) => {
+    e.preventDefault()
+    setIsDragging(false)
+  }, [])
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault()
+    setIsDragging(false)
+    const files = Array.from(e.dataTransfer.files)
+    files.forEach((file) => addUploadedFile(file))
+  }, [addUploadedFile])
+
+  const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const files = Array.from(e.target.files)
+      files.forEach((file) => addUploadedFile(file))
     }
   }
 
-  const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) await addFiles(Array.from(event.target.files))
+  const handleAnalyze = async () => {
+    if (uploadedFiles.length === 0) return
+    setIsProcessing(true)
+    try {
+      await executeRanking()
+      navigate("/processing")
+    } catch (error) {
+      setIsProcessing(false)
+      // Error is handled in context and could be shown via toast
+    }
   }
 
-  const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault()
-    setIsDragActive(false)
-    if (event.dataTransfer.files) await addFiles(Array.from(event.dataTransfer.files))
-  }
+  const totalSize = uploadedFiles.reduce((acc, f) => acc + f.size / 1024 / 1024, 0).toFixed(2)
+  const estTime = uploadedFiles.length > 0 ? Math.ceil(uploadedFiles.length * 0.4) : "--"
 
   return (
-    <div className="tm-page bg-black text-white min-h-screen">
-      <TopBar />
-      <SideNav active="upload" />
-      <main className="tm-content-with-sidebar tm-topbar-offset flex min-h-screen flex-col">
-        <div className="mx-auto w-full max-w-[1440px] flex-1 p-4 md:p-8 lg:p-12">
-          <div className="tm-slide-up mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end">
-            <div>
-              <h1 className="text-3xl font-bold text-[var(--tm-text)] md:text-4xl">Resume Upload</h1>
-              <p className="mt-2 text-lg leading-8 text-[var(--tm-muted)]">Batch process and rank candidates using autonomous intelligence.</p>
-            </div>
-            <button
-              disabled={uploadedFiles.length === 0}
-              onClick={() => {
-                if (!jobDescription.trim()) {
-                  alert("Please provide a job description before analyzing resumes.")
-                  navigate("/job")
-                  return
-                }
-                navigate("/processing")
-              }}
-              className="tm-primary-btn flex items-center justify-center gap-2 rounded-xl px-6 py-4 font-bold disabled:cursor-not-allowed disabled:bg-[var(--tm-border)] disabled:text-[var(--tm-muted)] disabled:shadow-none"
+    <AppLayout>
+      <div className="flex-1 max-w-container-max mx-auto w-full p-lg md:p-3xl flex flex-col">
+        {/* Page Header */}
+        <div className="mb-2xl flex flex-col md:flex-row md:items-end justify-between gap-lg">
+          <div>
+            <h2 className="text-headline-lg font-bold text-on-surface mb-xs">Resume Upload</h2>
+            <p className="text-body-lg text-on-surface-variant">Batch process and rank candidates using autonomous intelligence.</p>
+          </div>
+          <button
+            onClick={handleAnalyze}
+            disabled={uploadedFiles.length === 0 || isProcessing}
+            className={cn(
+              "px-xl py-md font-bold rounded-xl flex items-center gap-sm transition-all duration-300",
+              uploadedFiles.length > 0
+                ? "bg-primary-container text-on-primary-container hover:shadow-lg active:scale-95"
+                : "bg-outline-variant text-on-surface-variant cursor-not-allowed"
+            )}
+          >
+            {isProcessing ? (
+              <span className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin" />
+            ) : (
+              <Bolt className="w-5 h-5" />
+            )}
+            Analyze Resumes
+          </button>
+        </div>
+
+        {/* Bento Layout Grid */}
+        <div className="grid grid-cols-1 xl:grid-cols-12 gap-xl items-start">
+          {/* Upload Zone (Bento Primary) */}
+          <div className="xl:col-span-5 flex flex-col gap-xl">
+            <div
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+              className={cn(
+                "relative group bg-surface border-2 border-dashed rounded-3xl p-3xl flex flex-col items-center justify-center text-center transition-all duration-300 min-h-[400px]",
+                isDragging
+                  ? "border-primary bg-surface-container-low scale-[1.01]"
+                  : "border-outline-variant hover:border-primary-container hover:bg-surface-container-low"
+              )}
             >
-              <Bolt className="h-5 w-5" /> Analyze Resumes
-            </button>
+              <input
+                type="file"
+                multiple
+                onChange={handleFileInput}
+                className="absolute inset-0 opacity-0 cursor-pointer z-10"
+                accept=".pdf,.docx,.txt"
+              />
+              
+              <div className="mb-xl relative">
+                <div className="absolute inset-0 bg-primary-container/10 rounded-full blur-2xl animate-pulse" />
+                <div className="relative w-32 h-32 bg-surface-container-high rounded-3xl flex items-center justify-center border border-outline-variant shadow-sm rotate-3 group-hover:rotate-0 transition-transform">
+                  <CloudUpload className="w-12 h-12 text-primary" />
+                </div>
+              </div>
+              
+              <h3 className="text-headline-sm font-bold text-on-surface mb-sm">Drag and drop resumes</h3>
+              <p className="text-body-md text-on-surface-variant max-w-xs mx-auto">
+                Support for PDF, DOCX, and TXT files. Max 50 files per batch.
+              </p>
+              
+              <div className="mt-2xl flex items-center gap-md">
+                <span className="h-px w-8 bg-outline-variant" />
+                <span className="text-label-md font-bold text-on-surface-variant">OR</span>
+                <span className="h-px w-8 bg-outline-variant" />
+              </div>
+              
+              <button className="mt-lg px-xl py-sm bg-primary text-on-primary font-bold rounded-lg shadow-sm hover:bg-primary-container active:scale-95 transition-all relative z-20" onClick={() => document.querySelector<HTMLInputElement>('input[type="file"]')?.click()}>
+                Browse Files
+              </button>
+
+              <button className="mt-md text-label-sm font-bold text-secondary hover:text-primary transition-colors underline relative z-20" onClick={(e) => { e.preventDefault(); e.stopPropagation(); loadMockFiles(); }}>
+                Load Demo Resumes
+              </button>
+            </div>
+
+            {/* Usage Stats Card */}
+            <div className="bg-surface border border-outline-variant rounded-2xl p-lg flex items-center justify-between">
+              <div className="flex items-center gap-md">
+                <div className="w-12 h-12 bg-tertiary-fixed rounded-xl flex items-center justify-center">
+                  <Verified className="w-6 h-6 text-on-tertiary-fixed" />
+                </div>
+                <div>
+                  <p className="text-label-sm text-on-surface-variant uppercase tracking-wider font-bold">Quality Score</p>
+                  <p className="text-headline-sm font-bold text-on-surface">98.4% Accuracy</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="text-body-sm text-on-surface-variant">OCR Engine v4.2</p>
+                <p className="text-label-md font-bold text-tertiary">Active</p>
+              </div>
+            </div>
           </div>
 
-          <div className="grid items-start gap-8 lg:grid-cols-12">
-            <section className="tm-slide-up flex flex-col gap-6 lg:col-span-5">
-              <input ref={fileInputRef} type="file" className="hidden" multiple accept=".txt,.pdf,.docx" onChange={handleFileSelect} />
-              <div
-                onClick={() => fileInputRef.current?.click()}
-                onDragOver={(event) => {
-                  event.preventDefault()
-                  setIsDragActive(true)
-                }}
-                onDragLeave={(event) => {
-                  event.preventDefault()
-                  setIsDragActive(false)
-                }}
-                onDrop={handleDrop}
-                className={`tm-card flex min-h-[400px] cursor-pointer flex-col items-center justify-center rounded-3xl border-2 border-dashed p-10 text-center transition duration-300 ${
-                  isDragActive ? "scale-[1.01] border-[var(--tm-primary)] bg-[var(--tm-surface-low)]" : "border-[var(--tm-border)] bg-[var(--tm-surface)]"
-                }`}
-              >
-                <div className="relative mb-8">
-                  <div className="absolute inset-0 animate-pulse rounded-full bg-[var(--tm-primary-soft)] blur-2xl" />
-                  <div className="relative flex h-32 w-32 rotate-3 items-center justify-center rounded-3xl border border-[var(--tm-border)] bg-[var(--tm-surface-mid)] shadow-sm transition group-hover:rotate-0">
-                    <CloudUpload className="h-14 w-14 text-[var(--tm-primary)]" />
-                  </div>
-                </div>
-                <h2 className="text-2xl font-bold text-[var(--tm-text)]">{isDragActive ? "Drop resumes now" : "Drag and drop resumes"}</h2>
-                <p className="mt-3 max-w-xs leading-7 text-[var(--tm-muted)]">Support for PDF, DOCX, and TXT files. Max 50 files per batch.</p>
-                <div className="mt-8 flex items-center gap-4">
-                  <span className="h-px w-8 bg-[var(--tm-border)]" />
-                  <span className="text-sm font-bold text-[var(--tm-muted)]">OR</span>
-                  <span className="h-px w-8 bg-[var(--tm-border)]" />
-                </div>
-                <button className="tm-primary-btn mt-6 rounded-lg px-7 py-3 font-bold">Browse Files</button>
-              </div>
-
-              <div className="tm-card flex items-center justify-between rounded-2xl p-5">
-                <div className="flex items-center gap-4">
-                  <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--tm-tertiary-soft)] text-[var(--tm-tertiary)]">
-                    <Verified className="h-6 w-6" />
+          {/* Queue Manager (Bento Secondary) */}
+          <div className="xl:col-span-7 h-[540px]">
+            <div className="bg-surface border border-outline-variant rounded-3xl overflow-hidden shadow-sm flex flex-col h-full">
+              <div className="px-xl py-lg border-b border-outline-variant flex items-center justify-between bg-surface-container-lowest">
+                <div className="flex items-center gap-md">
+                  <h3 className="text-headline-sm font-bold text-on-surface">Queue Manager</h3>
+                  <span className="px-base py-[2px] bg-secondary-container text-on-secondary-container text-[11px] font-bold rounded-full">
+                    {uploadedFiles.length} FILES
                   </span>
-                  <div>
-                    <p className="tm-label">Quality Score</p>
-                    <p className="text-xl font-bold text-[var(--tm-text)]">98.4% Accuracy</p>
-                  </div>
                 </div>
-                <div className="text-right text-sm">
-                  <p className="text-[var(--tm-muted)]">OCR Engine v4.2</p>
-                  <p className="font-bold text-[var(--tm-tertiary)]">Active</p>
-                </div>
+                {uploadedFiles.length > 0 && (
+                  <button onClick={clearAll} className="text-error font-label-md hover:underline transition-all">
+                    Clear All
+                  </button>
+                )}
               </div>
-            </section>
 
-            <section className="tm-slide-up lg:col-span-7" style={{ animationDelay: "120ms" }}>
-              <div className="tm-card flex min-h-[540px] flex-col overflow-hidden rounded-3xl">
-                <div className="flex items-center justify-between border-b border-[var(--tm-border)] bg-[var(--tm-surface-low)] px-6 py-5">
-                  <div className="flex items-center gap-3">
-                    <h2 className="text-xl font-bold">Queue Manager</h2>
-                    <span className="rounded-full bg-[var(--tm-primary-soft)] px-2 py-1 text-[11px] font-extrabold text-[var(--tm-primary)]">{uploadedFiles.length} FILES</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <button onClick={loadMockFiles} className="text-sm font-bold text-[var(--tm-primary)] hover:underline">Load Demo</button>
-                    {uploadedFiles.length > 0 && (
-                      <button onClick={clearAll} className="text-sm font-bold text-[var(--tm-error)] hover:underline">
-                        Clear All
-                      </button>
-                    )}
-                  </div>
-                </div>
-
-                <div className="flex-1 space-y-4 overflow-y-auto p-4">
+              {/* Queue List */}
+              <div className="flex-grow overflow-y-auto p-md space-y-md custom-scrollbar">
+                <AnimatePresence mode="popLayout">
                   {uploadedFiles.length === 0 ? (
-                    <div className="flex h-full min-h-[310px] flex-col items-center justify-center py-12 text-[var(--tm-muted)]/55">
-                      <UploadCloud className="mb-4 h-16 w-16" />
-                      <p>Your upload queue is empty</p>
-                    </div>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="h-full flex flex-col items-center justify-center py-3xl text-on-surface-variant/40"
+                    >
+                      <Inbox className="w-16 h-16 mb-md" />
+                      <p className="text-body-md font-medium">Your upload queue is empty</p>
+                    </motion.div>
                   ) : (
-                    uploadedFiles.map((file, index) => (
-                      <div key={file.name} className="tm-slide-up group flex items-center gap-4 rounded-2xl border border-[var(--tm-border)] bg-[var(--tm-surface)] p-4 transition hover:shadow-md" style={{ animationDelay: `${index * 50}ms` }}>
-                        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[var(--tm-surface-mid)] text-[var(--tm-primary)]">
-                          <FileText className="h-5 w-5" />
-                        </span>
-                        <div className="min-w-0 flex-1">
-                          <div className="mb-2 flex items-center justify-between gap-3">
-                            <h3 className="truncate text-sm font-bold text-[var(--tm-text)]">{file.name}</h3>
-                            <span className="text-xs font-extrabold text-[var(--tm-primary)]">Ready</span>
+                    uploadedFiles.map((file) => (
+                      <motion.div
+                        key={file.name}
+                        layout
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        className="group flex items-center gap-md p-md bg-white border border-outline-variant rounded-2xl hover:shadow-md transition-all duration-300"
+                      >
+                        <div className="w-10 h-10 bg-surface-container-high rounded-xl flex items-center justify-center flex-shrink-0">
+                          <FileText className="w-5 h-5 text-primary" />
+                        </div>
+                        <div className="flex-grow overflow-hidden">
+                          <div className="flex items-center justify-between mb-xs">
+                            <h4 className="text-label-md font-bold text-on-surface truncate pr-md">{file.name}</h4>
+                            <span className="text-label-sm font-bold text-primary">Ready</span>
                           </div>
-                          <div className="flex items-center gap-4">
-                            <span className="whitespace-nowrap text-sm text-[var(--tm-muted)]">{fileType(file.name)} - {formatSize(file.size)}</span>
-                            <div className="tm-progress flex-1">
-                              <span style={{ width: "100%" }} />
+                          <div className="flex items-center gap-md">
+                            <span className="text-body-sm text-on-surface-variant whitespace-nowrap">
+                              DOCX • {(file.size / 1024 / 1024).toFixed(2)} MB
+                            </span>
+                            <div className="h-1 flex-grow bg-outline-variant rounded-full overflow-hidden">
+                              <motion.div
+                                className="h-full bg-primary-container"
+                                initial={{ width: 0 }}
+                                animate={{ width: "100%" }}
+                                transition={{ duration: 0.5 }}
+                              />
                             </div>
                           </div>
                         </div>
                         <button
                           onClick={() => removeUploadedFile(file.name)}
-                          className="rounded-lg p-2 text-[var(--tm-muted)] opacity-100 transition hover:bg-[var(--tm-error-soft)] hover:text-[var(--tm-error)] md:opacity-0 md:group-hover:opacity-100"
-                          aria-label={`Remove ${file.name}`}
+                          className="p-sm text-on-surface-variant hover:text-error hover:bg-error-container rounded-lg transition-all opacity-0 group-hover:opacity-100"
                         >
-                          <Trash2 className="h-5 w-5" />
+                          <Delete className="w-5 h-5" />
                         </button>
-                      </div>
+                      </motion.div>
                     ))
                   )}
-                </div>
+                </AnimatePresence>
+              </div>
 
-                <div className="mt-auto border-t border-[var(--tm-border)] bg-[var(--tm-surface-low)] p-6">
-                  <div className="mb-4 flex items-center justify-between">
-                    <span className="text-[var(--tm-muted)]">Total Size</span>
-                    <span className="font-bold text-[var(--tm-text)]">{formatSize(totalSize)}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-[var(--tm-muted)]">Processing Time (Est.)</span>
-                    <span className="font-bold text-[var(--tm-text)]">{uploadedFiles.length > 0 ? `${Math.max(1, Math.ceil(uploadedFiles.length * 0.4))} min` : "-- min"}</span>
-                  </div>
+              {/* Summary Footer */}
+              <div className="p-xl bg-surface-container-low border-t border-outline-variant mt-auto">
+                <div className="flex items-center justify-between mb-md">
+                  <span className="text-body-md text-on-surface-variant">Total Size</span>
+                  <span className="text-label-md font-bold text-on-surface">{totalSize} MB</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-body-md text-on-surface-variant">Processing Time (Est.)</span>
+                  <span className="text-label-md font-bold text-on-surface">{estTime} min</span>
                 </div>
               </div>
-            </section>
+            </div>
           </div>
         </div>
-      </main>
-      <MobileNav />
-    </div>
-  )
-}
-
-function formatSize(bytes: number) {
-  if (bytes === 0) return "0.0 MB"
-  const mb = bytes / 1024 / 1024
-  if (mb >= 1) return `${mb.toFixed(2)} MB`
-  return `${(bytes / 1024).toFixed(1)} KB`
-}
-
-function fileType(name: string) {
-  return name.split(".").pop()?.toUpperCase() || "FILE"
-}
-
-function TopBar() {
-  const navigate = useNavigate()
-  return (
-    <header className="tm-topbar">
-      <div className="flex h-full items-center justify-between px-4 md:px-8">
-        <button onClick={() => navigate("/")} className="flex items-center gap-3 transition-opacity hover:opacity-80">
-          <Network className="h-6 w-6 text-[var(--tm-primary)]" />
-          <span className="text-xl font-extrabold text-[var(--tm-primary)]">TalentMind AI</span>
-        </button>
-        <div className="flex items-center gap-3">
-          <button className="rounded-full p-2 text-[var(--tm-muted)] transition hover:bg-[var(--tm-surface-low)]" aria-label="Search"><Search className="h-5 w-5" /></button>
-          <button className="rounded-full p-2 text-[var(--tm-muted)] transition hover:bg-[var(--tm-surface-low)]" aria-label="Notifications"><Bell className="h-5 w-5" /></button>
-          <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--tm-border)] bg-[var(--tm-primary-soft)] font-bold text-[var(--tm-primary)]">A</div>
-        </div>
       </div>
-    </header>
-  )
-}
-
-function SideNav({ active }: { active: "job" | "upload" | "dashboard" }) {
-  const navigate = useNavigate()
-  return (
-    <aside className="tm-sidebar hidden flex-col p-5 pt-20 md:flex">
-      <div className="mb-8 px-2">
-        <div className="mb-2 flex items-center gap-2">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--tm-primary)] text-white">
-            <Network className="h-4 w-4" />
-          </span>
-          <span className="font-bold text-[var(--tm-primary)]">Premium Recruiter</span>
-        </div>
-        <p className="text-xl font-bold text-[var(--tm-text)]">Alex Sterling</p>
-        <p className="text-sm text-[var(--tm-muted)]">Lead Recruiter</p>
-      </div>
-      <nav className="flex flex-col gap-1">
-        <button onClick={() => navigate("/dashboard")} className={`tm-shell-link ${active === "dashboard" ? "tm-shell-link-active" : ""}`}><BarChart3 className="h-5 w-5" /> Dashboard</button>
-        <button onClick={() => navigate("/job")} className={`tm-shell-link ${active === "job" ? "tm-shell-link-active" : ""}`}><FileText className="h-5 w-5" /> Jobs</button>
-        <button onClick={() => navigate("/candidates")} className={`tm-shell-link ${active === "upload" ? "tm-shell-link-active" : ""}`}><UploadCloud className="h-5 w-5" /> Resumes</button>
-        <button onClick={() => navigate("/profile")} className="tm-shell-link"><User className="h-5 w-5" /> Profile</button>
-      </nav>
-      <div className="mt-auto rounded-2xl bg-[var(--tm-surface-low)] p-5">
-        <p className="tm-label mb-3">AI Capacity</p>
-        <div className="tm-progress mb-3">
-          <span style={{ width: "75%" }} />
-        </div>
-        <p className="text-sm text-[var(--tm-text)]">75% of monthly tokens</p>
-      </div>
-    </aside>
-  )
-}
-
-function MobileNav() {
-  const navigate = useNavigate()
-  return (
-    <nav className="fixed bottom-0 left-0 z-50 flex w-full justify-around border-t border-[var(--tm-border)] bg-[var(--tm-bg)] py-2 shadow-lg md:hidden">
-      <button onClick={() => navigate("/dashboard")} className="flex flex-col items-center text-[var(--tm-muted)]"><Home className="h-5 w-5" /><small>Home</small></button>
-      <button onClick={() => navigate("/candidates")} className="flex flex-col items-center font-bold text-[var(--tm-primary)]"><UploadCloud className="h-5 w-5" /><small>Resumes</small></button>
-      <button onClick={() => navigate("/profile")} className="flex flex-col items-center text-[var(--tm-muted)]"><User className="h-5 w-5" /><small>Profile</small></button>
-    </nav>
+    </AppLayout>
   )
 }

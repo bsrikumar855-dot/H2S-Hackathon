@@ -1,219 +1,292 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { BarChart3, CheckCircle2, Circle, Clock, Database, FileText, Info, Loader2, Network, Settings, ShieldCheck, User, Users, X } from "lucide-react"
+import { motion } from "framer-motion"
+import {
+  Clock,
+  BarChart,
+  Check,
+  RefreshCw,
+  BrainCircuit,
+  BarChart3,
+  FileText,
+  CheckCircle2,
+  Info,
+} from "lucide-react"
 import { useRecruitment } from "../../context/RecruitmentContext"
-
-const stepLabels = [
-  "Understanding Job",
-  "Reading Resumes",
-  "Generating Embeddings",
-  "Semantic Matching",
-  "Behavior Analysis",
-  "Ranking Candidates",
-  "Generating Explanations",
-]
+import AppLayout from "../../layouts/AppLayout"
+import { CandidateRowSkeleton } from "../../components/LoadingSkeleton"
+import { cn } from "../../lib/utils"
 
 export default function AIProcessingPage() {
   const navigate = useNavigate()
-  const { executeRanking, apiError, jobTitle, uploadedFiles } = useRecruitment()
+  const { jobTitle, uploadedFiles, isLoading, apiRankings, apiError, executeRanking } = useRecruitment()
+
   const [progress, setProgress] = useState(0)
-  const [activeStep, setActiveStep] = useState(0)
-  const [errorMessage, setErrorMessage] = useState("")
-  const remaining = useMemo(() => Math.max(0, 165 - Math.round(progress * 1.35)), [progress])
-  const statusMessage = useMemo(() => stepLabels[Math.min(activeStep, stepLabels.length - 1)] || "Analysis Engine", [activeStep])
+  const [timeLeft, setTimeLeft] = useState(uploadedFiles.length > 0 ? uploadedFiles.length * 2 : 12)
 
-  const runPipeline = () => {
-    setErrorMessage("")
-    setProgress(0)
-    setActiveStep(0)
-
-    const timer = window.setInterval(() => {
-      setActiveStep((step) => Math.min(step + 1, 5))
-      setProgress((value) => Math.min(value + 13, 84))
-    }, 450)
-
-    executeRanking()
-      .then(() => {
-        window.clearInterval(timer)
-        setActiveStep(stepLabels.length)
-        setProgress(100)
-        window.setTimeout(() => navigate("/dashboard"), 850)
-      })
-      .catch((err: any) => {
-        window.clearInterval(timer)
-        setErrorMessage(err.message || apiError || "The agent workflow could not complete.")
-      })
-  }
-
+  // Simulation effect for UI progress while API is pending
   useEffect(() => {
-    runPipeline()
-  }, [])
+    if (!isLoading && apiRankings.length > 0) {
+      setProgress(100)
+      setTimeLeft(0)
+      
+      // Auto-navigate to dashboard when done after a short delay
+      const t = setTimeout(() => navigate("/dashboard"), 1500)
+      return () => clearTimeout(t)
+    }
+
+    if (isLoading) {
+      const interval = setInterval(() => {
+        setProgress((prev) => {
+          if (prev >= 95) return 95
+          return prev + Math.random() * 2
+        })
+        setTimeLeft((prev) => Math.max(0, prev - 1))
+      }, 1000)
+      return () => clearInterval(interval)
+    }
+  }, [isLoading, apiRankings.length, navigate])
+
+  const mins = Math.floor(timeLeft / 60)
+  const secs = timeLeft % 60
 
   return (
-    <div className="tm-page bg-black text-white min-h-screen">
-      <TopBar />
-      <SideNav />
-      <main className="tm-content-with-sidebar tm-topbar-offset mx-auto min-h-screen max-w-[1440px] px-4 py-8 md:px-8">
-        <section className="tm-slide-up mb-8">
-          <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
+    <AppLayout>
+      <div className="flex-1 max-w-container-max mx-auto w-full p-lg md:p-3xl">
+        {/* Header Section */}
+        <section className="mb-xl">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-md">
             <div>
-              <h1 className="text-3xl font-bold text-[var(--tm-text)] md:text-4xl">{errorMessage ? "Pipeline Execution Error" : "Processing Candidates"}</h1>
-              <p className="mt-2 text-[var(--tm-muted)]">Role: {jobTitle || "Active role analysis"} - <span className="font-semibold text-[var(--tm-primary)]">{uploadedFiles.length} resumes queued</span></p>
+              <h1 className="text-headline-lg font-bold text-on-surface mb-xs">
+                {apiError ? "Pipeline Execution Error" : "Processing Candidates"}
+              </h1>
+              <p className="text-body-md text-on-surface-variant">
+                Role: {jobTitle || "Untitled"} • <span className="font-medium text-primary">{uploadedFiles.length} resumes queued</span>
+              </p>
             </div>
-            <div className="flex items-center gap-2 rounded-full border border-[var(--tm-border)] bg-[var(--tm-surface-low)] px-4 py-2 text-[var(--tm-muted)]">
-              <Clock className="h-5 w-5" />
-              <span className="text-sm font-semibold">Est. Completion: <span className="text-[var(--tm-text)]">{formatTime(remaining)}</span></span>
-            </div>
+            
+            {!apiError && (
+              <div className="flex items-center gap-sm text-on-surface-variant bg-surface-container-low px-md py-sm rounded-full border border-outline-variant">
+                <Clock className="w-5 h-5" />
+                <span className="font-label-md">
+                  Est. Completion: <span className="font-bold text-on-surface">{mins}m {secs.toString().padStart(2, '0')}s</span>
+                </span>
+              </div>
+            )}
           </div>
         </section>
 
-        <div className="grid gap-6 lg:grid-cols-12">
-          <section className="space-y-6 lg:col-span-7">
-            <div className="tm-card tm-slide-up rounded-2xl p-6 md:p-8">
-              <div className="mb-8 flex items-center justify-between gap-4">
-                <div className="flex items-center gap-4">
-                  <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--tm-primary)] text-white">
-                    <BarChart3 className="h-6 w-6" />
-                  </span>
+        {/* Status Grid Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-lg">
+          {/* Left Column: Pipeline visualization */}
+          <div className="lg:col-span-7 space-y-lg">
+            <div className="bg-surface-container-lowest p-xl rounded-xl border border-outline-variant shadow-sm transition-all">
+              <div className="flex justify-between items-center mb-xl">
+                <div className="flex items-center gap-md">
+                  <div className="w-12 h-12 bg-primary-container rounded-lg flex items-center justify-center text-on-primary-container">
+                    <BarChart className="w-7 h-7" />
+                  </div>
                   <div>
-                    <h2 className="text-xl font-bold text-[var(--tm-text)]">Analysis Progress</h2>
-                    <p className="text-sm text-[var(--tm-muted)]">{statusMessage}</p>
+                    <h2 className="text-headline-sm font-bold text-on-surface">Analysis Progress</h2>
+                    <p className="text-body-sm text-on-surface-variant">Real-time status of the recruitment engine</p>
                   </div>
                 </div>
-                <span className="tm-count-pop text-3xl font-extrabold text-[var(--tm-primary)]">{Math.round(progress)}%</span>
-              </div>
-              <div className="tm-progress h-3">
-                <span className={progress < 100 ? "tm-pulse-ring" : ""} style={{ width: `${progress}%` }} />
+                <span className="text-headline-sm font-bold text-primary">
+                  {Math.floor(progress)}%
+                </span>
               </div>
 
-              {errorMessage ? (
-                <div className="mt-8 space-y-5">
-                  <div className="rounded-2xl border border-[var(--tm-error)]/20 bg-[var(--tm-error-soft)] p-5 text-sm leading-6 text-[var(--tm-error)]">
-                    {errorMessage}
-                  </div>
-                  <div className="flex flex-col gap-3 sm:flex-row">
-                    <button onClick={() => navigate("/candidates")} className="tm-secondary-btn flex-1 rounded-xl px-5 py-3 font-bold">Back to Uploads</button>
-                    <button onClick={runPipeline} className="tm-primary-btn flex-1 rounded-xl px-5 py-3 font-bold">Retry Analysis</button>
-                  </div>
+              {/* Progress Bar */}
+              <div className="w-full h-3 bg-surface-container rounded-full overflow-hidden mb-lg">
+                <motion.div
+                  className={cn("h-full", apiError ? "bg-error" : "bg-primary")}
+                  initial={{ width: 0 }}
+                  animate={{ width: `${progress}%` }}
+                  transition={{ duration: 0.5 }}
+                />
+              </div>
+              
+              {apiError && (
+                <div className="mb-lg p-md bg-error-container text-on-error-container rounded-lg text-label-md border border-error">
+                  {apiError}
+                </div>
+              )}
+
+              {apiError ? (
+                <div className="flex gap-md mt-md">
+                   <button onClick={() => navigate("/candidates")} className="flex-1 py-md bg-surface-container hover:bg-surface-container-high text-on-surface font-bold rounded-lg transition-colors">
+                     Back to Uploads
+                   </button>
+                   <button onClick={() => executeRanking()} className="flex-1 py-md bg-primary hover:bg-primary-container text-on-primary font-bold rounded-lg transition-colors">
+                     Retry Analysis
+                   </button>
                 </div>
               ) : (
-                <div className="relative mt-8 space-y-5 pl-2">
-                  <div className="absolute bottom-5 left-7 top-5 w-px bg-[var(--tm-border)]" />
-                  {stepLabels.map((label, index) => {
-                    const completed = activeStep > index
-                    const active = activeStep === index
-                    return (
-                      <div key={label} className={`tm-slide-up relative flex items-start gap-5 ${active || completed ? "opacity-100" : "opacity-55"}`} style={{ animationDelay: `${index * 55}ms` }}>
-                        <span className="z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[var(--tm-border)] bg-[var(--tm-surface)]">
-                          {completed ? <CheckCircle2 className="h-5 w-5 text-[var(--tm-tertiary)]" /> : active ? <Loader2 className="h-5 w-5 animate-spin text-[var(--tm-primary)]" /> : <Circle className="h-5 w-5 text-[var(--tm-muted)]" />}
-                        </span>
-                        <div className="flex-1 pt-1">
-                          <h3 className={`font-bold ${active ? "text-[var(--tm-primary)]" : "text-[var(--tm-text)]"}`}>{label}</h3>
-                          <div className="tm-progress mt-3">
-                            <span className={active ? "tm-pulse-ring" : ""} style={{ width: completed ? "100%" : active ? "66%" : "0%" }} />
-                          </div>
-                        </div>
-                      </div>
-                    )
-                  })}
+                /* Pipeline Steps */
+                <div className="pipeline-track space-y-xl mt-xl relative">
+                  <div className="absolute left-[19px] top-6 bottom-6 w-0.5 bg-surface-container z-0" />
+                  
+                  <PipelineStep
+                    icon={<Check className="w-5 h-5" />}
+                    title="Reading Job Description"
+                    status="COMPLETED"
+                    desc="Extracted key technical competencies and soft skills."
+                    isComplete
+                  />
+                  <PipelineStep
+                    icon={<Check className="w-5 h-5" />}
+                    title="Parsing Resume"
+                    status="COMPLETED"
+                    desc={`Scanned ${uploadedFiles.length} documents. Successfully extracted metadata.`}
+                    isComplete
+                  />
+                  <PipelineStep
+                    icon={<RefreshCw className={cn("w-5 h-5", progress < 100 && "animate-spin")} />}
+                    title="Semantic Matching"
+                    status={progress === 100 ? "COMPLETED" : "IN PROGRESS"}
+                    desc="Cross-referencing historical success patterns..."
+                    isActive={progress < 100}
+                    isComplete={progress === 100}
+                    showSkeletons={progress < 100}
+                  />
+                  <PipelineStep
+                    icon={<BrainCircuit className="w-5 h-5" />}
+                    title="Behavior Analysis"
+                    status="PENDING"
+                    desc={progress === 100 ? "Completed behavior signals extraction." : "Waiting for preceding steps..."}
+                    isPending={progress < 100}
+                    isComplete={progress === 100}
+                  />
+                  <PipelineStep
+                    icon={<BarChart3 className="w-5 h-5" />}
+                    title="Ranking Candidates"
+                    status="PENDING"
+                    desc={progress === 100 ? "Final scores calculated." : "Awaiting final scoring data."}
+                    isPending={progress < 100}
+                    isComplete={progress === 100}
+                  />
+                  <PipelineStep
+                    icon={<FileText className="w-5 h-5" />}
+                    title="Generating Report"
+                    status="PENDING"
+                    desc="Compiling summaries and insights."
+                    isPending={progress < 100}
+                    isComplete={progress === 100}
+                  />
                 </div>
               )}
             </div>
+          </div>
 
-            <div className="tm-card tm-slide-up rounded-2xl p-6" style={{ animationDelay: "140ms" }}>
-              <h2 className="mb-5 text-xl font-bold text-[var(--tm-text)]">System Diagnostics</h2>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <Diagnostic icon={<ShieldCheck />} text="API Connectivity: Stable" />
-                <Diagnostic icon={<Database />} text="Data Integrity: Verified" />
-                <Diagnostic icon={<CheckCircle2 />} text="Memory Allocation: Optimal" />
-                <Diagnostic icon={<Loader2 className="animate-spin" />} text={`Processing Batch ${Math.max(1, activeStep + 1)}/${stepLabels.length}`} active />
+          {/* Right Column */}
+          <div className="lg:col-span-5 space-y-lg">
+            {/* System Checks */}
+            <div className="bg-surface-container-lowest p-xl rounded-xl border border-outline-variant shadow-sm">
+              <h3 className="text-headline-sm font-bold text-on-surface mb-md">System Diagnostics</h3>
+              <div className="grid grid-cols-2 gap-md">
+                <div className="flex items-center gap-sm">
+                  <CheckCircle2 className="w-5 h-5 text-tertiary" />
+                  <span className="text-body-sm text-on-surface-variant font-medium">API Connectivity: Stable</span>
+                </div>
+                <div className="flex items-center gap-sm">
+                  <CheckCircle2 className="w-5 h-5 text-tertiary" />
+                  <span className="text-body-sm text-on-surface-variant font-medium">Data Integrity: Verified</span>
+                </div>
+                <div className="flex items-center gap-sm">
+                  <CheckCircle2 className="w-5 h-5 text-tertiary" />
+                  <span className="text-body-sm text-on-surface-variant font-medium">Memory Allocation: Optimal</span>
+                </div>
+                <div className="flex items-center gap-sm">
+                  {progress < 100 && !apiError ? (
+                    <span className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <CheckCircle2 className="w-5 h-5 text-tertiary" />
+                  )}
+                  <span className="text-body-sm text-on-surface font-medium">Processing Batch {uploadedFiles.length > 0 ? 1 : 0}/1</span>
+                </div>
               </div>
             </div>
-          </section>
 
-          <aside className="space-y-6 lg:col-span-5">
-            <div className="tm-card tm-slide-up rounded-2xl border-dashed p-6" style={{ animationDelay: "180ms" }}>
-              <div className="mb-6 flex items-center justify-between">
-                <h2 className="text-xl font-bold text-[var(--tm-text)]">Live Preview</h2>
-                <span className="rounded bg-[var(--tm-surface-high)] px-3 py-1 text-xs font-bold text-[var(--tm-muted)]">Awaiting Data</span>
+            {/* Live Preview */}
+            <div className="bg-surface p-xl rounded-xl border border-outline-variant border-dashed">
+              <div className="flex justify-between items-center mb-xl">
+                <h3 className="text-headline-sm font-bold text-on-surface">Live Preview</h3>
+                <div className="px-sm py-xs bg-surface-container-high rounded text-on-surface-variant text-label-sm font-bold">
+                  {progress === 100 ? "Ready" : "Awaiting Data"}
+                </div>
               </div>
-              <div className="space-y-6">
-                {[0, 1, 2].map((item) => (
-                  <div key={item} className="flex items-center gap-4">
-                    <div className="tm-shimmer h-12 w-12 rounded-full" />
-                    <div className="flex-1 space-y-2">
-                      <div className="tm-shimmer h-4 w-1/2 rounded" />
-                      <div className="tm-shimmer h-3 w-3/4 rounded opacity-70" />
-                    </div>
-                    <div className="tm-shimmer h-6 w-12 rounded-full" />
-                  </div>
-                ))}
+              
+              <div className="space-y-sm">
+                <CandidateRowSkeleton />
+                <CandidateRowSkeleton />
+                <CandidateRowSkeleton />
               </div>
-              <p className="mt-8 text-center text-sm italic text-[var(--tm-muted)]">Insights will appear here as semantic analysis completes.</p>
+              
+              <p className="mt-xl text-body-sm text-center text-on-surface-variant italic">
+                Insights will appear here as semantic analysis completes.
+              </p>
             </div>
 
-            <div className="tm-card tm-slide-up flex items-start gap-4 rounded-2xl border-[var(--tm-primary)]/20 bg-[var(--tm-primary-soft)]/45 p-5" style={{ animationDelay: "240ms" }}>
-              <Info className="h-5 w-5 shrink-0 text-[var(--tm-primary)]" />
-              <p className="text-sm leading-6 text-[var(--tm-primary)]">Navigating away from this page will pause the visible analysis experience. Ranking results are saved automatically when the backend completes.</p>
+            {/* Action Guard */}
+            <div className="bg-primary-container/10 p-md rounded-xl border border-primary/20 flex gap-md items-start">
+              <Info className="w-5 h-5 text-primary flex-shrink-0" />
+              <p className="text-body-sm text-on-surface-variant">
+                Navigating away from this page will pause the visible analysis experience. Ranking results are saved automatically when the backend completes.
+              </p>
             </div>
-
-            {!errorMessage && (
-              <button onClick={() => navigate("/candidates")} className="tm-secondary-btn flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 font-bold">
-                <X className="h-4 w-4" /> Abort
-              </button>
-            )}
-          </aside>
+          </div>
         </div>
-      </main>
-    </div>
-  )
-}
-
-function formatTime(seconds: number) {
-  const mins = Math.floor(seconds / 60)
-  const secs = seconds % 60
-  return `${mins}m ${secs.toString().padStart(2, "0")}s`
-}
-
-function Diagnostic({ icon, text, active = false }: { icon: React.ReactNode; text: string; active?: boolean }) {
-  return (
-    <div className="flex items-center gap-3 rounded-xl bg-[var(--tm-surface-low)] p-4">
-      <span className={`[&>svg]:h-5 [&>svg]:w-5 ${active ? "text-[var(--tm-primary)]" : "text-[var(--tm-tertiary)]"}`}>{icon}</span>
-      <span className="text-sm font-semibold text-[var(--tm-muted)]">{text}</span>
-    </div>
-  )
-}
-
-function TopBar() {
-  const navigate = useNavigate()
-  return (
-    <header className="tm-topbar">
-      <div className="flex h-full items-center justify-between px-4 md:px-8">
-        <button onClick={() => navigate("/")} className="flex items-center gap-3 transition-opacity hover:opacity-80">
-          <Network className="h-6 w-6 text-[var(--tm-primary)]" />
-          <span className="text-xl font-extrabold text-[var(--tm-primary)]">TalentMind AI</span>
-        </button>
       </div>
-    </header>
+    </AppLayout>
   )
 }
 
-function SideNav() {
-  const navigate = useNavigate()
+function PipelineStep({ 
+  icon, 
+  title, 
+  status, 
+  desc, 
+  isActive, 
+  isComplete, 
+  isPending, 
+  showSkeletons 
+}: { 
+  icon: React.ReactNode
+  title: string
+  status: string
+  desc: string
+  isActive?: boolean
+  isComplete?: boolean
+  isPending?: boolean
+  showSkeletons?: boolean
+}) {
   return (
-    <aside className="tm-sidebar hidden flex-col p-5 pt-20 md:flex">
-      <nav className="flex flex-col gap-1">
-        <button onClick={() => navigate("/dashboard")} className="tm-shell-link"><BarChart3 className="h-5 w-5" /> Dashboard</button>
-        <button onClick={() => navigate("/job")} className="tm-shell-link"><FileText className="h-5 w-5" /> Jobs</button>
-        <button onClick={() => navigate("/candidates")} className="tm-shell-link"><Users className="h-5 w-5" /> Candidates</button>
-        <button className="tm-shell-link tm-shell-link-active"><BarChart3 className="h-5 w-5" /> Pipeline</button>
-        <button onClick={() => navigate("/profile")} className="tm-shell-link mt-6 border-t border-[var(--tm-border)] pt-6"><User className="h-5 w-5" /> Profile</button>
-      </nav>
-      <div className="mt-auto rounded-2xl border border-[var(--tm-border)] bg-[var(--tm-surface-low)] p-5">
-        <p className="tm-label text-[var(--tm-primary)]">Premium Plan</p>
-        <p className="mt-2 text-sm leading-6 text-[var(--tm-muted)]">Human-Centric Intelligence active for 12 roles.</p>
-        <button className="tm-primary-btn mt-4 w-full rounded-lg py-2 text-sm font-bold">Upgrade</button>
+    <div className={cn("flex items-start gap-lg relative z-10", isPending && "opacity-40", isActive && "step-active")}>
+      <div 
+        className={cn(
+          "step-icon w-10 h-10 rounded-full flex items-center justify-center transition-all",
+          isComplete ? "bg-primary text-on-primary" : isActive ? "bg-primary-container text-on-primary-container" : "bg-surface-container text-on-surface-variant"
+        )}
+      >
+        {icon}
       </div>
-    </aside>
+      <div className="flex-1 pt-1">
+        <div className="flex justify-between items-start">
+          <h3 className={cn("text-label-md font-bold", isActive ? "text-primary" : "text-on-surface")}>{title}</h3>
+          <span className={cn("text-label-sm font-bold", isActive ? "text-primary animate-pulse" : isComplete ? "text-tertiary" : "text-on-surface-variant")}>
+            {status}
+          </span>
+        </div>
+        <p className={cn("text-body-sm", isActive ? "text-on-surface font-medium" : "text-on-surface-variant")}>{desc}</p>
+        
+        {showSkeletons && (
+          <div className="mt-sm grid grid-cols-3 gap-sm">
+            <div className="h-1.5 skeleton-shimmer rounded-full" />
+            <div className="h-1.5 skeleton-shimmer rounded-full" />
+            <div className="h-1.5 skeleton-shimmer rounded-full opacity-50" />
+          </div>
+        )}
+      </div>
+    </div>
   )
 }
