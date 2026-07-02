@@ -6,6 +6,9 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        serif: ['"Instrument Serif"', "serif"],
+      },
       colors: {
         border: "var(--border)",
         input: "var(--input)",

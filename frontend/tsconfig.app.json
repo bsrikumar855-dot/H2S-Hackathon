@@ -17,10 +17,10 @@
 
     /* Paths */
     "baseUrl": ".",
+    "ignoreDeprecations": "5.0",
     "paths": {
       "@/*": ["./src/*"]
     },
-    "ignoreDeprecations": "5.0",
 
     /* Linting */
     "noUnusedLocals": true,

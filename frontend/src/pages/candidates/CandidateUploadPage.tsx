@@ -27,7 +27,7 @@ export default function CandidateUploadPage() {
   }
 
   return (
-    <div className="tm-page">
+    <div className="tm-page bg-black text-white min-h-screen">
       <TopBar />
       <SideNav active="upload" />
       <main className="tm-content-with-sidebar tm-topbar-offset flex min-h-screen flex-col">
@@ -68,7 +68,7 @@ export default function CandidateUploadPage() {
                 }}
                 onDrop={handleDrop}
                 className={`tm-card flex min-h-[400px] cursor-pointer flex-col items-center justify-center rounded-3xl border-2 border-dashed p-10 text-center transition duration-300 ${
-                  isDragActive ? "scale-[1.01] border-[var(--tm-primary)] bg-[var(--tm-surface-low)]" : "border-[var(--tm-border)] bg-white"
+                  isDragActive ? "scale-[1.01] border-[var(--tm-primary)] bg-[var(--tm-surface-low)]" : "border-[var(--tm-border)] bg-[var(--tm-surface)]"
                 }`}
               >
                 <div className="relative mb-8">
@@ -105,8 +105,8 @@ export default function CandidateUploadPage() {
             </section>
 
             <section className="tm-slide-up lg:col-span-7" style={{ animationDelay: "120ms" }}>
-              <div className="tm-card flex min-h-[540px] flex-col overflow-hidden rounded-3xl bg-white">
-                <div className="flex items-center justify-between border-b border-[var(--tm-border)] bg-white px-6 py-5">
+              <div className="tm-card flex min-h-[540px] flex-col overflow-hidden rounded-3xl">
+                <div className="flex items-center justify-between border-b border-[var(--tm-border)] bg-[var(--tm-surface-low)] px-6 py-5">
                   <div className="flex items-center gap-3">
                     <h2 className="text-xl font-bold">Queue Manager</h2>
                     <span className="rounded-full bg-[var(--tm-primary-soft)] px-2 py-1 text-[11px] font-extrabold text-[var(--tm-primary)]">{uploadedFiles.length} FILES</span>
@@ -129,7 +129,7 @@ export default function CandidateUploadPage() {
                     </div>
                   ) : (
                     uploadedFiles.map((file, index) => (
-                      <div key={file.name} className="tm-slide-up group flex items-center gap-4 rounded-2xl border border-[var(--tm-border)] bg-white p-4 transition hover:shadow-md" style={{ animationDelay: `${index * 50}ms` }}>
+                      <div key={file.name} className="tm-slide-up group flex items-center gap-4 rounded-2xl border border-[var(--tm-border)] bg-[var(--tm-surface)] p-4 transition hover:shadow-md" style={{ animationDelay: `${index * 50}ms` }}>
                         <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[var(--tm-surface-mid)] text-[var(--tm-primary)]">
                           <FileText className="h-5 w-5" />
                         </span>
@@ -241,7 +241,7 @@ function SideNav({ active }: { active: "job" | "upload" | "dashboard" }) {
 function MobileNav() {
   const navigate = useNavigate()
   return (
-    <nav className="fixed bottom-0 left-0 z-50 flex w-full justify-around border-t border-[var(--tm-border)] bg-white py-2 shadow-lg md:hidden">
+    <nav className="fixed bottom-0 left-0 z-50 flex w-full justify-around border-t border-[var(--tm-border)] bg-[var(--tm-bg)] py-2 shadow-lg md:hidden">
       <button onClick={() => navigate("/dashboard")} className="flex flex-col items-center text-[var(--tm-muted)]"><Home className="h-5 w-5" /><small>Home</small></button>
       <button onClick={() => navigate("/candidates")} className="flex flex-col items-center font-bold text-[var(--tm-primary)]"><UploadCloud className="h-5 w-5" /><small>Resumes</small></button>
       <button onClick={() => navigate("/profile")} className="flex flex-col items-center text-[var(--tm-muted)]"><User className="h-5 w-5" /><small>Profile</small></button>

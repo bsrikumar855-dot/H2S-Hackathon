@@ -50,7 +50,7 @@ export default function AIProcessingPage() {
   }, [])
 
   return (
-    <div className="tm-page">
+    <div className="tm-page bg-black text-white min-h-screen">
       <TopBar />
       <SideNav />
       <main className="tm-content-with-sidebar tm-topbar-offset mx-auto min-h-screen max-w-[1440px] px-4 py-8 md:px-8">
@@ -69,7 +69,7 @@ export default function AIProcessingPage() {
 
         <div className="grid gap-6 lg:grid-cols-12">
           <section className="space-y-6 lg:col-span-7">
-            <div className="tm-card tm-slide-up rounded-2xl bg-white p-6 md:p-8">
+            <div className="tm-card tm-slide-up rounded-2xl p-6 md:p-8">
               <div className="mb-8 flex items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
                   <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--tm-primary)] text-white">
@@ -104,7 +104,7 @@ export default function AIProcessingPage() {
                     const active = activeStep === index
                     return (
                       <div key={label} className={`tm-slide-up relative flex items-start gap-5 ${active || completed ? "opacity-100" : "opacity-55"}`} style={{ animationDelay: `${index * 55}ms` }}>
-                        <span className="z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[var(--tm-border)] bg-white">
+                        <span className="z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[var(--tm-border)] bg-[var(--tm-surface)]">
                           {completed ? <CheckCircle2 className="h-5 w-5 text-[var(--tm-tertiary)]" /> : active ? <Loader2 className="h-5 w-5 animate-spin text-[var(--tm-primary)]" /> : <Circle className="h-5 w-5 text-[var(--tm-muted)]" />}
                         </span>
                         <div className="flex-1 pt-1">
@@ -120,7 +120,7 @@ export default function AIProcessingPage() {
               )}
             </div>
 
-            <div className="tm-card tm-slide-up rounded-2xl bg-white p-6" style={{ animationDelay: "140ms" }}>
+            <div className="tm-card tm-slide-up rounded-2xl p-6" style={{ animationDelay: "140ms" }}>
               <h2 className="mb-5 text-xl font-bold text-[var(--tm-text)]">System Diagnostics</h2>
               <div className="grid gap-4 sm:grid-cols-2">
                 <Diagnostic icon={<ShieldCheck />} text="API Connectivity: Stable" />
@@ -132,7 +132,7 @@ export default function AIProcessingPage() {
           </section>
 
           <aside className="space-y-6 lg:col-span-5">
-            <div className="tm-card tm-slide-up rounded-2xl border-dashed bg-white p-6" style={{ animationDelay: "180ms" }}>
+            <div className="tm-card tm-slide-up rounded-2xl border-dashed p-6" style={{ animationDelay: "180ms" }}>
               <div className="mb-6 flex items-center justify-between">
                 <h2 className="text-xl font-bold text-[var(--tm-text)]">Live Preview</h2>
                 <span className="rounded bg-[var(--tm-surface-high)] px-3 py-1 text-xs font-bold text-[var(--tm-muted)]">Awaiting Data</span>
@@ -209,7 +209,7 @@ function SideNav() {
         <button className="tm-shell-link tm-shell-link-active"><BarChart3 className="h-5 w-5" /> Pipeline</button>
         <button onClick={() => navigate("/profile")} className="tm-shell-link mt-6 border-t border-[var(--tm-border)] pt-6"><User className="h-5 w-5" /> Profile</button>
       </nav>
-      <div className="mt-auto rounded-2xl border border-[var(--tm-border)] bg-white p-5">
+      <div className="mt-auto rounded-2xl border border-[var(--tm-border)] bg-[var(--tm-surface-low)] p-5">
         <p className="tm-label text-[var(--tm-primary)]">Premium Plan</p>
         <p className="mt-2 text-sm leading-6 text-[var(--tm-muted)]">Human-Centric Intelligence active for 12 roles.</p>
         <button className="tm-primary-btn mt-4 w-full rounded-lg py-2 text-sm font-bold">Upgrade</button>

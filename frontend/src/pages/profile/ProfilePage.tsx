@@ -10,7 +10,7 @@ export default function ProfilePage() {
   const [twoFactorAuth, setTwoFactorAuth] = useState(true)
   
   return (
-    <div className="tm-page">
+    <div className="tm-page bg-black text-white min-h-screen">
       <TopBar />
       <SideNav active="profile" />
       <main className="tm-content-with-sidebar tm-topbar-offset flex min-h-screen flex-col">
@@ -25,7 +25,7 @@ export default function ProfilePage() {
             
             {/* Left Column: Profile Card */}
             <section className="tm-slide-up flex flex-col gap-6 lg:col-span-4">
-              <div className="tm-card rounded-3xl bg-white p-8 text-center">
+              <div className="tm-card rounded-3xl p-8 text-center">
                 <div className="relative mx-auto mb-6 h-32 w-32">
                   <div className="flex h-full w-full items-center justify-center rounded-full border border-[var(--tm-border)] bg-[var(--tm-surface-mid)] font-bold text-[var(--tm-primary)] text-4xl">
                     A
@@ -51,7 +51,7 @@ export default function ProfilePage() {
 
             {/* Right Column: Settings */}
             <section className="tm-slide-up lg:col-span-8" style={{ animationDelay: "120ms" }}>
-              <div className="tm-card rounded-3xl bg-white p-8 md:p-10">
+              <div className="tm-card rounded-3xl p-8 md:p-10">
                 <h2 className="mb-8 text-2xl font-bold text-[var(--tm-text)]">General Settings</h2>
                 
                 <div className="space-y-8">
@@ -63,11 +63,11 @@ export default function ProfilePage() {
                     <div className="grid gap-4 md:grid-cols-2">
                       <div>
                         <label className="mb-2 block text-sm font-bold text-[var(--tm-muted)]">First Name</label>
-                        <input type="text" defaultValue="Alex" className="w-full rounded-xl border border-[var(--tm-border)] bg-[var(--tm-surface-low)] px-4 py-3 outline-none transition focus:border-[var(--tm-primary)] focus:bg-white" />
+                        <input type="text" defaultValue="Alex" className="w-full rounded-xl border border-[var(--tm-border)] bg-[var(--tm-surface-low)] px-4 py-3 outline-none transition focus:border-[var(--tm-primary)] focus:bg-[var(--tm-surface)]" />
                       </div>
                       <div>
                         <label className="mb-2 block text-sm font-bold text-[var(--tm-muted)]">Last Name</label>
-                        <input type="text" defaultValue="Sterling" className="w-full rounded-xl border border-[var(--tm-border)] bg-[var(--tm-surface-low)] px-4 py-3 outline-none transition focus:border-[var(--tm-primary)] focus:bg-white" />
+                        <input type="text" defaultValue="Sterling" className="w-full rounded-xl border border-[var(--tm-border)] bg-[var(--tm-surface-low)] px-4 py-3 outline-none transition focus:border-[var(--tm-primary)] focus:bg-[var(--tm-surface)]" />
                       </div>
                     </div>
                     <button className="tm-secondary-btn mt-4 rounded-xl px-6 py-2.5 font-bold">Save Changes</button>
@@ -197,7 +197,7 @@ function SideNav({ active }: { active: string }) {
 function MobileNav() {
   const navigate = useNavigate()
   return (
-    <nav className="fixed bottom-0 left-0 z-50 flex w-full justify-around border-t border-[var(--tm-border)] bg-white py-2 shadow-lg md:hidden">
+    <nav className="fixed bottom-0 left-0 z-50 flex w-full justify-around border-t border-[var(--tm-border)] bg-[var(--tm-bg)] py-2 shadow-lg md:hidden">
       <button onClick={() => navigate("/dashboard")} className="flex flex-col items-center text-[var(--tm-muted)]"><BarChart3 className="h-5 w-5" /><small>Dashboard</small></button>
       <button onClick={() => navigate("/candidates")} className="flex flex-col items-center text-[var(--tm-muted)]"><UploadCloud className="h-5 w-5" /><small>Resumes</small></button>
       <button onClick={() => navigate("/profile")} className="flex flex-col items-center font-bold text-[var(--tm-primary)]"><User className="h-5 w-5" /><small>Profile</small></button>

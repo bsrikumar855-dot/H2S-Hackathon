@@ -43,7 +43,7 @@ export default function JobInputPage() {
   }
 
   return (
-    <div className="tm-page">
+    <div className="tm-page bg-black text-white min-h-screen">
       <TopBar />
       <main className="tm-topbar-offset mx-auto flex min-h-screen max-w-[1440px] flex-col gap-8 px-4 py-8 lg:flex-row lg:px-8">
         <aside className="tm-slide-up w-full shrink-0 space-y-6 lg:w-[280px]">
@@ -61,7 +61,7 @@ export default function JobInputPage() {
               <Tip title="Inclusion" text="Use clear, neutral language." />
             </div>
           </div>
-          <div className="group relative h-52 overflow-hidden rounded-2xl bg-[var(--tm-text)]">
+          <div className="group relative h-52 overflow-hidden rounded-2xl bg-[var(--tm-surface)]">
             <img src="/inspiration_bg.png" alt="Inspiration" className="absolute inset-0 h-full w-full object-cover opacity-80 transition duration-700 group-hover:scale-105 group-hover:opacity-100" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
             <div className="absolute inset-x-0 bottom-0 p-5 z-10">
@@ -97,7 +97,7 @@ export default function JobInputPage() {
                   <span className="tm-label flex items-center gap-2">
                     <FileText className="h-4 w-4 text-[var(--tm-primary)]" /> Detailed Description
                   </span>
-                  <span className="rounded-full border border-[var(--tm-border)] bg-white/70 px-3 py-1 text-xs font-semibold text-[var(--tm-muted)]">
+                  <span className="rounded-full border border-[var(--tm-border)] bg-[var(--tm-surface-low)] px-3 py-1 text-xs font-semibold text-[var(--tm-muted)]">
                     {wordCount} words / {jobDescription.length.toLocaleString()} chars
                   </span>
                 </div>

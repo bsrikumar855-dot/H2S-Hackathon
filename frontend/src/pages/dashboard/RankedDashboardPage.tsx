@@ -14,7 +14,7 @@ const exportPDF = async (elementId: string, filename: string) => {
     const canvas = await html2canvas(element, { 
       scale: 2, 
       useCORS: true,
-      backgroundColor: '#f9f9ff',
+      backgroundColor: '#000000',
       onclone: (clonedDoc) => {
         const style = clonedDoc.createElement('style')
         style.innerHTML = '* { animation: none !important; transition: none !important; }'
@@ -38,12 +38,18 @@ const exportPDF = async (elementId: string, filename: string) => {
     let heightLeft = pdfHeight
     let position = 0
 
+    // Fill entire first page with black
+    pdf.setFillColor(0, 0, 0)
+    pdf.rect(0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight(), 'F')
+
     pdf.addImage(imgData, "PNG", 0, position, pdfWidth, pdfHeight)
     heightLeft -= pdf.internal.pageSize.getHeight()
 
     while (heightLeft > 0) {
       position = heightLeft - pdfHeight
       pdf.addPage()
+      pdf.setFillColor(0, 0, 0)
+      pdf.rect(0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight(), 'F')
       pdf.addImage(imgData, "PNG", 0, position, pdfWidth, pdfHeight)
       heightLeft -= pdf.internal.pageSize.getHeight()
     }
@@ -86,7 +92,7 @@ export default function RankedDashboardPage() {
   if (apiRankings.length === 0) {
     return (
       <div className="tm-page flex min-h-screen items-center justify-center px-4">
-        <div className="tm-card max-w-md rounded-2xl bg-white p-8 text-center">
+        <div className="tm-card max-w-md rounded-2xl p-8 text-center">
           <Network className="mx-auto mb-4 h-10 w-10 text-[var(--tm-primary)]" />
           <h1 className="text-2xl font-bold text-[var(--tm-text)]">No Evaluation Results</h1>
           <p className="mt-3 leading-6 text-[var(--tm-muted)]">Run a job and candidate analysis to generate the TalentMind dashboard.</p>
@@ -104,9 +110,9 @@ export default function RankedDashboardPage() {
   }
 
   return (
-    <div className="tm-page">
+    <div className="tm-page bg-black text-white min-h-screen">
       <SideNav />
-      <header className="fixed right-0 top-0 z-40 hidden h-16 items-center justify-between border-b border-[var(--tm-border)] bg-white px-6 md:flex md:left-[280px]">
+      <header className="fixed right-0 top-0 z-40 hidden h-16 items-center justify-between border-b border-[var(--tm-border)] bg-[var(--tm-bg)] px-6 md:flex md:left-[280px]">
         <div className="relative w-full max-w-md">
           <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--tm-muted)]" />
           <input
@@ -149,7 +155,7 @@ export default function RankedDashboardPage() {
           </section>
 
           <section className="mb-10 grid gap-6 lg:grid-cols-12">
-            <div className="tm-card tm-slide-up rounded-2xl bg-white p-6 lg:col-span-8">
+            <div className="tm-card tm-slide-up rounded-2xl p-6 lg:col-span-8">
               <div className="mb-6 flex items-center justify-between">
                 <div>
                   <h2 className="text-xl font-bold">Top Skill Coverage</h2>
@@ -160,8 +166,8 @@ export default function RankedDashboardPage() {
               <div className="flex h-[260px] items-end gap-4">
                 {topSkills.map((skill, index) => (
                   <div key={skill.name} className="flex flex-1 flex-col items-center gap-3">
-                    <div className="relative flex w-full items-end overflow-hidden rounded-t-xl bg-[var(--tm-primary-soft)]" style={{ height: "220px" }}>
-                      <div className="w-full rounded-t-xl bg-[var(--tm-primary)] transition-all duration-700" style={{ height: `${skill.percent}%`, animationDelay: `${index * 80}ms` }} />
+                    <div className="relative w-full rounded-t-xl bg-[var(--tm-primary-soft)]" style={{ height: "220px" }}>
+                      <div className="absolute bottom-0 left-0 w-full rounded-t-xl bg-[var(--tm-primary)] transition-all duration-700" style={{ height: `${skill.percent}%` }} />
                       <span className="absolute -top-7 left-1/2 -translate-x-1/2 text-xs font-bold text-[var(--tm-primary)]">{skill.percent}%</span>
                     </div>
                     <span className="max-w-[120px] truncate text-center text-xs font-bold uppercase tracking-[0.05em] text-[var(--tm-muted)]">{skill.name}</span>
@@ -170,7 +176,7 @@ export default function RankedDashboardPage() {
               </div>
             </div>
 
-            <div className="tm-card tm-slide-up rounded-2xl bg-white p-6 lg:col-span-4" style={{ animationDelay: "120ms" }}>
+            <div className="tm-card tm-slide-up rounded-2xl p-6 lg:col-span-4" style={{ animationDelay: "120ms" }}>
               <h2 className="text-xl font-bold">Match Radar</h2>
               <p className="mt-1 text-sm text-[var(--tm-muted)]">Pipeline signal integrity</p>
               <div className="mt-8 flex justify-center">
@@ -216,7 +222,7 @@ export default function RankedDashboardPage() {
 
 function Kpi({ icon, label, value, detail }: { icon: React.ReactNode; label: string; value: string; detail: string }) {
   return (
-    <div className="tm-card tm-slide-up rounded-2xl bg-white p-6">
+    <div className="tm-card tm-slide-up rounded-2xl p-6">
       <div className="mb-5 flex items-start justify-between">
         <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[var(--tm-primary-soft)] text-[var(--tm-primary)] [&>svg]:h-5 [&>svg]:w-5">{icon}</span>
         <span className="rounded-full bg-[var(--tm-tertiary-soft)] px-3 py-1 text-xs font-bold text-[var(--tm-tertiary)]">Live</span>
@@ -231,7 +237,7 @@ function Kpi({ icon, label, value, detail }: { icon: React.ReactNode; label: str
 function CandidateCard({ candidate, index, onSelect }: { candidate: RankingRunItem; index: number; onSelect: () => void }) {
   const score = pct(candidate.score)
   return (
-    <article onClick={onSelect} className="tm-card tm-slide-up group flex cursor-pointer flex-col gap-5 rounded-2xl bg-white p-5 transition hover:bg-[var(--tm-surface-low)] md:flex-row md:items-center" style={{ animationDelay: `${index * 70}ms` }}>
+    <article onClick={onSelect} className="tm-card tm-slide-up group flex cursor-pointer flex-col gap-5 rounded-2xl p-5 transition hover:bg-[var(--tm-surface-low)] md:flex-row md:items-center" style={{ animationDelay: `${index * 70}ms` }}>
       <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border-2 border-[var(--tm-border)] bg-[var(--tm-primary-soft)] text-xl font-bold text-[var(--tm-primary)]">
         {initials(candidate.candidate.candidate_name)}
       </div>
@@ -262,7 +268,7 @@ function CandidateDrawer({ candidate, onClose }: { candidate: RankingRunItem | n
   return (
     <div className="fixed inset-0 z-[70]">
       <div className="absolute inset-0 bg-[rgba(20,27,43,0.42)] backdrop-blur-sm" onClick={onClose} />
-      <aside id="candidate-profile" className="tm-drawer absolute right-0 top-0 flex h-full w-full max-w-[760px] flex-col overflow-hidden border-l border-[var(--tm-border)] bg-white shadow-2xl">
+      <aside id="candidate-profile" className="tm-drawer absolute right-0 top-0 flex h-full w-full max-w-[760px] flex-col overflow-hidden border-l border-[var(--tm-border)] bg-[var(--tm-bg)] shadow-2xl">
         <header className="flex items-start justify-between border-b border-[var(--tm-border)] p-6">
           <div className="flex gap-4">
             <span className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-[var(--tm-primary-soft)] text-2xl font-bold text-[var(--tm-primary)]">
@@ -331,7 +337,7 @@ function CandidateDrawer({ candidate, onClose }: { candidate: RankingRunItem | n
 
 function Metric({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-2xl border border-[var(--tm-border)] bg-white p-5">
+    <div className="rounded-2xl border border-[var(--tm-border)] bg-[var(--tm-surface-low)] p-5">
       <div className="mb-3 flex justify-between text-sm font-bold">
         <span>{label}</span>
         <span>{value}%</span>
