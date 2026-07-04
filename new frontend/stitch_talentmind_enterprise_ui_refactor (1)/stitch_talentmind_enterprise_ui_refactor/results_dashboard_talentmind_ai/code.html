@@ -121,32 +121,32 @@
 <!-- Side Navigation Bar -->
 <nav class="fixed h-full w-sidebar-width left-0 top-0 border-r border-outline-variant bg-surface flex flex-col p-lg z-50">
 <div class="mb-3xl">
-<h1 class="text-headline-md font-headline-md font-bold text-primary">TalentMind AI</h1>
+<h1 class="text-headline-md font-headline-md font-bold text-primary cursor-pointer hover:opacity-85 transition-opacity" onclick="navigateTo('home')">TalentMind AI</h1>
 <p class="text-label-sm font-label-sm text-on-surface-variant">Enterprise Recruitment</p>
 </div>
 <div class="flex-1 space-y-sm">
-<a class="flex items-center gap-md px-md py-sm bg-secondary-container text-on-secondary-container rounded-lg font-bold scale-[0.98] transition-all duration-200" href="#">
+<a class="flex items-center gap-md px-md py-sm bg-secondary-container text-on-secondary-container rounded-lg font-bold scale-[0.98] transition-all duration-200" href="/results_dashboard_talentmind_ai/code.html">
 <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
 <span class="text-label-md font-label-md">Dashboard</span>
 </a>
-<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors group" href="#">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors group" href="/job_analysis_talentmind_ai/code.html">
 <span class="material-symbols-outlined group-hover:text-primary transition-colors" data-icon="analytics">analytics</span>
 <span class="text-label-md font-label-md">Job Analysis</span>
 </a>
-<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors group" href="#">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors group" href="/upload_resumes_talentmind_ai/code.html">
 <span class="material-symbols-outlined group-hover:text-primary transition-colors" data-icon="description">description</span>
 <span class="text-label-md font-label-md">Resumes</span>
 </a>
-<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors group" href="#">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors group" href="/ai_processing_talentmind_ai/code.html">
 <span class="material-symbols-outlined group-hover:text-primary transition-colors" data-icon="view_kanban">view_kanban</span>
 <span class="text-label-md font-label-md">Pipeline</span>
 </a>
-<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors group" href="#">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors group" href="/executive_report_talentmind_ai/code.html">
 <span class="material-symbols-outlined group-hover:text-primary transition-colors" data-icon="settings">settings</span>
-<span class="text-label-md font-label-md">Settings</span>
+<span class="text-label-md font-label-md">Reports</span>
 </a>
 </div>
-<button class="mb-xl bg-primary text-on-primary px-lg py-md rounded-xl font-bold flex items-center justify-center gap-sm hover:opacity-90 transition-opacity">
+<button onclick="navigateTo('jobAnalysis')" class="mb-xl bg-primary text-on-primary px-lg py-md rounded-xl font-bold flex items-center justify-center gap-sm hover:opacity-90 transition-opacity">
 <span class="material-symbols-outlined" data-icon="add">add</span>
 <span>New Job Post</span>
 </button>
@@ -170,14 +170,6 @@
 </div>
 </div>
 <div class="flex items-center gap-lg">
-<button class="relative p-sm text-on-surface-variant hover:text-primary transition-colors">
-<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
-<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
-</button>
-<button class="p-sm text-on-surface-variant hover:text-primary transition-colors">
-<span class="material-symbols-outlined" data-icon="chat_bubble">chat_bubble</span>
-</button>
-<div class="h-8 w-px bg-outline-variant"></div>
 <div class="flex items-center gap-md">
 <div class="text-right hidden lg:block">
 <p class="text-label-md font-bold">Alexander Reed</p>
@@ -196,12 +188,18 @@
 <div class="relative">
 <span class="text-label-md font-bold text-primary mb-base block">Welcome back, Alexander</span>
 <h2 class="text-headline-lg font-headline-lg text-on-surface">Recruitment Dashboard</h2>
-<p class="text-body-md text-on-surface-variant">Monitoring your high-priority Senior Engineering roles.</p>
+<p class="text-body-md text-on-surface-variant" id="dashboard-subtitle">Monitoring your high-priority Senior Engineering roles.</p>
 </div>
+<div class="flex items-center gap-md">
+<button id="resetDemoBtn" class="flex items-center gap-xs px-md py-sm bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm rounded-lg active:scale-95 transition-all shadow-sm hover:opacity-90">
+<span class="material-symbols-outlined text-[18px]">sync</span>
+<span>Reset Demo</span>
+</button>
 <div class="flex items-center gap-sm bg-surface-container p-sm rounded-lg border border-outline-variant">
 <span class="material-symbols-outlined text-primary" data-icon="calendar_today">calendar_today</span>
 <span class="text-label-md font-bold">Oct 24, 2024 - Oct 31, 2024</span>
 <span class="material-symbols-outlined text-on-surface-variant cursor-pointer" data-icon="expand_more">expand_more</span>
+</div>
 </div>
 </div>
 <!-- KPI Bento Grid -->
@@ -263,7 +261,7 @@
 <h3 class="text-headline-lg font-headline-lg" id="count-applicants">0</h3>
 </div>
 </div>
-<p class="text-label-sm text-on-surface-variant mt-md">Active for Senior Backend Eng.</p>
+<p class="text-label-sm text-on-surface-variant mt-md" id="dashboard-active-role">Active for Senior Backend Eng.</p>
 </div>
 </div>
 <!-- Candidate Section Header -->
@@ -287,88 +285,8 @@
 </div>
 </div>
 <!-- Candidate List -->
-<div class="space-y-md">
-<!-- Candidate Card 1 -->
-<div class="group bg-surface border border-outline-variant p-lg rounded-xl flex items-center gap-lg hover:bg-surface-container-low hover:border-primary transition-all duration-300 animate-slide-up" style="animation-delay: 0.4s;">
-<div class="w-16 h-16 rounded-full overflow-hidden border-2 border-primary ring-4 ring-primary-fixed">
-<img class="w-full h-full object-cover" data-alt="A studio portrait of a modern software architect, a man in his late 30s with short hair and glasses, wearing a sleek grey sweater. The style is bright and airy with a neutral background, capturing a clean, professional, and intellectual personality typical for high-level tech recruitment platforms." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBisNLDAm5hFmZ4IUgTGTLATf1Io3cAB-6RCxD7Q6cLQdivwIpR3YZHq1VhHzVrNqzsJVk6PxBTq6Er1KREFzH_dNuUVs3pmKWzL0XrZsWa7qDiQOl9nKRtEaktv9sNERKyaIhcrOD1GwzuyotjZvfz3PeTVrwbWmrUdsdgUT3toH4p6FO044gAmqypVTZ6IQqHqgw-M4F9ZLG5XtPVFqj2V9ac0lqGCUxVYLG54paxIW2m_BiSn8hqzWEMfdFzpWF2YNjBgboYZO3B"/>
-</div>
-<div class="flex-1">
-<div class="flex items-center gap-sm mb-xs">
-<h5 class="text-headline-sm font-bold">Marcus Holloway</h5>
-<span class="px-sm py-0.5 bg-primary-fixed text-primary text-[10px] font-bold rounded uppercase tracking-wider">Top Talent</span>
-</div>
-<p class="text-body-md text-on-surface-variant mb-sm">Principal Backend Engineer at Nexa Systems</p>
-<div class="flex flex-wrap gap-xs">
-<span class="px-md py-1 bg-surface-container text-on-surface-variant text-label-sm rounded-full">Kubernetes</span>
-<span class="px-md py-1 bg-surface-container text-on-surface-variant text-label-sm rounded-full">Go</span>
-<span class="px-md py-1 bg-surface-container text-on-surface-variant text-label-sm rounded-full">Distributed Systems</span>
-<span class="px-md py-1 bg-surface-container text-on-surface-variant text-label-sm rounded-full">+4 more</span>
-</div>
-</div>
-<div class="text-right">
-<div class="mb-sm">
-<p class="text-label-sm text-on-surface-variant uppercase tracking-widest">Match Score</p>
-<p class="text-headline-md font-headline-md text-primary">94.2%</p>
-</div>
-<button class="px-lg py-sm bg-surface-container-highest text-on-surface font-bold rounded-lg hover:bg-primary hover:text-on-primary transition-all duration-200">
-                        View Profile
-                    </button>
-</div>
-</div>
-<!-- Candidate Card 2 -->
-<div class="group bg-surface border border-outline-variant p-lg rounded-xl flex items-center gap-lg hover:bg-surface-container-low hover:border-primary transition-all duration-300 animate-slide-up" style="animation-delay: 0.5s;">
-<div class="w-16 h-16 rounded-full overflow-hidden border-2 border-outline-variant">
-<img class="w-full h-full object-cover" data-alt="A high-quality professional portrait of a female software engineer, featuring a minimalist white studio background. She has a warm smile and is wearing a stylish blazer over a simple white top. The lighting is crisp and bright, embodying a premium corporate look that aligns with a high-end talent acquisition dashboard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBR09MKYyRIOZh4rVhwDOGcenxPekVDsNhmD9f6yAxUFg0ogsCuqCLuW0s981HkltIPsTTDNpQUv-PBD9MTgD337F2hOexI4RC91Bq4ZlgBXV9ovXoJrNAnC6O76lzxhWcgpuPzs3WnAm6x9iKm5-io-0BZFIBGbcdREg-a-kAP0tyGaDE3-7_kzzR1aYt40iYW63gtKHUkcOX4eDIU8x6aHh4QKFn4tUDQbJIkbLtV9ecJHiE9yyguLsVmN1Oj47_M5m-bTZ2HLJi4"/>
-</div>
-<div class="flex-1">
-<div class="flex items-center gap-sm mb-xs">
-<h5 class="text-headline-sm font-bold">Elena Rodriguez</h5>
-</div>
-<p class="text-body-md text-on-surface-variant mb-sm">Senior Cloud Architect at GlobalOne</p>
-<div class="flex flex-wrap gap-xs">
-<span class="px-md py-1 bg-surface-container text-on-surface-variant text-label-sm rounded-full">AWS</span>
-<span class="px-md py-1 bg-surface-container text-on-surface-variant text-label-sm rounded-full">Terraform</span>
-<span class="px-md py-1 bg-surface-container text-on-surface-variant text-label-sm rounded-full">Python</span>
-</div>
-</div>
-<div class="text-right">
-<div class="mb-sm">
-<p class="text-label-sm text-on-surface-variant uppercase tracking-widest">Match Score</p>
-<p class="text-headline-md font-headline-md text-on-surface">89.5%</p>
-</div>
-<button class="px-lg py-sm bg-surface-container-highest text-on-surface font-bold rounded-lg hover:bg-primary hover:text-on-primary transition-all duration-200">
-                        View Profile
-                    </button>
-</div>
-</div>
-<!-- Candidate Card 3 -->
-<div class="group bg-surface border border-outline-variant p-lg rounded-xl flex items-center gap-lg hover:bg-surface-container-low hover:border-primary transition-all duration-300 animate-slide-up" style="animation-delay: 0.6s;">
-<div class="w-16 h-16 rounded-full overflow-hidden border-2 border-outline-variant">
-<img class="w-full h-full object-cover" data-alt="A clean, professional headshot of a diverse male candidate in a professional casual outfit, looking straight into the camera with a calm expression. The setting is a bright, airy co-working space with soft background bokeh. The image adheres to a modern corporate minimalism style with neutral tones and high-key lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqNNU7g62qX5NgpiX2oS5MmGyGDjA0FtiCkupinwuZHm5RCot86sSczwApDoRTVRvKAmPbguWCGRlAlOw26x1K0jPMH-IArlF274cR9EsdF0pJJY3xehOsvTt625uic8MFzZF8u4b7brddVLlG2_99o7BJHqsneH2-VNiwBGOdNA_hb8gzI6oDqrEGOL9daU_fK_2ZRExNiV3SzNcA0A0aB8M0PnuPMOzhsaoqX4FThCGh8eK01x_9rjU8ANIlzmjXzQi9SGopKDt9"/>
-</div>
-<div class="flex-1">
-<div class="flex items-center gap-sm mb-xs">
-<h5 class="text-headline-sm font-bold">Jordan Smith</h5>
-<span class="px-sm py-0.5 bg-tertiary-container text-on-tertiary-container text-[10px] font-bold rounded uppercase tracking-wider">Fast Track</span>
-</div>
-<p class="text-body-md text-on-surface-variant mb-sm">Staff Engineer at InnovateHQ</p>
-<div class="flex flex-wrap gap-xs">
-<span class="px-md py-1 bg-surface-container text-on-surface-variant text-label-sm rounded-full">React</span>
-<span class="px-md py-1 bg-surface-container text-on-surface-variant text-label-sm rounded-full">Node.js</span>
-<span class="px-md py-1 bg-surface-container text-on-surface-variant text-label-sm rounded-full">Redis</span>
-</div>
-</div>
-<div class="text-right">
-<div class="mb-sm">
-<p class="text-label-sm text-on-surface-variant uppercase tracking-widest">Match Score</p>
-<p class="text-headline-md font-headline-md text-on-surface">88.2%</p>
-</div>
-<button class="px-lg py-sm bg-surface-container-highest text-on-surface font-bold rounded-lg hover:bg-primary hover:text-on-primary transition-all duration-200">
-                        View Profile
-                    </button>
-</div>
-</div>
+<div id="candidate-list-container" class="space-y-md">
+    <!-- Loaded dynamically by JavaScript -->
 </div>
 <!-- Load More -->
 <div class="mt-2xl text-center">
@@ -391,6 +309,7 @@
 </div>
 </footer>
 <!-- Scripts for Counters & Interactions -->
+<script src="/api.js"></script>
 <script>
         function animateValue(id, start, end, duration, isFloat = false) {
             const obj = document.getElementById(id);
@@ -407,23 +326,92 @@
             window.requestAnimationFrame(step);
         }
 
+        function renderCandidates() {
+            const container = document.getElementById('candidate-list-container');
+            const candidates = getRankedCandidates();
+            container.innerHTML = '';
+
+            candidates.forEach((cand, index) => {
+                const isTop = index === 0;
+                const isFast = index === 2;
+                const badge = isTop 
+                    ? `<span class="px-sm py-0.5 bg-primary-fixed text-primary text-[10px] font-bold rounded uppercase tracking-wider">Top Talent</span>`
+                    : isFast
+                    ? `<span class="px-sm py-0.5 bg-tertiary-container text-on-tertiary-container text-[10px] font-bold rounded uppercase tracking-wider">Fast Track</span>`
+                    : '';
+
+                const scoreClass = isTop ? 'text-primary' : 'text-on-surface';
+
+                const skillsHTML = cand.skills.map(s => 
+                    `<span class="px-md py-1 bg-surface-container text-on-surface-variant text-label-sm rounded-full">${s}</span>`
+                ).join('');
+
+                const card = document.createElement('div');
+                card.className = `group bg-surface border border-outline-variant p-lg rounded-xl flex items-center gap-lg hover:bg-surface-container-low hover:border-primary transition-all duration-300 animate-slide-up`;
+                card.style.animationDelay = `${0.3 + index * 0.1}s`;
+                
+                card.innerHTML = `
+                    <div class="w-16 h-16 rounded-full overflow-hidden border-2 ${isTop ? 'border-primary ring-4 ring-primary-fixed' : 'border-outline-variant'}">
+                        <img class="w-full h-full object-cover" alt="${cand.name} avatar" src="${cand.avatar}"/>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-sm mb-xs">
+                            <h5 class="text-headline-sm font-bold">${cand.name}</h5>
+                            ${badge}
+                        </div>
+                        <p class="text-body-md text-on-surface-variant mb-sm">${cand.title}</p>
+                        <div class="flex flex-wrap gap-xs">
+                            ${skillsHTML}
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="mb-sm">
+                            <p class="text-label-sm text-on-surface-variant uppercase tracking-widest">Match Score</p>
+                            <p class="text-headline-md font-headline-md ${scoreClass}">${cand.score}%</p>
+                        </div>
+                        <button onclick="viewCandidateProfile('${cand.id}')" class="px-lg py-sm bg-surface-container-highest text-on-surface font-bold rounded-lg hover:bg-primary hover:text-on-primary transition-all duration-200">
+                            View Profile
+                        </button>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+
+        function updateDashboardMetrics() {
+            const candidates = getRankedCandidates();
+            const topScore = candidates.length > 0 ? candidates[0].score : 94.2;
+            const avgScore = candidates.length > 0 
+                ? Math.round(candidates.reduce((acc, c) => acc + c.score, 0) / candidates.length) 
+                : 88;
+            const applicantCount = candidates.length;
+
+            animateValue("count-match", 0, avgScore, 1500);
+            animateValue("count-score", 0, topScore, 1800, true);
+            animateValue("count-applicants", 0, applicantCount, 1200);
+
+            // Populate project name if available
+            const currentJob = JSON.parse(localStorage.getItem('tm_current_job') || '{}');
+            if (currentJob && currentJob.title) {
+                const subEl = document.getElementById('dashboard-subtitle');
+                const roleEl = document.getElementById('dashboard-active-role');
+                if (subEl) subEl.textContent = `Monitoring your high-priority ${currentJob.title} role.`;
+                if (roleEl) roleEl.textContent = `Active for ${currentJob.title}`;
+            }
+        }
+
         // Initialize animations on load
         window.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => {
-                animateValue("count-match", 0, 88, 1500);
-                animateValue("count-score", 0, 94.2, 1800, true);
-                animateValue("count-applicants", 0, 142, 1200);
-            }, 500);
+            renderCandidates();
+            setTimeout(updateDashboardMetrics, 500);
         });
 
-        // Basic list hover feedback
-        document.querySelectorAll('.group').forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                card.style.transform = 'translateY(-2px)';
-            });
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'translateY(0)';
-            });
+        // Reset Demo button click handler
+        document.getElementById('resetDemoBtn').addEventListener('click', () => {
+            renderCandidates();
+            updateDashboardMetrics();
+            showToast('Dashboard demo metrics reloaded!', 'success');
         });
     </script>
 </body></html>

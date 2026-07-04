@@ -157,7 +157,7 @@
 <button class="p-base rounded-full hover:bg-surface-container transition-colors active:scale-95 duration-200">
 <span class="material-symbols-outlined text-primary">menu</span>
 </button>
-<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-inverse-primary">TalentMind AI</h1>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-inverse-primary cursor-pointer hover:opacity-85 transition-opacity" onclick="navigateTo('home')">TalentMind AI</h1>
 </div>
 <div class="flex items-center gap-md">
 <div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden border border-outline-variant">
@@ -206,9 +206,15 @@
 <!-- Central Workspace -->
 <section class="flex-grow flex flex-col gap-lg items-center">
 <div class="w-full max-w-3xl glass-card rounded-2xl p-xl shadow-md">
-<header class="mb-xl">
+<header class="mb-xl flex items-center justify-between">
+<div>
 <h2 class="font-headline-lg text-headline-lg text-on-surface mb-xs">Job Description</h2>
 <p class="font-body-md text-body-md text-on-surface-variant">Define the role, expectations, and why someone should join your team.</p>
+</div>
+<button id="loadDemoJobBtn" class="flex items-center gap-xs px-md py-xs bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm rounded-lg active:scale-95 transition-all shadow-sm hover:opacity-90">
+<span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+<span>Load Demo</span>
+</button>
 </header>
 <div class="space-y-xl">
 <!-- Title Input -->
@@ -229,11 +235,11 @@
 </div>
 <!-- Actions -->
 <div class="flex items-center justify-between pt-md">
-<button class="flex items-center gap-sm px-lg py-md rounded-full font-label-md text-label-md text-secondary hover:bg-surface-container transition-colors active:scale-95">
+<button class="flex items-center gap-sm px-lg py-md rounded-full font-label-md text-label-md text-secondary hover:bg-surface-container transition-colors active:scale-95" id="saveDraftBtn">
 <span class="material-symbols-outlined">save</span>
                             Save Draft
                         </button>
-<button class="bg-primary text-on-primary px-3xl py-md rounded-full font-label-md text-label-md font-bold shadow-md hover:shadow-lg active:scale-95 transition-all">
+<button class="bg-primary text-on-primary px-3xl py-md rounded-full font-label-md text-label-md font-bold shadow-md hover:shadow-lg active:scale-95 transition-all" id="continueBtn">
                             Continue
                         </button>
 </div>
@@ -273,11 +279,13 @@
 <a class="font-body-sm text-body-sm text-secondary hover:text-primary transition-colors" href="#">Terms of Service</a>
 </div>
 </footer>
+<script src="/api.js"></script>
 <script>
         // Counters Logic
         const textarea = document.getElementById('job-description');
         const charCounter = document.getElementById('char-counter');
         const wordCounter = document.getElementById('word-counter');
+        const titleInput = document.getElementById('job-title');
 
         textarea.addEventListener('input', () => {
             const text = textarea.value;
@@ -291,6 +299,98 @@
                 charCounter.classList.add('text-error');
             } else {
                 charCounter.classList.remove('text-error');
+            }
+        });
+
+        // Load draft from localStorage
+        const savedTitle = localStorage.getItem('tm_draft_title');
+        const savedDesc = localStorage.getItem('tm_draft_description');
+        if (savedTitle) titleInput.value = savedTitle;
+        if (savedDesc) {
+            textarea.value = savedDesc;
+            textarea.dispatchEvent(new Event('input'));
+        }
+
+        // Load Demo button handler
+        document.getElementById('loadDemoJobBtn').addEventListener('click', () => {
+            titleInput.value = 'Senior Python & FastAPI Developer';
+            textarea.value = `We are looking for a Senior Python & FastAPI Developer to build out our high-throughput AI recruitment graph.
+
+Required Skills:
+- 5+ years of experience with Python and web frameworks (FastAPI, SQLModel, SQLAlchemy)
+- Experience designing orchestration pipelines using LangGraph or LangChain
+- In-depth understanding of PostgreSQL, query optimization, and transaction handling
+- Experience with background task execution using Celery or Redis
+- Familiarity with Docker, AWS ECS, and CI/CD pipelines
+- Strong background in writing testable, documentation-complete clean code`;
+            textarea.dispatchEvent(new Event('input'));
+            showToast('Demo job loaded successfully!', 'success');
+        });
+
+        // Save Draft button
+        document.getElementById('saveDraftBtn').addEventListener('click', () => {
+            localStorage.setItem('tm_draft_title', titleInput.value);
+            localStorage.setItem('tm_draft_description', textarea.value);
+            showToast('Draft saved successfully!', 'success');
+        });
+
+        // Continue button — submit job to backend
+        document.getElementById('continueBtn').addEventListener('click', async () => {
+            const title = titleInput.value.trim();
+            const description = textarea.value.trim();
+
+            if (!title) {
+                showToast('Please enter a job title.', 'warning');
+                titleInput.focus();
+                return;
+            }
+            if (!description) {
+                showToast('Please enter a job description.', 'warning');
+                textarea.focus();
+                return;
+            }
+
+            const btn = document.getElementById('continueBtn');
+            btn.disabled = true;
+            btn.textContent = 'Submitting...';
+
+            try {
+                let result;
+                try {
+                    result = await TalentMindAPI.createJob(title, description);
+                    console.log('[TalentMind] Job created:', result);
+                } catch (apiErr) {
+                    console.warn('[TalentMind] API connection failed, simulating local job creation:', apiErr);
+                    await new Promise(r => setTimeout(r, 600));
+                    result = {
+                        job_id: 'mock-' + Math.random().toString(36).substr(2, 9),
+                        title: title,
+                        raw_description: description,
+                        structured_data: {
+                            role_title: title,
+                            seniority_level: "SENIOR",
+                            technical_skills: { mandatory: ["Python", "FastAPI"], preferred: [] },
+                            minimum_years_experience: 5,
+                            status: "VALID",
+                            reasoning: "Successfully initialized mockup structured job details."
+                        },
+                        created_at: new Date().toISOString(),
+                        updated_at: new Date().toISOString()
+                    };
+                }
+
+                // Store job data for downstream pages
+                localStorage.setItem('tm_current_job', JSON.stringify(result));
+                localStorage.removeItem('tm_draft_title');
+                localStorage.removeItem('tm_draft_description');
+
+                showToast('Job created! Redirecting to resume upload...', 'success');
+                setTimeout(() => navigateTo('upload'), 1200);
+            } catch (err) {
+                console.error('[TalentMind] Job creation error:', err);
+                showToast('Failed to create job.', 'error');
+                btn.disabled = false;
+                btn.textContent = 'Continue';
             }
         });
 

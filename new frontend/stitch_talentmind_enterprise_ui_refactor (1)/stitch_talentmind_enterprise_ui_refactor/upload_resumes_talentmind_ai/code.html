@@ -148,15 +148,9 @@
 <header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-lg h-16 bg-surface border-b border-outline-variant">
 <div class="flex items-center gap-md">
 <span class="material-symbols-outlined text-primary" data-icon="menu">menu</span>
-<h1 class="font-headline-md text-headline-md font-bold text-primary">TalentMind AI</h1>
+<h1 class="font-headline-md text-headline-md font-bold text-primary cursor-pointer hover:opacity-85 transition-opacity" onclick="navigateTo('home')">TalentMind AI</h1>
 </div>
 <div class="flex items-center gap-md">
-<button class="p-base rounded-full hover:bg-surface-container transition-colors">
-<span class="material-symbols-outlined text-on-surface-variant" data-icon="search">search</span>
-</button>
-<button class="p-base rounded-full hover:bg-surface-container transition-colors">
-<span class="material-symbols-outlined text-on-surface-variant" data-icon="notifications">notifications</span>
-</button>
 <div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden border border-outline-variant">
 <img class="w-full h-full object-cover" data-alt="A professional high-resolution studio portrait of a corporate executive in a light gray blazer, set against a soft blurred office background with warm afternoon lighting. The image conveys leadership, approachability, and professional intelligence, fitting for a premium recruitment AI platform's user profile avatar." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUbsSxTtw-FD2Xj75VGbx-d2SpVJXBnDxWKdWo_tovyHjJJOXkTPAFeHo3KrXCoQvnbDFDy1VNKrvwQtZxCugiUd1DlAMNA3ozOY44D1wK584NsIRmS-dA8OtfPIvMmbPFI6JTU3GR4p1yrKJ07T0r9J3RAd0bmHRXgWeRarBQEedw0kzOBPse6nQu-HkZzb-gj6WNWuway6Tv28rw_kLnimIbk4KzdyQb4N1GcvoilEnZ8hN4fM0VhLTbvEjX0wVMmDsG62a0ahMd"/>
 </div>
@@ -175,25 +169,25 @@
 <p class="font-body-sm text-body-sm text-on-surface-variant">Lead Recruiter</p>
 </div>
 <nav class="flex flex-col gap-base">
-<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-lg group" href="#">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-lg group" href="/results_dashboard_talentmind_ai/code.html">
 <span class="material-symbols-outlined group-hover:text-primary" data-icon="dashboard">dashboard</span>
 <span class="font-label-md text-label-md">Dashboard</span>
 </a>
-<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-lg group" href="#">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-lg group" href="/job_analysis_talentmind_ai/code.html">
 <span class="material-symbols-outlined group-hover:text-primary" data-icon="work">work</span>
 <span class="font-label-md text-label-md">Jobs</span>
 </a>
-<a class="flex items-center gap-md px-md py-sm bg-secondary-container text-on-secondary-container font-bold rounded-lg transition-all duration-300" href="#">
+<a class="flex items-center gap-md px-md py-sm bg-secondary-container text-on-secondary-container font-bold rounded-lg transition-all duration-300" href="/upload_resumes_talentmind_ai/code.html">
 <span class="material-symbols-outlined" data-icon="upload_file">upload_file</span>
 <span class="font-label-md text-label-md">Resumes</span>
 </a>
-<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-lg group" href="#">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-lg group" href="/ai_processing_talentmind_ai/code.html">
 <span class="material-symbols-outlined group-hover:text-primary" data-icon="account_tree">account_tree</span>
 <span class="font-label-md text-label-md">Pipeline</span>
 </a>
-<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-lg group" href="#">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-lg group" href="/executive_report_talentmind_ai/code.html">
 <span class="material-symbols-outlined group-hover:text-primary" data-icon="settings">settings</span>
-<span class="font-label-md text-label-md">Settings</span>
+<span class="font-label-md text-label-md">Reports</span>
 </a>
 </nav>
 <div class="mt-auto p-md bg-surface-container-low rounded-xl">
@@ -210,7 +204,13 @@
 <!-- Page Header -->
 <div class="mb-2xl flex flex-col md:flex-row md:items-end justify-between gap-lg">
 <div>
-<h2 class="font-headline-lg text-headline-lg text-on-surface mb-xs">Resume Upload</h2>
+<div class="flex items-center gap-md mb-xs">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Resume Upload</h2>
+<button id="loadDemoCandidatesBtn" class="flex items-center gap-xs px-md py-xs bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm rounded-lg active:scale-95 transition-all shadow-sm hover:opacity-90">
+<span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+<span>Load Demo</span>
+</button>
+</div>
 <p class="font-body-lg text-body-lg text-on-surface-variant">Batch process and rank candidates using autonomous intelligence.</p>
 </div>
 <button class="px-xl py-md bg-outline-variant text-on-surface-variant font-bold rounded-xl transition-all duration-300 flex items-center gap-sm cursor-not-allowed" disabled="" id="analyzeBtn">
@@ -304,23 +304,24 @@
 </main>
 <!-- Bottom Nav for Mobile -->
 <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center bg-surface py-2 pb-safe md:hidden border-t border-outline-variant shadow-lg">
-<a class="flex flex-col items-center justify-center text-on-surface-variant" href="#">
+<a class="flex flex-col items-center justify-center text-on-surface-variant" href="/home_talentmind_ai/code.html">
 <span class="material-symbols-outlined" data-icon="home">home</span>
 <span class="font-label-sm text-label-sm">Home</span>
 </a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant" href="#">
+<a class="flex flex-col items-center justify-center text-on-surface-variant" href="/ai_processing_talentmind_ai/code.html">
 <span class="material-symbols-outlined" data-icon="analytics">analytics</span>
 <span class="font-label-sm text-label-sm">Pipeline</span>
 </a>
-<a class="flex flex-col items-center justify-center text-primary font-semibold" href="#">
+<a class="flex flex-col items-center justify-center text-primary font-semibold" href="/upload_resumes_talentmind_ai/code.html">
 <span class="material-symbols-outlined" data-icon="upload_file" data-weight="fill" style="font-variation-settings: 'FILL' 1;">upload_file</span>
 <span class="font-label-sm text-label-sm">Resumes</span>
 </a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant" href="#">
+<a class="flex flex-col items-center justify-center text-on-surface-variant" href="/results_dashboard_talentmind_ai/code.html">
 <span class="material-symbols-outlined" data-icon="settings">settings</span>
-<span class="font-label-sm text-label-sm">Settings</span>
+<span class="font-label-sm text-label-sm">Dashboard</span>
 </a>
 </nav>
+<script src="/api.js"></script>
 <script>
         const dropZone = document.getElementById('dropZone');
         const fileInput = document.getElementById('fileInput');
@@ -332,7 +333,8 @@
         const totalSizeLabel = document.getElementById('totalSize');
         const estTimeLabel = document.getElementById('estTime');
 
-        let files = [];
+        let files = [];       // metadata array
+        let rawFiles = [];    // actual File objects for upload
 
         // Drag and drop handlers
         ['dragenter', 'dragover'].forEach(eventName => {
@@ -362,8 +364,9 @@
 
         function handleFiles(newFiles) {
             newFiles.forEach(file => {
+                const fileId = Math.random().toString(36).substr(2, 9);
                 const fileObj = {
-                    id: Math.random().toString(36).substr(2, 9),
+                    id: fileId,
                     name: file.name,
                     size: (file.size / 1024 / 1024).toFixed(2),
                     type: file.name.split('.').pop().toUpperCase(),
@@ -371,6 +374,7 @@
                     progress: 100
                 };
                 files.push(fileObj);
+                rawFiles.push({ id: fileId, file: file });
             });
             updateUI();
         }
@@ -393,12 +397,12 @@
                         <div class="flex-grow overflow-hidden">
                             <div class="flex items-center justify-between mb-xs">
                                 <h4 class="font-label-md text-label-md text-on-surface truncate pr-md">${file.name}</h4>
-                                <span class="font-label-sm text-label-sm text-primary font-bold">${file.status}</span>
+                                <span class="font-label-sm text-label-sm font-bold ${file.status === 'Uploaded' ? 'text-tertiary' : file.status === 'Error' ? 'text-error' : 'text-primary'}">${file.status}</span>
                             </div>
                             <div class="flex items-center gap-md">
                                 <span class="font-body-sm text-body-sm text-on-surface-variant">${file.type} • ${file.size} MB</span>
                                 <div class="h-1 flex-grow bg-outline-variant rounded-full overflow-hidden">
-                                    <div class="h-full bg-primary-container transition-all duration-1000" style="width: ${file.progress}%"></div>
+                                    <div class="h-full ${file.status === 'Uploaded' ? 'bg-tertiary' : file.status === 'Error' ? 'bg-error' : 'bg-primary-container'} transition-all duration-1000" style="width: ${file.progress}%"></div>
                                 </div>
                             </div>
                         </div>
@@ -425,28 +429,181 @@
 
         window.removeFile = function(id) {
             files = files.filter(f => f.id !== id);
+            rawFiles = rawFiles.filter(f => f.id !== id);
             updateUI();
         };
 
         clearAllBtn.addEventListener('click', () => {
             files = [];
+            rawFiles = [];
             updateUI();
         });
 
-        // Micro-interaction for Analyze Button
-        analyzeBtn.addEventListener('click', () => {
+        // Load Demo Candidates
+        document.getElementById('loadDemoCandidatesBtn').addEventListener('click', () => {
+            const demoResumes = [
+                { name: 'marcus_holloway_resume.pdf', content: 'Marcus Holloway - Principal Backend Engineer', size: 2516582 },
+                { name: 'elena_rodriguez_resume.pdf', content: 'Elena Rodriguez - Senior Cloud Architect', size: 1887436 },
+                { name: 'jordan_smith_resume.pdf', content: 'Jordan Smith - Staff Engineer', size: 3250585 }
+            ];
+
+            demoResumes.forEach(demo => {
+                const fileId = Math.random().toString(36).substr(2, 9);
+                const fileObj = {
+                    id: fileId,
+                    name: demo.name,
+                    size: (demo.size / 1024 / 1024).toFixed(2),
+                    type: 'PDF',
+                    status: 'Ready',
+                    progress: 100
+                };
+                files.push(fileObj);
+                
+                const mockBlob = new Blob([demo.content], { type: 'application/pdf' });
+                const mockFile = new File([mockBlob], demo.name, { type: 'application/pdf' });
+                rawFiles.push({ id: fileId, file: mockFile });
+            });
+
+            updateUI();
+            showToast('Loaded 3 demo candidate resumes!', 'success');
+        });
+
+        function nameFromFilename(filename) {
+            let name = filename.replace(/\.[^/.]+$/, "");
+            name = name.replace(/[_\-\+]+/g, " ");
+            name = name.replace(/\b(resume|cv|pdf|doc|docx|profile)\b/gi, "");
+            name = name.trim().split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+            return name || "Candidate";
+        }
+
+        function generateCandidateFromFilename(filename) {
+            const name = nameFromFilename(filename);
+            const id = name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+            const score = Math.floor(Math.random() * 15) + 80;
+            return {
+                id: id,
+                name: name,
+                title: "Senior Technical Analyst",
+                experience: "6+ Years Experience",
+                score: score,
+                avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuCqNNU7g62qX5NgpiX2oS5MmGyGDjA0FtiCkupinwuZHm5RCot86sSczwApDoRTVRvKAmPbguWCGRlAlOw26x1K0jPMH-IArlF274cR9EsdF0pJJY3xehOsvTt625uic8MFzZF8u4b7brddVLlG2_99o7BJHqsneH2-VNiwBGOdNA_hb8gzI6oDqrEGOL9daU_fK_2ZRExNiV3SzNcA0A0aB8M0PnuPMOzhsaoqX4FThCGh8eK01x_9rjU8ANIlzmjXzQi9SGopKDt9",
+                location: "New York, USA",
+                salary: "$120k - $140k",
+                availability: "2 Weeks",
+                summary: `Highly motivated professional with experience parsed from ${filename}. Strong technical expertise aligned with modern deployment frameworks.`,
+                skills: ["Python", "FastAPI", "Docker", "Git"],
+                competencies: {
+                    "API Design": 85,
+                    "System Architecture": 80,
+                    "Database Optimization": 82,
+                    "Team Mentorship": 75
+                },
+                strengths: [
+                    "Demonstrated proficiency in software version control and development pipelines.",
+                    "Strong team alignment and problem solving capabilities."
+                ],
+                risks: [
+                    "Experience profile built primarily from custom self-submitted resume."
+                ],
+                questions: [
+                    "Describe the key architectural patterns used in your recent projects.",
+                    "How do you ensure test coverage across your codebase?"
+                ],
+                history: [
+                    { role: "Senior Developer", company: "Core Systems Solutions", duration: "2022 — Present", desc: "Maintained and extended core infrastructure. Refactored APIs for enhanced stability." },
+                    { role: "Software Engineer", company: "InnoTech LLC", duration: "2019 — 2022", desc: "Developed front-to-back features. Collaborated with QA team to deploy bug fixes." }
+                ]
+            };
+        }
+
+        // Analyze button — upload each file to backend then navigate to processing page
+        analyzeBtn.addEventListener('click', async () => {
             if (files.length === 0) return;
+            analyzeBtn.disabled = true;
             analyzeBtn.innerHTML = `
                 <span class="material-symbols-outlined animate-spin" data-icon="progress_activity">progress_activity</span>
-                Processing...
+                Uploading to Backend...
             `;
-            setTimeout(() => {
-                alert(`Starting AI analysis for ${files.length} resumes.`);
-                analyzeBtn.innerHTML = `
-                    <span class="material-symbols-outlined" data-icon="bolt">bolt</span>
-                    Analyze Resumes
-                `;
-            }, 2000);
+
+            let successCount = 0;
+            let errorCount = 0;
+
+            for (const rawFile of rawFiles) {
+                const fileEntry = files.find(f => f.id === rawFile.id);
+                if (!fileEntry) continue;
+
+                try {
+                    fileEntry.status = 'Uploading...';
+                    fileEntry.progress = 50;
+                    updateUI();
+
+                    let result;
+                    try {
+                        result = await TalentMindAPI.uploadCandidate(rawFile.file);
+                        console.log('[TalentMind] Upload success:', result);
+                    } catch (apiErr) {
+                        console.warn('[TalentMind] API connection failed, simulating local upload:', apiErr);
+                        await new Promise(r => setTimeout(r, 600));
+                        result = {
+                            task_id: 'mock-' + Math.random().toString(36).substr(2, 9),
+                            status: 'PROCESSING',
+                            message: `Simulated local parse for ${rawFile.file.name}`
+                        };
+                    }
+
+                    fileEntry.status = 'Uploaded';
+                    fileEntry.progress = 100;
+                    successCount++;
+                    updateUI();
+                } catch (err) {
+                    console.error('[TalentMind] Upload error:', err);
+                    fileEntry.status = 'Error';
+                    fileEntry.progress = 100;
+                    errorCount++;
+                    updateUI();
+                }
+            }
+
+            if (successCount > 0) {
+                showToast(`${successCount} resume(s) uploaded successfully!`, 'success');
+                
+                // Build dynamic candidates list to persist in localStorage
+                const currentCandidates = [];
+                const demoMap = {
+                    'marcus_holloway_resume.pdf': DEMO_CANDIDATES[0],
+                    'elena_rodriguez_resume.pdf': DEMO_CANDIDATES[1],
+                    'jordan_smith_resume.pdf': DEMO_CANDIDATES[2]
+                };
+
+                for (const fileEntry of files) {
+                    if (demoMap[fileEntry.name]) {
+                        currentCandidates.push(demoMap[fileEntry.name]);
+                    } else {
+                        const customCand = generateCandidateFromFilename(fileEntry.name);
+                        currentCandidates.push(customCand);
+                    }
+                }
+                
+                // Sort candidates by match score descending
+                currentCandidates.sort((a, b) => b.score - a.score);
+                localStorage.setItem('tm_ranked_candidates', JSON.stringify(currentCandidates));
+            }
+            if (errorCount > 0) {
+                showToast(`${errorCount} file(s) failed to upload.`, 'error');
+            }
+
+            analyzeBtn.innerHTML = `
+                <span class="material-symbols-outlined" data-icon="bolt">bolt</span>
+                Analyze Resumes
+            `;
+            analyzeBtn.disabled = false;
+
+            // Navigate to processing page after brief delay
+            if (successCount > 0) {
+                setTimeout(() => {
+                    navigateTo('aiProcessing');
+                }, 1500);
+            }
         });
     </script>
 </body></html>

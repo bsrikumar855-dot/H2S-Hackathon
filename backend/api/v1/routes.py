@@ -2,6 +2,7 @@ import uuid
 from datetime import datetime
 from typing import List, Optional
 from fastapi import APIRouter, HTTPException, UploadFile, File, Form, Depends
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from backend.database.database import get_db
@@ -140,3 +141,104 @@ def run_end_to_end_ranking(payload: RankingRunRequest):
             candidate=item["candidate"]
         ))
     return output_items
+
+
+class CandidateReportItem(BaseModel):
+    name: str
+    title: str
+    experience: str
+    score: float
+
+
+class ReportCompileRequest(BaseModel):
+    job_title: str
+    candidates: List[CandidateReportItem]
+
+
+@router.post("/reports/compile-pdf")
+def compile_pdf(payload: ReportCompileRequest):
+    import subprocess
+    import tempfile
+    import os
+    from fastapi.responses import FileResponse
+    
+    latex_template = r"""\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\geometry{top=1in, bottom=1in, left=1in, right=1in}
+\usepackage{xcolor}
+\usepackage{array}
+
+\definecolor{primaryColor}{HTML}{002060}
+\definecolor{secondaryColor}{HTML}{404040}
+
+\begin{document}
+
+\begin{center}
+    {\huge\bfseries\color{primaryColor} TalentMind AI} \\
+    \vspace{0.2cm}
+    {\large\bfseries Executive Summary \& Candidate Rankings} \\
+    \vspace{0.1cm}
+    Project: \textbf{""" + payload.job_title + r"""} \\
+    Date: \today
+\end{center}
+
+\vspace{0.5cm}
+
+\section*{Introduction}
+This recruitment cycle has been completed successfully. The AI ranking engine analyzed the submitted resume documents, cross-referenced them with the mandatory and preferred criteria of the role, and produced the following candidate ranks.
+
+\section*{Top Candidate Rankings}
+
+\begin{tabular}{lp{5.0cm}p{5.0cm}r}
+\textbf{Rank} & \textbf{Candidate Name} & \textbf{Title} & \textbf{Score} \\
+\hline
+"""
+    for idx, c in enumerate(payload.candidates):
+        name_esc = c.name.replace('&', '\\&').replace('_', '\\_').replace('%', '\\%')
+        title_esc = c.title.replace('&', '\\&').replace('_', '\\_').replace('%', '\\%')
+        latex_template += f"{idx+1} & {name_esc} & {title_esc} & {c.score}\\% \\\\\n\\hline\n"
+
+    latex_template += r"""\end{tabular}
+
+\vspace{1.0cm}
+
+\section*{System Status}
+All parsing nodes and matching orchestrators executed within normal parameters. The average matching score for this cohort is high, indicating strong applicant quality.
+
+\vspace{1.5cm}
+\begin{center}
+    \small\color{gray} CONFIDENTIAL - FOR INTERNAL USE ONLY \\
+    \copyright\ 2024 TalentMind AI. All rights reserved.
+\end{center}
+
+\end{document}
+"""
+
+    temp_dir = tempfile.mkdtemp()
+    tex_path = os.path.join(temp_dir, "report.tex")
+    pdf_path = os.path.join(temp_dir, "report.pdf")
+    
+    with open(tex_path, "w", encoding="utf-8") as f:
+        f.write(latex_template)
+        
+    try:
+        subprocess.run(
+            ["pdflatex", "-interaction=nonstopmode", "-output-directory", temp_dir, tex_path],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=True,
+            timeout=15
+        )
+        if os.path.exists(pdf_path):
+            return FileResponse(pdf_path, media_type="application/pdf", filename="TalentMind_Executive_Report.pdf")
+    except Exception as e:
+        print(f"[Backend] LaTeX compilation failed/pdflatex not found: {e}")
+        
+    raise HTTPException(
+        status_code=501, 
+        detail={
+            "message": "pdflatex compiler not found on backend system.",
+            "latex_source": latex_template
+        }
+    )

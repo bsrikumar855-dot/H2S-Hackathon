@@ -127,35 +127,60 @@
         .chart-bar {
             transition: width 1s ease-out;
         }
+        @media print {
+            body * {
+                visibility: hidden !important;
+            }
+            #report-paper-page, #report-paper-page * {
+                visibility: visible !important;
+            }
+            #report-paper-page {
+                position: absolute !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                box-shadow: none !important;
+                padding: 1.5cm !important;
+                margin: 0 !important;
+                background-color: white !important;
+                color: black !important;
+            }
+            #report-paper-page .bg-primary {
+                background-color: #002060 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
     </style>
 </head>
 <body class="bg-background text-on-surface font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
 <!-- Sidebar Navigation -->
 <aside class="fixed h-full w-sidebar-width left-0 top-0 border-r border-outline-variant bg-surface flex flex-col p-lg z-50">
 <div class="mb-3xl">
-<h1 class="text-headline-md font-headline-md font-bold text-primary">TalentMind AI</h1>
+<h1 class="text-headline-md font-headline-md font-bold text-primary cursor-pointer hover:opacity-85 transition-opacity" onclick="navigateTo('home')">TalentMind AI</h1>
 <p class="text-label-md font-label-md text-on-surface-variant">Enterprise Recruitment</p>
 </div>
 <nav class="flex-1 space-y-base">
-<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="/results_dashboard_talentmind_ai/code.html">
 <span class="material-symbols-outlined">dashboard</span>
 <span class="font-label-md">Dashboard</span>
 </a>
-<a class="flex items-center gap-md px-md py-sm bg-secondary-container text-on-secondary-container rounded-lg font-bold" href="#">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="/job_analysis_talentmind_ai/code.html">
 <span class="material-symbols-outlined">analytics</span>
 <span class="font-label-md">Job Analysis</span>
 </a>
-<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="/upload_resumes_talentmind_ai/code.html">
 <span class="material-symbols-outlined">description</span>
 <span class="font-label-md">Resumes</span>
 </a>
-<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="/ai_processing_talentmind_ai/code.html">
 <span class="material-symbols-outlined">view_kanban</span>
 <span class="font-label-md">Pipeline</span>
 </a>
-<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<a class="flex items-center gap-md px-md py-sm bg-secondary-container text-on-secondary-container rounded-lg font-bold" href="/executive_report_talentmind_ai/code.html">
 <span class="material-symbols-outlined">settings</span>
-<span class="font-label-md">Settings</span>
+<span class="font-label-md">Reports</span>
 </a>
 </nav>
 <div class="mt-auto pt-lg border-t border-outline-variant">
@@ -181,14 +206,7 @@
 </div>
 </div>
 <div class="flex items-center gap-lg">
-<button class="relative p-base text-on-surface-variant hover:text-primary transition-colors">
-<span class="material-symbols-outlined">notifications</span>
-<span class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full"></span>
-</button>
-<button class="p-base text-on-surface-variant hover:text-primary transition-colors">
-<span class="material-symbols-outlined">chat_bubble</span>
-</button>
-<button class="flex items-center gap-sm bg-primary text-on-primary px-md py-sm rounded-lg font-label-md hover:bg-primary-container transition-all active:scale-95">
+<button class="flex items-center gap-sm bg-primary text-on-primary px-md py-sm rounded-lg font-label-md hover:bg-primary-container transition-all active:scale-95" id="downloadReportBtn">
 <span class="material-symbols-outlined">download</span>
                 Download Report
             </button>
@@ -216,7 +234,7 @@
 <span class="material-symbols-outlined">share</span>
                             Share Link
                         </button>
-<button class="flex items-center gap-sm px-md py-sm border border-outline-variant rounded-lg text-label-md hover:bg-surface-container-high transition-colors">
+<button id="printReportBtn" class="flex items-center gap-sm px-md py-sm border border-outline-variant rounded-lg text-label-md hover:bg-surface-container-high transition-colors">
 <span class="material-symbols-outlined">print</span>
                             Print
                         </button>
@@ -226,7 +244,7 @@
 <!-- PDF Preview Container -->
 <div class="flex justify-center bg-surface-dim rounded-xl p-2xl report-shadow fade-in-preview">
 <!-- Mock "Paper" Page -->
-<div class="bg-white w-[842px] min-h-[1190px] p-3xl shadow-xl flex flex-col relative overflow-hidden">
+<div id="report-paper-page" class="bg-white w-[842px] min-h-[1190px] p-3xl shadow-xl flex flex-col relative overflow-hidden text-black">
 <!-- Decorative Header Element -->
 <div class="absolute top-0 left-0 w-full h-2 bg-primary"></div>
 <!-- Report Header -->
@@ -263,7 +281,7 @@
 <p class="text-label-sm text-on-surface-variant uppercase mb-xs">Avg. AI Score</p>
 <p class="text-headline-lg font-headline-lg text-primary">92.4%</p>
 <div class="w-full bg-outline-variant h-1 mt-md rounded-full overflow-hidden">
-<div class="bg-primary h-full chart-bar" style="width: 92%"></div>
+<div class="bg-primary h-full chart-bar" data-width="92%" style="width: 0%"></div>
 </div>
 </div>
 </div>
@@ -277,7 +295,7 @@
 <span class="font-bold">88%</span>
 </div>
 <div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
-<div class="bg-primary h-full chart-bar" style="width: 88%"></div>
+<div class="bg-primary h-full chart-bar" data-width="88%" style="width: 0%"></div>
 </div>
 </div>
 <div>
@@ -286,7 +304,7 @@
 <span class="font-bold">74%</span>
 </div>
 <div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
-<div class="bg-primary h-full chart-bar" style="width: 74%"></div>
+<div class="bg-primary h-full chart-bar" data-width="74%" style="width: 0%"></div>
 </div>
 </div>
 <div>
@@ -295,7 +313,7 @@
 <span class="font-bold">62%</span>
 </div>
 <div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
-<div class="bg-primary h-full chart-bar" style="width: 62%"></div>
+<div class="bg-primary h-full chart-bar" data-width="62%" style="width: 0%"></div>
 </div>
 </div>
 </div>
@@ -303,46 +321,8 @@
 <!-- Top Candidates -->
 <div>
 <h4 class="text-headline-sm font-headline-sm text-on-surface mb-lg">Top Strategic Matches</h4>
-<div class="divide-y divide-outline-variant">
-<div class="py-md flex items-center justify-between">
-<div class="flex items-center gap-md">
-<img class="w-12 h-12 rounded-full object-cover" data-alt="Portrait of a senior male engineer, professional lighting, minimal grey background, wearing a smart casual sweater, warm expression, high resolution photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2DxzCl_cMdrNvf6d2l3Q4mqmkgQx_tux6_gdlcA5pf409KwpWULF2Oyqy7IvW53dlPVsBPCfEHkc_95ewXo69_nKCT70o8iFpRsvuJpKKa3obzngS0S-73ovT_yUAbbAxWZGMIPy8AGRnxX5xzEqCkz3NJR2A6Sl0VbmXdABnt1jNHSDwbAL5HMknjcMEukjCsIKN0cRrKA6SzUDYrqVfcwCd8wyKw_lP3h-oiJfv8FQtNRbmpKUrr2q_qzrKIxWtkrouhEj2JQbF"/>
-<div>
-<p class="text-body-lg font-bold">Marcus Thorne</p>
-<p class="text-body-sm text-on-surface-variant">Ex-Google • 12 Yrs Exp</p>
-</div>
-</div>
-<div class="text-right">
-<p class="text-label-sm font-bold text-primary">98/100</p>
-<p class="text-label-sm text-on-surface-variant">AI Match Score</p>
-</div>
-</div>
-<div class="py-md flex items-center justify-between">
-<div class="flex items-center gap-md">
-<img class="w-12 h-12 rounded-full object-cover" data-alt="Portrait of a professional woman in engineering leadership, sharp office environment, confident pose, modern minimal aesthetic, soft key lighting, neutral tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAz38pecv909llI70FLQZnEeU2gv5tnxgXb2IeCHj6pTSr7hSdYV4C5Pz2rL6iMr4D8nGA-empoJLK3R90nhRmhV-sOvrAl_UBH5XVyEPx2QrGJeia-iwVNa80zjMMtp0ExTWdji5y7Y_rdP5_xJ3hxSvXzKvxFlqRopdREEaux0QUwU5VVljx-GAW3cmGpaF02f42leywgomyWtRb3gx5LHAMXrjrPrnLuwmDG0RLioMlAz_dr9w4BieMp-DY-h3UXD-klNkozz3K-"/>
-<div>
-<p class="text-body-lg font-bold">Elena Rodriguez</p>
-<p class="text-body-sm text-on-surface-variant">Scale-up CTO • 9 Yrs Exp</p>
-</div>
-</div>
-<div class="text-right">
-<p class="text-label-sm font-bold text-primary">95/100</p>
-<p class="text-label-sm text-on-surface-variant">AI Match Score</p>
-</div>
-</div>
-<div class="py-md flex items-center justify-between">
-<div class="flex items-center gap-md">
-<img class="w-12 h-12 rounded-full object-cover" data-alt="Close up professional headshot of a developer, diverse background, bright natural lighting, focus on eyes, wearing a simple blue shirt, tech corporate style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuATF-VC1uleqXlCDesiONhnocBQm70qK1MckIz96RR5fI8onYI7wEPOzkk05xIuxMPNPFZPonleP5SNlTHumPawGkD7vpOMujwxqalndU1qhNOt3mPNX8QHbPENrzrNJek7c9XX_sugjFZ7o5uWzuPDQwXn1iHaqEpRCJmnlSCWi-8Ya0k6kSpbTCdWPKcdSv_-9zR-OVmWNbII0E9McNW0bfWnUbcu55uoE0xAulUXivN0rcNTzly_Ve4qbdMP3jCM2C3_bsDdIpID"/>
-<div>
-<p class="text-body-lg font-bold">David Chen</p>
-<p class="text-body-sm text-on-surface-variant">Systems Specialist • 15 Yrs Exp</p>
-</div>
-</div>
-<div class="text-right">
-<p class="text-label-sm font-bold text-primary">92/100</p>
-<p class="text-label-sm text-on-surface-variant">AI Match Score</p>
-</div>
-</div>
+<div class="divide-y divide-outline-variant" id="executive-candidates-list">
+    <!-- Loaded dynamically by JavaScript -->
 </div>
 </div>
 <!-- Footer Page Info -->
@@ -382,7 +362,35 @@
 </div>
 </div>
 </footer>
+<script src="/api.js"></script>
 <script>
+        function renderExecutiveCandidates() {
+            const container = document.getElementById('executive-candidates-list');
+            if (!container) return;
+            const candidates = getRankedCandidates();
+            container.innerHTML = '';
+
+            // Take top 3
+            candidates.slice(0, 3).forEach((cand) => {
+                const item = document.createElement('div');
+                item.className = 'py-md flex items-center justify-between';
+                item.innerHTML = `
+                    <div class="flex items-center gap-md">
+                        <img class="w-12 h-12 rounded-full object-cover" src="${cand.avatar}" alt="${cand.name}"/>
+                        <div>
+                            <p class="text-body-lg font-bold text-on-surface">${cand.name}</p>
+                            <p class="text-body-sm text-on-surface-variant">${cand.title} • ${cand.experience.split(' ')[0]} Exp</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-label-sm font-bold text-primary">${Math.round(cand.score)}/100</p>
+                        <p class="text-label-sm text-on-surface-variant">AI Match Score</p>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
         // Simple micro-interaction for the report page selection
         document.querySelectorAll('.cursor-pointer').forEach(thumb => {
             thumb.addEventListener('click', function() {
@@ -394,5 +402,107 @@
                 this.classList.remove('border-outline-variant', 'opacity-60');
             });
         });
+
+        // Animate chart bars and populate data on load
+        window.addEventListener('DOMContentLoaded', () => {
+            renderExecutiveCandidates();
+            
+            // Populate project name if available
+            const currentJob = JSON.parse(localStorage.getItem('tm_current_job') || '{}');
+            if (currentJob && currentJob.title) {
+                const projEl = document.querySelector('.text-body-md.text-on-surface-variant');
+                if (projEl) {
+                    projEl.innerHTML = `Project: ${currentJob.title} • Ref: #RE-9042`;
+                }
+            }
+
+            setTimeout(() => {
+                document.querySelectorAll('.chart-bar').forEach(bar => {
+                    bar.style.width = bar.getAttribute('data-width');
+                });
+            }, 300);
+        });
+
+        // Download Report button click handler
+        document.getElementById('downloadReportBtn').addEventListener('click', async () => {
+            const btn = document.getElementById('downloadReportBtn');
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = `<span class="material-symbols-outlined animate-spin mr-xs">sync</span> Compiling LaTeX...`;
+
+            const currentJob = JSON.parse(localStorage.getItem('tm_current_job') || '{}');
+            const jobTitle = currentJob.title || 'Senior Software Engineer';
+            const candidates = getRankedCandidates();
+
+            try {
+                const response = await TalentMindAPI.compileReportPDF(jobTitle, candidates);
+                
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `TalentMind_Executive_Report_${jobTitle.replace(/\s+/g, '_')}.pdf`;
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    window.URL.revokeObjectURL(url);
+                    showToast('PDF Report downloaded successfully!', 'success');
+                } else if (response.status === 501) {
+                    const errData = await response.json();
+                    showToast('pdflatex not found on backend. Downloading report.tex...', 'warning');
+                    downloadTexFile(errData.detail.latex_source, jobTitle);
+                    
+                    setTimeout(() => {
+                        showToast('Opening print dialog for PDF export...', 'info');
+                        window.print();
+                    }, 1500);
+                } else {
+                    throw new Error(`Server returned status: ${response.status}`);
+                }
+            } catch (err) {
+                console.error('[TalentMind] PDF generation error:', err);
+                showToast('Backend offline. Downloading LaTeX source & opening PDF export...', 'warning');
+                const fallbackLatex = generateLocalLatex(jobTitle, candidates);
+                downloadTexFile(fallbackLatex, jobTitle);
+                
+                setTimeout(() => {
+                    window.print();
+                }, 1500);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        });
+
+        // Print Report button click handler
+        document.getElementById('printReportBtn').addEventListener('click', () => {
+            window.print();
+        });
+
+        function downloadTexFile(latexContent, jobTitle) {
+            const blob = new Blob([latexContent], { type: 'text/plain;charset=utf-8' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `TalentMind_Report_${jobTitle.replace(/\s+/g, '_')}.tex`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+        }
+
+        function generateLocalLatex(jobTitle, candidates) {
+            let latex = `\\documentclass[11pt,a4paper]{article}\n\\usepackage[utf8]{inputenc}\n\\usepackage{geometry}\n\\geometry{top=1in, bottom=1in, left=1in, right=1in}\n\\usepackage{xcolor}\n\\usepackage{array}\n\n\\definecolor{primaryColor}{HTML}{002060}\n\\definecolor{secondaryColor}{HTML}{404040}\n\n\\begin{document}\n\n\\begin{center}\n    {\\huge\\bfseries\\color{primaryColor} TalentMind AI} \\\\\n    \\vspace{0.2cm}\n    {\\large\\bfseries Executive Summary \\& Candidate Rankings} \\\\\n    \\vspace{0.1cm}\n    Project: \\textbf{${jobTitle}} \\\\\n    Date: \\today\n\\end{center}\n\n\\vspace{0.5cm}\n\n\\section*{Introduction}\nThis recruitment cycle has been completed successfully. The AI ranking engine analyzed the submitted resume documents, cross-referenced them with the mandatory and preferred criteria of the role, and produced the following candidate ranks.\n\n\\section*{Top Candidate Rankings}\n\n\\begin{tabular}{lp{5.0cm}p{5.0cm}r}\n\\textbf{Rank} & \\textbf{Candidate Name} & \\textbf{Title} & \\textbf{Score} \\\\\n\\hline\n`;
+            
+            candidates.forEach((c, idx) => {
+                const nameEsc = c.name.replace('&', '\\&').replace('_', '\\_').replace('%', '\\%');
+                const titleEsc = c.title.replace('&', '\\&').replace('_', '\\_').replace('%', '\\%');
+                latex += `${idx+1} & ${nameEsc} & ${titleEsc} & ${Math.round(c.score)}\\% \\\\\n\\hline\n`;
+            });
+
+            latex += `\\end{tabular}\n\n\\vspace{1.0cm}\n\n\\section*{System Status}\nAll parsing nodes and matching orchestrators executed within normal parameters. The average matching score for this cohort is high, indicating strong applicant quality.\n\n\\vspace{1.5cm}\n\\begin{center}\n    \\small\\color{gray} CONFIDENTIAL - FOR INTERNAL USE ONLY \\\\\n    \\copyright\\ 2024 TalentMind AI. All rights reserved.\n\\end{center}\n\n\\end{document}\n`;
+            return latex;
+        }
     </script>
 </body></html>

@@ -137,14 +137,14 @@
 <span class="font-headline-md text-headline-md font-bold text-primary">TalentMind AI</span>
 </div>
 <nav class="hidden md:flex gap-lg">
-<a class="font-label-md text-label-md text-primary font-medium hover:text-primary transition-colors" href="#">Home</a>
+<a class="font-label-md text-label-md text-primary font-medium hover:text-primary transition-colors" href="/home_talentmind_ai/code.html">Home</a>
 <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#features">Features</a>
 <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#stats">Performance</a>
-<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Pricing</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="/results_dashboard_talentmind_ai/code.html">Dashboard</a>
 </nav>
 <div class="flex items-center gap-md">
-<button class="font-label-md text-label-md text-on-surface font-medium px-md py-sm hover:bg-surface-container-low rounded-lg transition-all">Sign In</button>
-<button class="bg-primary text-on-primary font-label-md text-label-md px-lg py-sm rounded-lg active:scale-95 transition-all shadow-sm">Get Started</button>
+<button class="font-label-md text-label-md text-on-surface font-medium px-md py-sm hover:bg-surface-container-low rounded-lg transition-all" onclick="navigateTo('results')">Sign In</button>
+<button class="bg-primary text-on-primary font-label-md text-label-md px-lg py-sm rounded-lg active:scale-95 transition-all shadow-sm" onclick="navigateTo('jobAnalysis')">Get Started</button>
 </div>
 </header>
 <main class="pt-16">
@@ -165,8 +165,8 @@
                         Find the most relevant candidates with intelligent resume analysis. Our human-centric AI identifies talent depth where others see keywords.
                     </p>
 <div class="flex flex-wrap gap-md">
-<button class="bg-primary text-on-primary font-label-md text-label-md px-3xl py-md rounded-lg active:scale-95 transition-all shadow-lg hover:shadow-primary/20">Start Analysis</button>
-<button class="bg-surface border border-outline-variant text-on-surface font-label-md text-label-md px-3xl py-md rounded-lg hover:bg-surface-container-low active:scale-95 transition-all">Learn More</button>
+<button class="bg-primary text-on-primary font-label-md text-label-md px-3xl py-md rounded-lg active:scale-95 transition-all shadow-lg hover:shadow-primary/20" onclick="navigateTo('jobAnalysis')">Start Analysis</button>
+<button class="bg-surface border border-outline-variant text-on-surface font-label-md text-label-md px-3xl py-md rounded-lg hover:bg-surface-container-low active:scale-95 transition-all" onclick="navigateTo('upload')">Upload Resumes</button>
 </div>
 <!-- Backend Status Card -->
 <div class="mt-2xl stagger-in" style="transition-delay: 200ms;">
@@ -340,8 +340,8 @@
                             Join the ranks of high-growth companies using TalentMind AI to build their dream teams.
                         </p>
 <div class="flex flex-col sm:flex-row justify-center gap-md">
-<button class="bg-primary text-on-primary font-label-md text-label-md px-3xl py-md rounded-xl shadow-lg active:scale-95 transition-all">Create Free Account</button>
-<button class="bg-white border border-outline-variant text-on-surface font-label-md text-label-md px-3xl py-md rounded-xl hover:bg-surface active:scale-95 transition-all">Schedule Demo</button>
+<button class="bg-primary text-on-primary font-label-md text-label-md px-3xl py-md rounded-xl shadow-lg active:scale-95 transition-all" onclick="navigateTo('jobAnalysis')">Start Hiring Now</button>
+<button class="bg-white border border-outline-variant text-on-surface font-label-md text-label-md px-3xl py-md rounded-xl hover:bg-surface active:scale-95 transition-all" onclick="navigateTo('results')">View Dashboard</button>
 </div>
 </div>
 </div>
@@ -368,6 +368,7 @@
 </div>
 </div>
 </footer>
+<script src="/api.js"></script>
 <script>
         // Entrance Animations with Intersection Observer
         const observerOptions = {
@@ -379,7 +380,6 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    // Once animated, no need to watch anymore
                     observer.unobserve(entry.target);
                 }
             });
@@ -387,37 +387,54 @@
 
         document.querySelectorAll('.stagger-in').forEach(el => observer.observe(el));
 
-        // Mock Health Check Micro-interaction
+        // Real Backend Health Check
         async function checkHealth() {
             const statusIndicator = document.querySelector('.animate-ping');
-            const statusText = statusIndicator?.closest('div').nextElementSibling.querySelector('.font-body-sm');
+            const statusDot = statusIndicator?.nextElementSibling;
+            const statusContainer = statusIndicator?.closest('.bg-surface-container-low');
+            const statusLabel = statusContainer?.querySelector('.font-label-sm');
+            const statusText = statusContainer?.querySelector('.font-body-sm');
             
             try {
-                // Mimicking GET /health
-                // In a real app, you'd fetch() here
-                await new Promise(resolve => setTimeout(resolve, 800));
+                const data = await TalentMindAPI.checkHealth();
                 if (statusIndicator) {
-                    statusIndicator.classList.remove('bg-tertiary');
+                    statusIndicator.classList.remove('bg-error');
                     statusIndicator.classList.add('bg-tertiary');
                 }
+                if (statusDot) {
+                    statusDot.classList.remove('bg-error');
+                    statusDot.classList.add('bg-tertiary');
+                }
+                if (statusLabel) statusLabel.textContent = 'API Status';
+                if (statusText) statusText.innerHTML = '<span class="material-symbols-outlined text-[14px]">check_circle</span> Systems Operational';
+                console.log('[TalentMind] Backend connected:', data);
             } catch (e) {
+                console.warn('[TalentMind] Backend offline:', e.message);
                 if (statusIndicator) {
                     statusIndicator.classList.remove('bg-tertiary');
                     statusIndicator.classList.add('bg-error');
                 }
-                if (statusText) statusText.innerHTML = "System Maintenance";
+                if (statusDot) {
+                    statusDot.classList.remove('bg-tertiary');
+                    statusDot.classList.add('bg-error');
+                }
+                if (statusLabel) statusLabel.textContent = 'API Status';
+                if (statusText) statusText.innerHTML = '<span class="material-symbols-outlined text-[14px]">error</span> Backend Offline';
             }
         }
         
         checkHealth();
+        // Re-check every 30 seconds
+        setInterval(checkHealth, 30000);
 
         // Smooth scroll for anchors
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
+                const target = this.getAttribute('href');
+                if (target === '#') return;
                 e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
+                const el = document.querySelector(target);
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
             });
         });
     </script>

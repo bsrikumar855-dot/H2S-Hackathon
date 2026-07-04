@@ -128,33 +128,33 @@
 <!-- SideNavBar (Fixed) -->
 <aside class="fixed h-full w-sidebar-width left-0 top-0 border-r border-outline-variant bg-surface flex flex-col p-lg z-50">
 <div class="mb-3xl">
-<h1 class="text-headline-md font-headline-md font-bold text-primary">TalentMind AI</h1>
+<h1 class="text-headline-md font-headline-md font-bold text-primary cursor-pointer hover:opacity-85 transition-opacity" onclick="navigateTo('home')">TalentMind AI</h1>
 <p class="text-label-md font-label-md text-on-surface-variant">Enterprise Recruitment</p>
 </div>
 <nav class="flex-1 space-y-sm">
-<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="/results_dashboard_talentmind_ai/code.html">
 <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
 <span class="font-label-md">Dashboard</span>
 </a>
-<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="/job_analysis_talentmind_ai/code.html">
 <span class="material-symbols-outlined" data-icon="analytics">analytics</span>
 <span class="font-label-md">Job Analysis</span>
 </a>
-<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="/upload_resumes_talentmind_ai/code.html">
 <span class="material-symbols-outlined" data-icon="description">description</span>
 <span class="font-label-md">Resumes</span>
 </a>
-<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="/ai_processing_talentmind_ai/code.html">
 <span class="material-symbols-outlined" data-icon="view_kanban">view_kanban</span>
 <span class="font-label-md">Pipeline</span>
 </a>
-<a class="flex items-center gap-md px-md py-sm bg-secondary-container text-on-secondary-container rounded-lg font-bold" href="#">
+<a class="flex items-center gap-md px-md py-sm bg-secondary-container text-on-secondary-container rounded-lg font-bold" href="/executive_report_talentmind_ai/code.html">
 <span class="material-symbols-outlined" data-icon="settings">settings</span>
-<span class="font-label-md">Settings</span>
+<span class="font-label-md">Reports</span>
 </a>
 </nav>
 <div class="mt-auto space-y-sm pt-xl border-t border-outline-variant">
-<button class="w-full bg-primary-container text-on-primary-container py-md px-lg rounded-lg font-bold mb-md hover:opacity-90 transition-all active:scale-95">
+<button onclick="navigateTo('jobAnalysis')" class="w-full bg-primary-container text-on-primary-container py-md px-lg rounded-lg font-bold mb-md hover:opacity-90 transition-all active:scale-95">
                 New Job Post
             </button>
 <a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
@@ -174,14 +174,7 @@
 <input class="w-full pl-xl pr-md py-sm bg-surface-container-low border border-outline-variant rounded-lg focus:outline-none focus:border-primary text-body-sm" placeholder="Search talent..." type="text"/>
 </div>
 <div class="flex items-center gap-lg">
-<button class="relative text-on-surface-variant hover:text-primary transition-colors">
-<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
-<span class="absolute -top-1 -right-1 w-2 h-2 bg-error rounded-full"></span>
-</button>
-<button class="text-on-surface-variant hover:text-primary transition-colors">
-<span class="material-symbols-outlined" data-icon="chat_bubble">chat_bubble</span>
-</button>
-<div class="flex items-center gap-md pl-md border-l border-outline-variant">
+<div class="flex items-center gap-md">
 <div class="text-right">
 <p class="text-label-md font-bold leading-none">Sarah Jenkins</p>
 <p class="text-label-sm text-on-surface-variant">Director of Talent</p>
@@ -272,38 +265,40 @@
 </div>
 </footer>
 </main>
+<script src="/api.js"></script>
 <script>
         const retryBtn = document.getElementById('retryBtn');
         const retryIcon = document.getElementById('retryIcon');
 
-        retryBtn.addEventListener('click', () => {
+        retryBtn.addEventListener('click', async () => {
             // Visual feedback for retry
             retryIcon.classList.add('retry-animate');
             retryBtn.classList.add('opacity-80', 'pointer-events-none');
             retryBtn.innerText = 'Retrying...';
             
-            // Artificial delay to simulate a real connection check
-            setTimeout(() => {
-                retryIcon.classList.remove('retry-animate');
-                retryBtn.classList.remove('opacity-80', 'pointer-events-none');
-                retryBtn.innerHTML = `
-                    <span id="retryIcon" class="material-symbols-outlined" data-icon="refresh">refresh</span>
-                    Retry Connection
-                `;
-                // Show a small toast notification for "still offline"
-                const toast = document.createElement('div');
-                toast.className = 'fixed bottom-lg right-lg bg-inverse-surface text-inverse-on-surface px-lg py-md rounded-lg shadow-xl flex items-center gap-md animate-in slide-in-from-right duration-300 z-50';
-                toast.innerHTML = `
-                    <span class="material-symbols-outlined text-tertiary-fixed" data-icon="cloud_off">cloud_off</span>
-                    <span class="text-label-md">System still unreachable. Please try again in a moment.</span>
-                `;
-                document.body.appendChild(toast);
+            try {
+                // Real connection check
+                await TalentMindAPI.checkHealth();
+                
+                // If it succeeds, navigate to home
+                showToast('Backend connected! Redirecting...', 'success');
+                setTimeout(() => {
+                    navigateTo('home');
+                }, 1500);
+            } catch (err) {
+                // If it fails, keep system offline status
+                console.warn('[TalentMind] Retry check failed:', err.message);
                 
                 setTimeout(() => {
-                    toast.classList.add('animate-out', 'fade-out', 'duration-300');
-                    setTimeout(() => toast.remove(), 300);
-                }, 3000);
-            }, 1500);
+                    retryIcon.classList.remove('retry-animate');
+                    retryBtn.classList.remove('opacity-80', 'pointer-events-none');
+                    retryBtn.innerHTML = `
+                        <span id="retryIcon" class="material-symbols-outlined" data-icon="refresh">refresh</span>
+                        Retry Connection
+                    `;
+                    showToast('Backend still unreachable. Please ensure FastAPI is running on port 8000.', 'error');
+                }, 1000);
+            }
         });
 
         // Simple subtle parallax effect for the illustration container

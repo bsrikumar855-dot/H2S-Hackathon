@@ -144,7 +144,7 @@
 <!-- Top Navigation -->
 <header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-lg h-16 bg-surface border-b border-outline-variant">
 <div class="flex items-center gap-md">
-<span class="font-headline-md text-headline-md font-bold text-primary">TalentMind AI</span>
+<span class="font-headline-md text-headline-md font-bold text-primary cursor-pointer hover:opacity-85 transition-opacity" onclick="navigateTo('home')">TalentMind AI</span>
 </div>
 <div class="flex items-center gap-md">
 <div class="hidden md:flex items-center gap-xl mr-xl">
@@ -199,7 +199,13 @@
 <section class="mb-xl animate-in slide-in-from-bottom-2 fade-in duration-700">
 <div class="flex flex-col md:flex-row md:items-end justify-between gap-md">
 <div>
-<h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-xs">Processing Candidates</h1>
+<h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-xs flex items-center gap-md">
+<span>Processing Candidates</span>
+<button id="fastTrackBtn" class="flex items-center gap-xs px-md py-xs bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm rounded-lg active:scale-95 transition-all shadow-sm hover:opacity-90">
+<span class="material-symbols-outlined text-[18px]">fast_forward</span>
+<span>Fast-Track</span>
+</button>
+</h1>
 <p class="font-body-md text-on-surface-variant">Role: Senior Product Designer • <span class="font-medium text-primary">#SP-442</span></p>
 </div>
 <div class="flex items-center gap-sm text-on-surface-variant bg-surface-container-low px-md py-sm rounded-full border border-outline-variant">
@@ -232,79 +238,82 @@
 </div>
 <!-- Pipeline Steps -->
 <div class="pipeline-track space-y-xl mt-xl">
-<!-- Step 1: Complete -->
-<div class="flex items-start gap-lg relative z-10">
-<div class="step-icon w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary transition-all-300">
-<span class="material-symbols-outlined text-[20px]">check</span>
+<!-- Step 1 -->
+<div id="step-1" class="flex items-start gap-lg relative z-10 transition-all duration-300">
+<div class="step-icon w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300">
+<span class="material-symbols-outlined text-[20px]">description</span>
 </div>
 <div class="flex-1 pt-1">
 <div class="flex justify-between items-start">
-<h3 class="font-label-md text-on-surface font-bold">Reading Job Description</h3>
-<span class="text-tertiary font-label-sm font-bold">COMPLETED</span>
+<h3 class="font-label-md font-bold text-on-surface">Reading Job Description</h3>
+<span class="step-status font-label-sm font-bold">PENDING</span>
 </div>
-<p class="font-body-sm text-on-surface-variant">Extracted 14 key technical competencies and 4 soft skills.</p>
+<p class="step-desc font-body-sm text-on-surface-variant">Extracting technical competencies and requirements...</p>
 </div>
 </div>
-<!-- Step 2: Complete -->
-<div class="flex items-start gap-lg relative z-10">
-<div class="step-icon w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary transition-all-300">
-<span class="material-symbols-outlined text-[20px]">check</span>
+<!-- Step 2 -->
+<div id="step-2" class="flex items-start gap-lg relative z-10 transition-all duration-300">
+<div class="step-icon w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300">
+<span class="material-symbols-outlined text-[20px]">upload_file</span>
 </div>
 <div class="flex-1 pt-1">
 <div class="flex justify-between items-start">
-<h3 class="font-label-md text-on-surface font-bold">Parsing Resume</h3>
-<span class="text-tertiary font-label-sm font-bold">COMPLETED</span>
+<h3 class="font-label-md font-bold text-on-surface">Parsing Resume</h3>
+<span class="step-status font-label-sm font-bold">PENDING</span>
 </div>
-<p class="font-body-sm text-on-surface-variant">Scanned 124 documents. Successfully extracted metadata.</p>
+<p class="step-desc font-body-sm text-on-surface-variant">Extracting candidate experience and history...</p>
 </div>
 </div>
-<!-- Step 3: Active -->
-<div class="flex items-start gap-lg relative z-10 step-active">
-<div class="step-icon w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container transition-all-300 animate-pulse">
+<!-- Step 3 -->
+<div id="step-3" class="flex items-start gap-lg relative z-10 transition-all duration-300">
+<div class="step-icon w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300">
 <span class="material-symbols-outlined text-[20px]">sync</span>
 </div>
 <div class="flex-1 pt-1">
 <div class="flex justify-between items-start">
-<h3 class="font-label-md text-primary font-bold">Semantic Matching</h3>
-<span class="text-primary font-label-sm font-bold animate-pulse">IN PROGRESS</span>
+<h3 class="font-label-md font-bold text-on-surface">Semantic Matching</h3>
+<span class="step-status font-label-sm font-bold">PENDING</span>
 </div>
-<p class="font-body-sm text-on-surface font-medium">Cross-referencing historical success patterns...</p>
-<!-- Mini Skeleton in progress step -->
-<div class="mt-sm grid grid-cols-3 gap-sm">
-<div class="h-1.5 skeleton-shimmer rounded-full"></div>
-<div class="h-1.5 skeleton-shimmer rounded-full"></div>
-<div class="h-1.5 skeleton-shimmer rounded-full opacity-50"></div>
+<p class="step-desc font-body-sm text-on-surface-variant">Evaluating candidate experience against the job spec...</p>
 </div>
 </div>
-</div>
-<!-- Step 4: Pending -->
-<div class="flex items-start gap-lg relative z-10 opacity-40">
-<div class="step-icon w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant transition-all-300">
+<!-- Step 4 -->
+<div id="step-4" class="flex items-start gap-lg relative z-10 transition-all duration-300">
+<div class="step-icon w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300">
 <span class="material-symbols-outlined text-[20px]">psychology</span>
 </div>
 <div class="flex-1 pt-1">
-<h3 class="font-label-md text-on-surface">Behavior Analysis</h3>
-<p class="font-body-sm text-on-surface-variant">Waiting for preceding steps...</p>
+<div class="flex justify-between items-start">
+<h3 class="font-label-md font-bold text-on-surface">Behavior Analysis</h3>
+<span class="step-status font-label-sm font-bold">PENDING</span>
+</div>
+<p class="step-desc font-body-sm text-on-surface-variant">Analyzing soft skills and communication cues...</p>
 </div>
 </div>
-<!-- Step 5: Pending -->
-<div class="flex items-start gap-lg relative z-10 opacity-40">
-<div class="step-icon w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant transition-all-300">
+<!-- Step 5 -->
+<div id="step-5" class="flex items-start gap-lg relative z-10 transition-all duration-300">
+<div class="step-icon w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300">
 <span class="material-symbols-outlined text-[20px]">leaderboard</span>
 </div>
 <div class="flex-1 pt-1">
-<h3 class="font-label-md text-on-surface">Ranking Candidates</h3>
-<p class="font-body-sm text-on-surface-variant">Awaiting final scoring data.</p>
+<div class="flex justify-between items-start">
+<h3 class="font-label-md font-bold text-on-surface">Ranking Candidates</h3>
+<span class="step-status font-label-sm font-bold">PENDING</span>
+</div>
+<p class="step-desc font-body-sm text-on-surface-variant">Generating final scoring matrix...</p>
 </div>
 </div>
-<!-- Step 6: Pending -->
-<div class="flex items-start gap-lg relative z-10 opacity-40">
-<div class="step-icon w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant transition-all-300">
-<span class="material-symbols-outlined text-[20px]">description</span>
+<!-- Step 6 -->
+<div id="step-6" class="flex items-start gap-lg relative z-10 transition-all duration-300">
+<div class="step-icon w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300">
+<span class="material-symbols-outlined text-[20px]">summarize</span>
 </div>
 <div class="flex-1 pt-1">
-<h3 class="font-label-md text-on-surface">Generating Report</h3>
-<p class="font-body-sm text-on-surface-variant">Compiling PDF summaries and insights.</p>
+<div class="flex justify-between items-start">
+<h3 class="font-label-md font-bold text-on-surface">Generating Report</h3>
+<span class="step-status font-label-sm font-bold">PENDING</span>
+</div>
+<p class="step-desc font-body-sm text-on-surface-variant">Compiling recruitment brief and scorecards...</p>
 </div>
 </div>
 </div>
@@ -405,28 +414,91 @@
 <span class="text-secondary hover:text-primary transition-all cursor-pointer font-body-sm underline">Contact Support</span>
 </div>
 </footer>
+<script src="/api.js"></script>
 <script>
         // Micro-interactions and Status Updates
-        let progress = 45;
-        let timeLeft = 165; // seconds
+        let progress = 10;
+        let timeLeft = 120; // seconds
+        let hasNavigated = false;
 
         const progressBar = document.getElementById('progress-bar');
         const percentVal = document.getElementById('percent-val');
         const timer = document.getElementById('timer');
 
+        const stepConfigs = [
+            { id: 'step-1', range: [0, 20], activeIcon: 'description', compIcon: 'check_circle', title: 'Reading Job Description', compDesc: 'Extracted 14 key technical competencies and 4 soft skills.', pendDesc: 'Preparing to extract requirements...' },
+            { id: 'step-2', range: [20, 40], activeIcon: 'upload_file', compIcon: 'check_circle', title: 'Parsing Resume', compDesc: 'Scanned candidate documents. Extracted resume structure and metadata.', pendDesc: 'Extracting candidate work experience...' },
+            { id: 'step-3', range: [40, 60], activeIcon: 'sync', compIcon: 'check_circle', title: 'Semantic Matching', compDesc: 'Cross-referenced experience against job role requirements.', pendDesc: 'Evaluating candidate skill mapping...' },
+            { id: 'step-4', range: [60, 80], activeIcon: 'psychology', compIcon: 'check_circle', title: 'Behavior Analysis', compDesc: 'Evaluated soft skills, intent cues, and behavioral consistency.', pendDesc: 'Analyzing behavioral indicators...' },
+            { id: 'step-5', range: [80, 95], activeIcon: 'leaderboard', compIcon: 'check_circle', title: 'Ranking Candidates', compDesc: 'Compiled final relative matching and qualification scores.', pendDesc: 'Ranking candidates based on skill match...' },
+            { id: 'step-6', range: [95, 101], activeIcon: 'summarize', compIcon: 'check_circle', title: 'Generating Report', compDesc: 'Prepared complete executive recruitment report and recommendations.', pendDesc: 'Assembling recruitment dashboards...' }
+        ];
+
+        function renderSteps() {
+            stepConfigs.forEach((config) => {
+                const el = document.getElementById(config.id);
+                if (!el) return;
+                const iconContainer = el.querySelector('.step-icon');
+                const iconSpan = el.querySelector('.step-icon span');
+                const statusSpan = el.querySelector('.step-status');
+                const descP = el.querySelector('.step-desc');
+
+                const [start, end] = config.range;
+
+                if (progress >= end) {
+                    // Completed state
+                    el.style.opacity = '1';
+                    iconContainer.className = 'step-icon w-10 h-10 rounded-full bg-tertiary flex items-center justify-center text-on-tertiary transition-all duration-300';
+                    iconSpan.innerText = 'check';
+                    iconSpan.className = 'material-symbols-outlined text-[20px]';
+                    statusSpan.innerText = 'COMPLETED';
+                    statusSpan.className = 'step-status font-label-sm font-bold text-tertiary';
+                    descP.innerText = config.compDesc;
+                    descP.className = 'step-desc font-body-sm text-on-surface-variant';
+                } else if (progress >= start && progress < end) {
+                    // Active state
+                    el.style.opacity = '1';
+                    iconContainer.className = 'step-icon w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container transition-all duration-300 animate-pulse';
+                    iconSpan.innerText = 'sync';
+                    iconSpan.className = 'material-symbols-outlined text-[20px] animate-spin';
+                    statusSpan.innerText = 'IN PROGRESS';
+                    statusSpan.className = 'step-status font-label-sm font-bold text-primary animate-pulse';
+                    descP.innerText = config.pendDesc;
+                    descP.className = 'step-desc font-body-sm text-on-surface font-medium';
+                } else {
+                    // Pending state
+                    el.style.opacity = '0.4';
+                    iconContainer.className = 'step-icon w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant transition-all duration-300';
+                    iconSpan.innerText = config.activeIcon;
+                    iconSpan.className = 'material-symbols-outlined text-[20px]';
+                    statusSpan.innerText = 'PENDING';
+                    statusSpan.className = 'step-status font-label-sm font-bold text-on-surface-variant';
+                    descP.innerText = config.pendDesc;
+                    descP.className = 'step-desc font-body-sm text-on-surface-variant';
+                }
+            });
+        }
+
         function updateProgress() {
             if (progress < 100) {
-                // Slower increment for realism
-                const inc = Math.random() * 0.5;
+                const inc = Math.random() * 2 + 1; // Faster incremental progress for demo responsiveness
                 progress = Math.min(100, progress + inc);
                 progressBar.style.width = `${progress}%`;
                 percentVal.innerText = `${Math.floor(progress)}%`;
+                renderSteps();
+            } else if (!hasNavigated) {
+                hasNavigated = true;
+                progressBar.style.width = '100%';
+                percentVal.innerText = '100%';
+                renderSteps();
+                showToast('Analysis complete! Viewing results...', 'success');
+                setTimeout(() => navigateTo('results'), 2000);
             }
         }
 
         function updateTimer() {
-            if (timeLeft > 0) {
-                timeLeft--;
+            if (timeLeft > 0 && progress < 100) {
+                timeLeft = Math.max(0, timeLeft - Math.ceil(10 * (progress / 100)));
                 const mins = Math.floor(timeLeft / 60);
                 const secs = timeLeft % 60;
                 timer.innerText = `${mins}m ${secs.toString().padStart(2, '0')}s`;
@@ -436,19 +508,26 @@
             }
         }
 
+        // Fast track button handler
+        document.getElementById('fastTrackBtn').addEventListener('click', () => {
+            progress = 100;
+            updateProgress();
+        });
+
         // Simulating periodic state updates
         setInterval(updateProgress, 1000);
         setInterval(updateTimer, 1000);
 
         // Simple Fade in for page elements
         document.addEventListener('DOMContentLoaded', () => {
+            renderSteps();
             const steps = document.querySelectorAll('.pipeline-track > div');
             steps.forEach((step, index) => {
                 step.style.opacity = '0';
                 step.style.transform = 'translateY(10px)';
                 setTimeout(() => {
                     step.style.transition = 'all 0.5s ease-out';
-                    step.style.opacity = index > 2 ? '0.4' : '1';
+                    step.style.opacity = '1';
                     step.style.transform = 'translateY(0)';
                 }, 100 * index);
             });
